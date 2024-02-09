@@ -1,0 +1,15 @@
+{
+  "id": "mage-magic-system",
+  "title": "Mage Magic System",
+  "description": "Adds the magic system from mage the awakening to any system.",
+  "authors": [
+    {
+      "name": "Sumayyah Kalush"
+    }
+  ],
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11"
+  }
+}
