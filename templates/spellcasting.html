@@ -1,0 +1,62 @@
+<form class="magic-casting-modal">
+    <header>
+        <h1>Cast spell as {{ token.document.name }}</h1>
+    </header>
+    <div class="magic-casting-content">
+        <aside class="magic-casting-sidebar">
+        
+        {{#if showAddSkillsBtn}}
+            Need Skillz
+        {{/if}}
+        <ul>
+            {{#each magicSkills}}
+            <li>
+                <button
+                    type="button"
+                    class="mage-roll-skill"
+                    data-name="{{ name }}"
+                    data-rank="{{ rank }}"
+                    data-actor="{{ actor }}"
+                >
+                    {{name}}: {{rank}}
+                </button>
+            </li>
+            {{/each}}
+        </ul>
+        </aside>
+        <main class="magic-casting-spell-list">
+            <nav class="magic-casting-spells-nav" aria-labelledby="magic-casting-spell-tabs">
+                <h2 id="magic-casting-spell-tabs">Spells</h2>
+                <ul>
+                    <li><button type="button">Level 1</button></li>
+                    <li><button type="button">Level 2</button></li>
+                    <li><button type="button">Level 3</button></li>
+                    <li><button type="button">Level 4</button></li>
+                    <li><button type="button">Level 5</button></li>
+                </ul>
+            </nav>
+            <section class="magic-casting-spell-level-panel">
+                <h3>Prepared Spells</h3>
+                <h3>Spell List</h3>
+                <article class="magic-casting-spell-def">
+                    <h4>Spell Name</h4>
+                    <div class="magic-casting-spell-def-description">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </div>
+                </article>
+                <article class="magic-casting-spell-def">
+                    <h4>Spell Name</h4>
+                    <div class="magic-casting-spell-def-description">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </div>
+                </article>
+                <article class="magic-casting-spell-def">
+                    <h4>Spell Name</h4>
+                    <div class="magic-casting-spell-def-description">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </div>
+                </article>
+            </section>
+        </main>
+    </div>
+</form>

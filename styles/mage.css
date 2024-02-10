@@ -1,0 +1,81 @@
+.mage-hotbar-button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.magic-casting-modal {
+    --primary-color: #eedb5d;
+    --primary-color-text: #333;
+    background: #333;
+    display:flex;
+    flex-direction: row;
+}
+.magic-casting-modal h1 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    font-weight: lighter;
+}
+.magic-casting-modal h2 {
+    font-size: 1.4rem;
+}
+.magic-casting-modal h3 {
+    font-size: 1.3rem;
+}
+.magic-casting-modal header {
+    display:flex;
+    height:100%;
+    align-items: center;
+    justify-content: center;
+    border-right:1px solid var(--primary-color);
+    margin-right:.5rem;
+}
+.magic-casting-modal header h1 {
+    text-align: center;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    line-height: 2;
+    padding: 2rem 1rem;
+}
+.magic-casting-content {
+    display: flex;
+    flex-direction: row;
+}
+.magic-casting-sidebar {
+    flex:0;
+    min-width: 10rem;
+    padding:.5rem;
+}
+.magic-casting-spell-list {
+    flex:1;
+    padding:.5rem;
+}
+.magic-casting-spells-nav, .magic-casting-spells-nav ul {
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.magic-casting-spells-nav {
+    margin-bottom:.5rem;
+    border-bottom: 1px solid var(--primary-color);
+}
+.magic-casting-spells-nav h2 {
+    margin-right:1rem;
+}
+.magic-casting-spells-nav button {
+    background-color: transparent;
+    color: var(--primary-color);
+    line-height: 1.5;
+    padding:0 1rem .5rem;
+    margin:0;
+    border-radius: 0;
+    white-space: nowrap;
+    transition: all .2s linear;
+}
+.magic-casting-spells-nav button:hover {
+    background-color: var(--primary-color);
+    color: var(--primary-color-text);
+}
+.magic-casting-spell-level-panel {
+
+}
