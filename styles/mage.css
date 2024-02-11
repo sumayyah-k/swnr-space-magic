@@ -76,6 +76,12 @@
     background-color: var(--primary-color);
     color: var(--primary-color-text);
 }
+.magic-casting-spell-level-panels {
+    max-width: 50rem;
+    max-height: 50rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 .magic-casting-spell-level-panel {
 
 }

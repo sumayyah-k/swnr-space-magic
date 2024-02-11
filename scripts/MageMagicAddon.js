@@ -1,10 +1,9 @@
 // import { MageConfig } from "./MageConfig";
 
 export class MageMagicAddon {
-  static ID = "mage_magic_addon";
+  static ID = "swnr-space-magic";
 
   static FLAGS = {
-    TODOS: "mage",
     SPELLSLOTS: "spell-slot"
   };
 

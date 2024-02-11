@@ -7,14 +7,14 @@ import { MageConfig } from "./MageConfig.js";
 Hooks.once("init", () => {
   CONFIG.debug.hooks = true;
   // Object.assign(CONFIG.Item.dataModels, {
-  //   "mage_magic_addon.spell": SpellModel,
+  //   "swnr-space-magic.spell": SpellModel,
   // });
   // DocumentSheetConfig.registerSheet(
   //   Item,
-  //   "mage_magic_addon",
+  //   "swnr-space-magic",
   //   SpellSheet,
   //   {
-  //     types: ["mage_magic_addon.spell"],
+  //     types: ["swnr-space-magic.spell"],
   //     makeDefault: true,
   //   }
   // );

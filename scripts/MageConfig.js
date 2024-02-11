@@ -47,11 +47,13 @@ export class MageConfig extends FormApplication {
         };
       });
     }
-    MageMagicAddon.log(true, token);
+    const maxSpellSlots = this.getMaxSpellSlots(token.document.actor.system.class, token.document.actor.system.level.value);
+    MageMagicAddon.log(true, token, token.document.actor);
     return {
       token,
       magicSkills,
       showAddSkillsBtn: true,
+      maxSpellSlots
     };
   }
 
@@ -59,8 +61,9 @@ export class MageConfig extends FormApplication {
     const clickedElement = $(event.currentTarget);
     const rank = clickedElement.data().rank;
     const name = clickedElement.data().name;
-    const actor = clickedElement.data().actor;
-
+    const actorID = clickedElement.data().actor;
+    const actor = game.actors.get(actorID);
+    
     // Construct the Roll instance
     let r = new Roll("1d20 + @rank", { rank: rank });
 
