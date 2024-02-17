@@ -23,7 +23,7 @@ export class MageConfig extends FormApplication {
   }
 
   bind(html) {
-    MageMagicAddon.log(true, {html});
+    MageMagicAddon.log(true, { html });
   }
 
   getData(options) {
@@ -65,7 +65,10 @@ export class MageConfig extends FormApplication {
     }
 
     const spellSlots = SpellSlots.getForActor(actorId);
-    const maxSpellSlots = SpellSlots.getMaxSpellSlots(token.document.actor.system.class, token.document.actor.system.level.value);
+    const maxSpellSlots = SpellSlots.getMaxSpellSlots(
+      token.document.actor.system.class,
+      token.document.actor.system.level.value
+    );
 
     const activeMagicTab = game.actors
       .get(actorId)
@@ -89,7 +92,7 @@ export class MageConfig extends FormApplication {
     const actorID = clickedElement.data().actor;
     if (actorID) {
       const actor = game.actors.get(actorID);
-      
+
       // Construct the Roll instance
       let r = new Roll("1d20 + @rank", { rank: rank });
 
@@ -106,9 +109,9 @@ export class MageConfig extends FormApplication {
       // };
       // ChatMessage.applyRollMode(chatData, "roll");
       // ChatMessage.create(chatData);
-      
+
       const rollMode = game.settings.get("core", "rollMode");
-      var stats = {}
+      var stats = {};
       stats[name] = rank;
       const data = {
         actor: this.actor,
@@ -130,8 +133,7 @@ export class MageConfig extends FormApplication {
           },
           rollMode
         )
-      );     
-      
+      );
 
       // The resulting equation after it was rolled
       console.log(r.result); // 16 + 2 + 4
@@ -150,11 +152,19 @@ export class MageConfig extends FormApplication {
 
     SpellSlots.useSpellSlot(actorId, level);
   }
+
+  async _handleRestClick(event) {
+    const clickedElement = $(event.currentTarget);
+    const actorId = clickedElement.data().actor;
+
+    SpellSlots.fillSpellSlots(actorId);
+  }
   activateListeners(html) {
     super.activateListeners(html);
 
     html.on("click", ".mage-roll-skill", this._handleCastButtonClick);
     html.on("click", ".magic-casting-cast-btn", this._handleCastSpellClick);
+    html.on("click", ".magic-casting-rest-btn", this._handleRestClick);
   }
 
   async _updateObject(event, formData) {
