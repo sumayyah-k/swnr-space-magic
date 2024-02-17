@@ -1,5 +1,4 @@
 import { MageMagicAddon } from "./MageMagicAddon.js";
-// import { MageMagicData } from "./MageMagicData.js";
 import {filterSkillsBySystem, validateSkillsExist} from "./utils.js";
 import SpellSlots from './Models/SpellSlots.js';
 

@@ -1,24 +1,9 @@
 import { filterSkillsBySystem } from "./utils.js";
 import { MageMagicAddon } from "./MageMagicAddon.js";
 import { MageConfig } from "./MageConfig.js";
-// import { SpellModel } from "./SpellModel.js";
-// import { SpellSheet } from "./SpellSheet.js";
 
 Hooks.once("init", () => {
   CONFIG.debug.hooks = true;
-  // Object.assign(CONFIG.Item.dataModels, {
-  //   "swnr-space-magic.spell": SpellModel,
-  // });
-  // DocumentSheetConfig.registerSheet(
-  //   Item,
-  //   "swnr-space-magic",
-  //   SpellSheet,
-  //   {
-  //     types: ["swnr-space-magic.spell"],
-  //     makeDefault: true,
-  //   }
-  // );
-  //   MageMagicAddon.initialize();
 });
 
 Hooks.once("devModeReady", ({ registerPackageDebugFlag }) => {
