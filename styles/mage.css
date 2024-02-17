@@ -49,20 +49,20 @@
     flex:1;
     padding:.5rem;
 }
-.magic-casting-spells-nav, .magic-casting-spells-nav ul {
+.magic-casting-spells-nav-wrap, .magic-casting-spells-nav {
     display:flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
 }
-.magic-casting-spells-nav {
+.magic-casting-spells-nav-wrap {
     margin-bottom:.5rem;
     border-bottom: 1px solid var(--primary-color);
 }
-.magic-casting-spells-nav h2 {
+.magic-casting-spells-nav-wrap h2 {
     margin-right:1rem;
 }
-.magic-casting-spells-nav button {
+.magic-casting-spells-nav .item {
     background-color: transparent;
     color: var(--primary-color);
     line-height: 1.5;
@@ -72,7 +72,7 @@
     white-space: nowrap;
     transition: all .2s linear;
 }
-.magic-casting-spells-nav button:hover {
+.magic-casting-spells-nav .item:hover, .magic-casting-spells-nav .item.active {
     background-color: var(--primary-color);
     color: var(--primary-color-text);
 }

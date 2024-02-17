@@ -1,4 +1,4 @@
-const SWNRSkillList = ["Know Magic", "Use Magic", "Death", "Fate", "Forces"];
+const SWNRSkillList = ["Know Magic", "Use Magic"];
 
 export function filterSkillsBySystem(token, i) {
     if (token.document.actor.constructor.name == "SWNRCharacterActor") {

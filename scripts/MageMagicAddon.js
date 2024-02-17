@@ -4,7 +4,8 @@ export class MageMagicAddon {
   static ID = "swnr-space-magic";
 
   static FLAGS = {
-    SPELLSLOTS: "spell-slot"
+    SPELLSLOTS: "spell-slot",
+    ACTIVE_MAGIC_TAB: "active-magic-tab",
   };
 
   static TEMPLATES = {

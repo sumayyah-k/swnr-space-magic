@@ -68,7 +68,16 @@ Hooks.on("renderHotbar", (playerList, html) => {
 
   html.on("click", ".mage-hotbar-button", (event) => {
     try {
-      new MageConfig().render(true, { userId: game.userId });
+      new MageConfig(null, {
+        userId: game.userId,
+        tabs: [
+          {
+            navSelector: ".magic-casting-spells-nav",
+            contentSelector: ".magic-casting-spell-level-panels",
+            initial: "spell-level-1",
+          },
+        ],
+      }).render(true);
     } catch (e) {
       console.error(e);
     }
