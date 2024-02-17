@@ -32,7 +32,7 @@ export class MageConfig extends FormApplication {
     var magicSkills = [];
     var spells = [];
     var actorId = null;
-    // var showAddSkillsBtn = true;
+
     tokens = canvas?.tokens?.controlled;
     if (tokens) {
       token = tokens[0];
@@ -43,9 +43,6 @@ export class MageConfig extends FormApplication {
         filterSkillsBySystem(token, i)
       );
 
-      // if (!validateSkillsExist(token)) {
-      //   showAddSkillsBtn = false;
-      // }
       magicSkills = magicSkills.map((i) => {
         return {
           name: i.name,
@@ -74,12 +71,10 @@ export class MageConfig extends FormApplication {
       .get(actorId)
       ?.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ACTIVE_MAGIC_TAB);
 
-    // const spellSlots = {};
     return {
       token,
       actor: actorId,
       magicSkills,
-      showAddSkillsBtn: true,
       maxSpellSlots,
       spellSlots,
       spells,
@@ -148,23 +143,6 @@ export class MageConfig extends FormApplication {
     }
   }
 
-  // async _handleSpellTabClick(event) {
-  //   const clickedElement = $(event.currentTarget);
-  //   const level = clickedElement.data().level;
-  //   const actorId = clickedElement.data().actor;
-  //   game.actors
-  //     .get(actorId)
-  //     ?.setFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ACTIVE_MAGIC_TAB, level);
-
-
-  //   const tab = event.target.closest("[data-tab]");
-  //   if (!tab) return;
-  //   event.preventDefault();
-  //   const tabName = tab.dataset.tab;
-  //   if (tabName !== this.active)
-  //     this.activate(tabName, { triggerCallback: true });
-  // }
-
   async _handleCastSpellClick(event) {
     const clickedElement = $(event.currentTarget);
     const level = clickedElement.data().level;
@@ -176,16 +154,10 @@ export class MageConfig extends FormApplication {
     super.activateListeners(html);
 
     html.on("click", ".mage-roll-skill", this._handleCastButtonClick);
-    // html.on("click", ".mage-spell-level-tab", this._handleSpellTabClick);
     html.on("click", ".magic-casting-cast-btn", this._handleCastSpellClick);
   }
 
   async _updateObject(event, formData) {
-    // const expandedData = foundry.utils.expandObject(formData);
-
-    // await ToDoListData.updateUserToDos(this.options.userId, expandedData);
-
-    // this.render();
     return;
   }
 }
