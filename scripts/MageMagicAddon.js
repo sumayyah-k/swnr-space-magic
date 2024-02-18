@@ -9,7 +9,7 @@ export class MageMagicAddon {
   };
 
   static TEMPLATES = {
-    SPELLCASTING: `modules/${this.ID}/templates/spellcasting2.hbs`,
+    SPELLCASTING: `modules/${this.ID}/templates/spellcasting.hbs`,
   };
 
   //   static initialize() {
