@@ -7,11 +7,16 @@
       "name": "Sumayyah Kalush"
     }
   ],
-  "version": "1.0.0",
+  "version": "#{VERSION}#",
   "compatibility": {
     "minimum": "11",
     "verified": "11"
   },
+  "url": "#{URL}#",
+  "manifest": "#{MANIFEST}#",
+  "download": "#{DOWNLOAD}#",
+  "license": "LICENSE",
+  "readme": "README.md",
   "esmodules": ["scripts/main.js"],
   "styles": ["styles/mage.css"],
   "languages": [

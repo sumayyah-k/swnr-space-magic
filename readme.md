@@ -7,4 +7,6 @@ This will (hopefully) help track spells and spell slots for classes that use the
 3. highlight token on a map, if the class is set correctly the button to the right of the hotbar will open a spellcasting window
 
 ## Installation
+install from foundry using the manifest URL: https://github.com/sumayyah-k/swnr-space-magic/releases/latest/download/module.json
+
 Drop the files in a folder named `swnr-space-magic` in foundry's modules directory. Enable from manage modules screen in game.
