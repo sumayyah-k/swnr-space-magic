@@ -1,0 +1,117 @@
+<form class="magic-casting-modal">
+  <header>
+    <h1>Cast spell as {{ token.document.name }}</h1>
+  </header>
+  <div class="magic-casting-content">
+    <aside class="magic-casting-sidebar">
+      <h2>Spell Slots</h2>
+      {{#each numSpellSlots as |levels class|}}
+      <h3>{{class}}</h3>
+      <ul>
+        {{#each levels as |slots level|}}
+          <li>{{level}}: {{slots.available}}/{{slots.max}}</li>
+        {{/each}}
+      </ul>
+      {{/each}}
+      <button type="button" data-action="rest"><i class="fas fa-campfire"></i> Rest</button>
+    </aside>
+
+    <main class="magic-casting-spell-list">
+      <div class="magic-casting-spells-nav-wrap">
+      <h2 id="magic-casting-spell-tabs">Spells</h2>
+      <nav class="magic-casting-spells-nav" data-group="spell-list-nav">
+          {{#each spells as |spelllist level|}}
+              <a
+                  type="button"
+                  class="item mage-spell-level-tab"
+                  data-tab="spell-level-{{level}}"
+              >
+                  Level {{level}}
+              </a>
+          {{/each}}
+      </nav>
+      </div>
+      <div class="spell-content">
+        <section class="magic-casting-spell-level-panels" data-group="spell-list-nav">
+          {{#each spells as |spelllist level|}}
+            <div class="tab magic-casting-spell-level-panel" data-tab="spell-level-{{level}}">
+              {{#if ../isArcanist}}
+                <h3>Prepared Spells</h3>
+                <ul>
+                  {{#each ../spellSlotsByLevel as |levels class|}}
+                    {{#swnr-space-magic-if-equals class 'arcanist' }}
+                      {{#each levels as |slots slevel|}}
+                        {{#swnr-space-magic-if-equals slevel level }}
+                          {{#each slots}}
+                            <li data-slot-id="{{this.id}}" class="spell-list-prepared-slot">
+
+                              {{#if this.spell}}
+                                <div class="spell-list-prepared-slot-content">
+                                  {{#with (lookup ../../../../spellsById this.spell)~}}
+                                    <div class="spell-list-prepared-slot-img" style="background-image: url({{img}})"></div>
+                                    <div class="spell-list-prepared-slot-name">{{name}}</div>
+                                  {{/with}}
+                                </div>
+                                <div class="spell-list-prepared-slot-controls">
+                                  {{#if this.isUsed}}
+                                    <button type="button" data-action="restoreSlot" title="Restore Spell Slot"><i class="fa fa-sparkles"></i></button>
+                                  {{else}}
+                                    <button type="button" data-action="castBySlot" data-spell-id="{{this.spell}}" title="Cast"><i class="fa fa-wand-sparkles"></i></button>
+                                  {{/if}}
+                                  <button type="button" data-action="unprepare" title="Clear Spell"><i class="fa fa-trash"></i></button>
+                                </div>
+                              {{else}}
+                              <div class="spell-list-prepared-slot-content">
+                                <div class="spell-list-prepared-slot-img"></div>
+                                <div class="spell-list-prepared-slot-name"></div>
+                              </div>
+                              {{/if}}
+                            </li>
+                          {{/each}}
+                        {{/swnr-space-magic-if-equals}}
+                      {{/each}}
+                    {{/swnr-space-magic-if-equals}}
+                  {{/each}}
+                </ul>
+              {{/if}}
+              <h3>Spell List</h3>
+              {{#each spelllist as |spell|}}
+                <article class="magic-casting-spell-def">
+                    <div class="magic-casting-spell-def-title">
+                      <h4><a class="item" data-tab="spell-{{spell.id}}">{{ spell.name }}</a></h4>
+                      <div class="magic-casting-spell-def-title-controls">
+                        {{#if ../../isMagister}}
+                          <button
+                            class="magic-casting-cast-btn"
+                            data-action="castByLevel"
+                            data-cast-level="{{spell.system.level}}"
+                            data-spell-id="{{spell.id}}"
+                          >
+                            <i class="fa fa-wand-sparkles"></i> Cast
+                          </button>
+                        {{/if}}
+                        {{#if ../../isArcanist}}
+                          <button
+                            class="magic-casting-prepare-btn"
+                            data-action="prepare"
+                            data-spell-id="{{spell.id}}"
+                            data-cast-level="{{level}}"
+                            title="Prepare Spell"
+                          >
+                            <i class="fa fa-book"></i>
+                          </button>
+                        {{/if}}
+                      </div>
+                    </div>
+                    <div class="magic-casting-spell-def-description">
+                        {{{ spell.system.description }}}
+                    </div>
+                </article>
+              {{/each}}
+            </div>
+          {{/each}}
+        </section>
+      </div
+    </main>
+  </div>
+</form>

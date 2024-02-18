@@ -6,6 +6,12 @@ Hooks.once("init", () => {
   CONFIG.debug.hooks = true;
 });
 
+Hooks.once("ready", () => {
+  Handlebars.registerHelper(MageMagicAddon.ID + "-if-equals", function (arg1, arg2, options) {
+    return arg1 == arg2 ? options.fn(this) : options.inverse(this);
+  });
+});
+
 Hooks.once("devModeReady", ({ registerPackageDebugFlag }) => {
   try {
     registerPackageDebugFlag(MageMagicAddon.ID);

@@ -39,6 +39,7 @@
 .magic-casting-content {
     display: flex;
     flex-direction: row;
+    width: 100%;
 }
 .magic-casting-sidebar {
     flex:0;
@@ -77,11 +78,82 @@
     color: var(--primary-color-text);
 }
 .magic-casting-spell-level-panels {
-    max-width: 50rem;
-    max-height: 50rem;
     overflow-y: auto;
     overflow-x: hidden;
 }
 .magic-casting-spell-level-panel {
 
+}
+
+.spell-list-prepared-slot {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom:.5rem;
+}
+
+.spell-list-prepared-slot .spell-list-prepared-slot-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.spell-list-prepared-slot .spell-list-prepared-slot-content .spell-list-prepared-slot-img {
+  width:3rem;
+  height:3rem;
+  border:1px solid var(--primary-color);
+  border-radius: .25rem;
+  background-size: cover;
+  background-position: center center;
+  margin-right:1rem;
+}
+.spell-list-prepared-slot .spell-list-prepared-slot-content .spell-list-prepared-slot-name {
+
+}
+
+.spell-list-prepared-slot .spell-list-prepared-slot-controls {
+  font-size: 0.85rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.spell-list-prepared-slot .spell-list-prepared-slot-controls button {
+    padding: 0.5rem;
+    margin-left: 0.5rem;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.magic-casting-spell-def {
+  margin-bottom: 1rem;
+}
+
+.magic-casting-spell-def-title {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom:.5rem;
+  border-bottom: 1px solid var(--primary-color);
+  margin-bottom: .5rem;
+}
+
+.magic-casting-spell-def-title h4 {
+  flex: 1;
+  font-weight: bold;
+}
+.magic-casting-spell-def-title .magic-casting-spell-def-title-controls {
+  flex: 0;
+}
+.magic-casting-spell-def-title .magic-casting-spell-def-title-controls button {
+  white-space: nowrap;
+  font-size:.85rem;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  padding:.5rem;
 }
