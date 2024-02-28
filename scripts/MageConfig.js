@@ -1,6 +1,8 @@
 import { MageMagicAddon } from "./MageMagicAddon.js";
-import {filterSkillsBySystem, validateSkillsExist} from "./utils.js";
+import { filterSkillsBySystem, isMtAMage, isArcanist, isMagister, isSwNMage } from "./utils.js";
 import SpellSlots from './Models/SpellSlots.js';
+import Mana from "./Models/Mana.js";
+import {SpellcastConfig} from "./SpellcastConfig.js";
 
 export class MageConfig extends FormApplication {
   static get defaultOptions() {
@@ -48,6 +50,7 @@ export class MageConfig extends FormApplication {
     var spells = [];
     var spellsById = {};
     var actorId = null;
+    var actor = {};
 
     tokens = canvas?.tokens?.controlled;
     if (tokens) {
@@ -55,7 +58,8 @@ export class MageConfig extends FormApplication {
     }
     if (token) {
       actorId = token.document.actor.id;
-      magicSkills = token.document.actor.items.contents.filter((i) =>
+      actor = game.actors.get(actorId);
+      magicSkills = actor.items.contents.filter((i) =>
         filterSkillsBySystem(token, i)
       );
 
@@ -63,14 +67,13 @@ export class MageConfig extends FormApplication {
         return {
           name: i.name,
           rank: i.system.rank,
-          actor: token.document.actor.id,
+          actor: actorId,
         };
       });
 
-      spells = token.document.actor.items.contents
+      spells = actor.items.contents
         .filter((i) => i.type == "power")
         .reduce((acc, i) => {
-          MageMagicAddon.log(true, acc);
           if (!acc.hasOwnProperty(i.system.level)) {
             acc[i.system.level] = [];
           }
@@ -79,7 +82,7 @@ export class MageConfig extends FormApplication {
           return acc;
         }, {});
 
-      spellsById = token.document.actor.items.contents
+      spellsById = actor.items.contents
         .filter((i) => i.type == "power")
         .reduce((acc, i) => {
           acc[i.id] = i;
@@ -99,7 +102,7 @@ export class MageConfig extends FormApplication {
       if (!acc[chClass][level]) {
         const maxSpellSlots = SpellSlots.getMaxSpellSlots(
           chClass,
-          token.document.actor.system.level.value
+          actor.system.level.value
         );
 
         acc[chClass][level] = { available: 0, max: maxSpellSlots[i.level] };
@@ -128,12 +131,23 @@ export class MageConfig extends FormApplication {
       return acc;
     }, {});
 
-    console.log("swnr-mage", 118, { spellsById });
-
     const activeMagicTab = game.actors
       .get(actorId)
       ?.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ACTIVE_MAGIC_TAB);
 
+    const mtAMage = isMtAMage(actor);
+
+    const strain = actor.system.systemStrain;
+    var mageInfo = {};
+    if (mtAMage) {
+      mageInfo.gnosis = actor.items.find(f => f.type == 'skill' && f.name.toLowerCase() == 'gnosis')
+      var mana = new Mana(actor);
+
+      mageInfo.mana = {
+        current: mana.getCurrentValue(),
+        max: mana.getMax(),
+      };
+    }
     return {
       token,
       actor: actorId,
@@ -142,14 +156,14 @@ export class MageConfig extends FormApplication {
       spellSlotsByLevel,
       spells,
       spellsById,
-      isArcanist:
-        token.document.actor.system.class.toLowerCase().trim() == "arcanist",
-      isMagister:
-        ["magister", "pacter", "rectifier", "war mage"].indexOf(
-          token.document.actor.system.class.toLowerCase().trim()
-        ) != -1,
+      isArcanist: isArcanist(actor),
+      isMagister: isMagister(actor),
+      isSwNMage: isSwNMage(actor),
+      mtAMage,
       activeMagicTab: activeMagicTab || 1,
       flag: MageMagicAddon.FLAGS.ID + "-" + MageMagicAddon.FLAGS.SPELLSLOTS,
+      strain,
+      mageInfo,
     };
   }
 
@@ -256,15 +270,18 @@ export class MageConfig extends FormApplication {
     const castLevel = clickedElement.data()?.castLevel;
     const spellId = clickedElement.data()?.spellId;
 
-    MageMagicAddon.log(false, "Button Clicked!", {
-      this: this,
-      action,
-      slotId,
-    });
-
+    const actor = game.actors?.get(this.options.actorId);
+    const swNMage = isSwNMage(actor);
+    const mtAMage = isMtAMage(actor);
     switch (action) {
       case "rest": {
-        await SpellSlots.fillSpellSlots(this.options.actorId);
+        if (swNMage) {
+          await SpellSlots.fillSpellSlots(this.options.actorId);
+        }
+        if (mtAMage) {
+          var mana = new Mana(actor);
+          await mana.addRestMana();
+        }
         this.render();
         break;
       }
@@ -311,6 +328,38 @@ export class MageConfig extends FormApplication {
         break;
       }
 
+      case "add-mana": {
+        var mana = new Mana(actor);
+        var val = await mana.getCurrentValue();
+        await mana.setCurrentValue(val + 1);
+        this.render();
+        break;
+      }
+
+      case "subtract-mana": {
+        var mana = new Mana(actor);
+        var val = await mana.getCurrentValue();
+        await mana.setCurrentValue(val - 1);
+        this.render();
+        break;
+      }
+
+      case "add-strain": {
+        if (actor.system.systemStrain.value < actor.system.systemStrain.max) {
+          actor.system.systemStrain.value += 1;
+        }
+        this.render();
+        break;
+      }
+
+      case "subtract-strain": {
+        if (actor.system.systemStrain.value > 0) {
+          actor.system.systemStrain.value -= 1;
+        }
+        this.render();
+        break;
+      }
+
       default:
         MageMagicAddon.log(false, "Invalid action detected", action);
     }
@@ -320,12 +369,22 @@ export class MageConfig extends FormApplication {
     super.activateListeners(html);
 
     html.on("click", "[data-action]", this._handleButtonClick.bind(this));
+
+    html.on("click", ".swnr-mage-improvised-spellcasting-btn", (event) => {
+      var actorId = event.target.dataset.actor;
+      console.log("swnr-mage", "open improvised spellcast menu", actorId);
+      try {
+        new SpellcastConfig(null, {
+          actorId,
+        }).render(true);
+      } catch (e) {
+        console.error(e);
+      }
+    });
   }
 
   async _updateObject(event, formData) {
     if (!this.object.id) return;
-
-    MageMagicAddon.log(true, { formData });
 
     return this.object.update(formData);
   }

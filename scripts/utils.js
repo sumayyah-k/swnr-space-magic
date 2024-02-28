@@ -1,8 +1,12 @@
 const SWNRSkillList = ["Know Magic", "Use Magic"];
+const MTASkillList = ["Gnosis", "Death", "Fate", "Forces", "Life", "Matter", "Mind", "Prime", "Space", "Spirit", "Time"];
 
 export function filterSkillsBySystem(token, i) {
     if (token.document.actor.constructor.name == "SWNRCharacterActor") {
-        return i.type == "skill" && SWNRSkillList.indexOf(i.name) != -1;
+        return (
+          i.type == "skill" &&
+          [...SWNRSkillList, ...MTASkillList].indexOf(i.name) != -1
+        );
     }
 
     return false;
@@ -18,4 +22,21 @@ export function validateSkillsExist(token, ) {
   }
 
   return false;
+}
+
+export function isArcanist(actor) {
+  return actor.system.class.toLowerCase().trim() == "arcanist";
+}
+export function isMagister(actor) {
+  return ["magister", "pacter", "rectifier", "war mage"].indexOf(
+    actor.system.class.toLowerCase().trim()
+  ) != -1;
+}
+
+export function isMtAMage(actor) {
+  return actor.system.class.toLowerCase().trim() == "mage";
+}
+
+export function isSwNMage(actor) {
+  return isArcanist(actor) || isMagister(actor);
 }

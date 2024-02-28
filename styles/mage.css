@@ -41,6 +41,11 @@
     flex-direction: row;
     width: 100%;
 }
+.magic-casting-content fieldset {
+  border:1px solid var(--primary-color);
+  margin-bottom:.5rem;
+  padding:.25rem;
+}
 .magic-casting-sidebar {
     flex:0;
     min-width: 10rem;
@@ -156,4 +161,150 @@
   justify-content: center;
   align-items: center;
   padding:.5rem;
+}
+
+.magic-casting-panel {
+  border: 1px solid var(--primary-color);
+  margin-bottom: .5rem;
+}
+
+.magic-casting-panel-title {
+  background: var(--primary-color);
+  color:var(--primary-color-text);
+  text-align: center;
+  padding:.25rem 0;
+}
+.magic-casting-panel-content {
+  padding: .5rem 0;
+}
+.magic-casting-panel-content-stat {
+  text-align: center;
+  font-size: 2rem;
+}
+.magic-casting-panel-content.magic-casting-panel-content-controls-right {
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width:100%;
+  padding:0;
+}
+.magic-casting-panel-content.magic-casting-panel-content-controls-right .magic-casting-panel-content-stat {
+  flex:1;
+}
+.magic-casting-panel-content-controls {
+  flex:0;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+  height:100%;
+}
+.magic-casting-panel-content-controls button {
+  padding:0;
+  border-radius: 0;
+  padding:0 .25rem;
+  height:auto;
+  max-height: none;
+}
+
+.swnr-mage-chat-roll-wrap {}
+
+.swnr-mage-chat-roll-wrap h2 {}
+
+.swnr-mage-chat-roll-wrap .swnr-mage-chat-roll-dice-formula {
+  margin-bottom: .25rem;
+}
+
+.swnr-mage-chat-roll-dice-results {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-bottom:.25rem;
+}
+
+.swnr-mage-chat-roll-wrap .swnr-mage-chat-roll-dice-formula,
+.swnr-mage-chat-roll-wrap .swnr-mage-chat-roll-total-successes {
+  background: #333;
+  color: #fff;
+  padding: 0 .75rem;
+  line-height: 2rem;
+  font-weight:bold;
+  font-size:1.1rem;
+  text-align:center;
+}
+.magic-casting-panel-arcana-row {
+  display:flex;
+  width:100%;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top:.5rem;
+}
+.magic-casting-panel-arcana-row input[type=checkbox] {
+  margin:0 .5rem 0 .25rem;
+}
+
+.swnr-mage-chat-roll-table tfoot {
+  border-top: 1px solid var(--color-border-light-tertiary);
+}
+
+.swnr-mage-chat-roll-total-successes small {
+  display:block;
+}
+
+.swnr-mage-chat-roll-total-successes.swnr-mage-chat-roll-result-exceptional {
+  background-color: lime;
+  color:#333;
+}
+.swnr-mage-chat-roll-total-successes.swnr-mage-chat-roll-result-success {
+  background-color: green;
+}
+.swnr-mage-chat-roll-total-successes.swnr-mage-chat-roll-result-failure {
+  background-color: red;
+}
+.swnr-mage-chat-roll-total-successes.swnr-mage-chat-roll-result-dramafail {
+  background-color: maroon;
+}
+
+.magic-casting-panel-errors {
+  list-style-type: none;
+  margin:0;
+  padding:0;
+  color: red;
+}
+.magic-casting-panel-errors li {
+  margin:0;
+  padding:0;
+}
+
+.magic-casting-panel-controls {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin:0 -.25rem .5rem -.25rem;
+}
+
+.magic-casting-panel-controls button {
+  margin:0 .25rem 0 .25rem;
+}
+.magic-casting-panel-controls button[disabled] {
+  opacity:.5;
+}
+
+.swnr-mage-chat-roll-section-title {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  height: 1.5rem;
+}
+
+.swnr-mage-chat-roll-wrap .dice-result {
+  margin-bottom: 0.5rem;
 }

@@ -6,10 +6,13 @@ export class MageMagicAddon {
   static FLAGS = {
     SPELLSLOTS: "spell-slot",
     ACTIVE_MAGIC_TAB: "active-magic-tab",
+    MTA_MANA: "swnr-space-magic-mta-mana"
   };
 
   static TEMPLATES = {
     SPELLCASTING: `modules/${this.ID}/templates/spellcasting.hbs`,
+    SPELLCASTFORM: `modules/${this.ID}/templates/spellcast-form.hbs`,
+    CHATROLL: `modules/${this.ID}/templates/chat-roll.hbs`,
   };
 
   //   static initialize() {

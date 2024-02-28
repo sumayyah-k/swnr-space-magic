@@ -4,16 +4,61 @@
   </header>
   <div class="magic-casting-content">
     <aside class="magic-casting-sidebar">
-      <h2>Spell Slots</h2>
-      {{#each numSpellSlots as |levels class|}}
-      <h3>{{class}}</h3>
-      <ul>
-        {{#each levels as |slots level|}}
-          <li>{{level}}: {{slots.available}}/{{slots.max}}</li>
+      {{#if isSwNMage }}
+        <h2>Spell Slots</h2>
+        {{#each numSpellSlots as |levels class|}}
+        <h3>{{class}}</h3>
+        <ul>
+          {{#each levels as |slots level|}}
+            <li>{{level}}: {{slots.available}}/{{slots.max}}</li>
+          {{/each}}
+        </ul>
         {{/each}}
-      </ul>
-      {{/each}}
+      {{/if}}
+      {{#if mtAMage}}
+      <div class="magic-casting-panel">
+        <div class="magic-casting-panel-title">Gnosis</div>
+        <div class="magic-casting-panel-content">
+          <div class="magic-casting-panel-content-stat">{{mageInfo.gnosis.system.rank}}</div>
+        </div>
+      </div>
+      <div class="magic-casting-panel">
+        <div class="magic-casting-panel-title">System Strain</div>
+        <div class="magic-casting-panel-content magic-casting-panel-content-controls-right">
+          <div class="magic-casting-panel-content-stat">{{strain.value}}/{{strain.max}}</div>
+          <div class="magic-casting-panel-content-controls">
+            <button type="button" data-action="add-strain">+</button>
+            <button type="button" data-action="subtract-strain">-</button>
+          </div>
+        </div>
+      </div>
+      <div class="magic-casting-panel">
+        <div class="magic-casting-panel-title">Mana</div>
+        <div class="magic-casting-panel-content magic-casting-panel-content-controls-right">
+          <div class="magic-casting-panel-content-stat">{{mageInfo.mana.current}}/{{mageInfo.mana.max}}</div>
+          <div class="magic-casting-panel-content-controls">
+            <button type="button" data-action="add-mana">+</button>
+            <button type="button" data-action="subtract-mana">-</button>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="swnr-mage-improvised-spellcasting-btn" data-actor="{{actor}}"><i class="fas fa-wand-sparkles"></i> Improvised Spellcasting</button>
+      {{/if}}
       <button type="button" data-action="rest"><i class="fas fa-campfire"></i> Rest</button>
+      {{#if mtAMage}}
+      <ul>
+        <li>Death: 0/5</li>
+        <li>Fate: 0/5</li>
+        <li>Forces: 0/5</li>
+        <li>Life: 0/5</li>
+        <li>Matter: 0/5</li>
+        <li>Mind: 0/5</li>
+        <li>Prime: 1/5</li>
+        <li>Space: 1/5</li>
+        <li>Spirit: 0/5</li>
+        <li>Time: 0/5</li>
+      </ul>
+      {{/if}}
     </aside>
 
     <main class="magic-casting-spell-list">
