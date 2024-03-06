@@ -15,10 +15,12 @@ export class SpellcastConfig extends FormApplication {
     super(opts, { submitOnChange: true, closeOnSubmit: false });
     console.log("swnr-mage", "\opts", opts, data);
     console.log("swnr-mage", "OBJECT", this.object);
+    console.log("swnr-mage", "actor", this.object);
 
+    this.actorId = data.actorId;
     this.actor = game.actors?.get(data.actorId);
     this.spell = null;
-    console.log();
+
     if (data.spellId) {
       this.spell = this.actor.items.get(data.spellId);
       console.log('swnr-mage', 'spell', this.spell);
@@ -54,8 +56,6 @@ export class SpellcastConfig extends FormApplication {
       closeOnSubmit: false,
       submitOnChange: true,
     };
-
-    classes: ["mta-sheet", "dialogue"],
       console.log("swnr-mage", 26, defaults, overrides);
 
     const mergedOptions = foundry.utils.mergeObject(defaults, overrides);
@@ -70,26 +70,19 @@ export class SpellcastConfig extends FormApplication {
     var spells = [];
     var spellsById = {};
     var actorId = "null";
-    var actor = {};
+    var actor = game.actors?.get(this.actorId);
     var mageInfo = {};
 
-    tokens = canvas?.tokens?.controlled;
-    if (tokens) {
-      token = tokens[0];
-    }
-    if (token) {
-      actorId = token.document.actor.id;
-      actor = game.actors.get(actorId);
-      var arcana = new Arcanum(actor);
-      magicSkills = arcana.getAll();
 
-      spellsById = actor.items.contents
-        .filter((i) => i.type == "power")
-        .reduce((acc, i) => {
-          acc[i.id] = i;
-          return acc;
-        }, {});
-    }
+    var arcana = new Arcanum(actor);
+    magicSkills = arcana.getAll();
+
+    spellsById = actor.items.contents
+      .filter((i) => i.type == "power")
+      .reduce((acc, i) => {
+        acc[i.id] = i;
+        return acc;
+      }, {});
 
 
     mageInfo.gnosis = actor.items.find(

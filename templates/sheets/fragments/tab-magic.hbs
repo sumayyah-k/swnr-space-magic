@@ -40,7 +40,11 @@
             </div>
           </div>
         </div>
+        {{#swnr-space-magic-if-gt mageInfo.gnosis.system.rank -1}}
+        {{#if magicSkills}}
         <button type="button" class="swnr-mage-improvised-spellcasting-btn" data-actor="{{actor}}"><i class="fas fa-wand-sparkles"></i> Improvised Spellcasting</button>
+        {{/if}}
+        {{/swnr-space-magic-if-gt}}
         {{/if}}
         {{#if mtAMage}}
         <ul class="swnr-mage-arcana-list">

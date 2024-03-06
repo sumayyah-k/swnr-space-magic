@@ -116,12 +116,22 @@ export default class MageActorSheet extends CharacterActorSheet {
     var mageInfo = {};
     if (mtAMage) {
       mageInfo.gnosis = actor.items.find(f => f.type == 'skill' && f.name.toLowerCase() == 'gnosis')
-      mageInfo.gnosisData = Gnosis.byRank(mageInfo.gnosis.system.rank);
-      mageInfo.maxSafeRolls = mageInfo.gnosis.system.rank;
-      mageInfo.scrutinyPenalty = Math.ceil((mageInfo.gnosis.system.rank + 1) / 2);
+      var gnosisRank = mageInfo.gnosis ? mageInfo.gnosis.system.rank : 0
+      mageInfo.gnosisData = mageInfo.gnosis ? Gnosis.byRank(gnosisRank) : null;
+      mageInfo.maxSafeRolls = gnosisRank;
+      mageInfo.scrutinyPenalty = Math.ceil((gnosisRank + 1) / 2);
       var mana = new Mana(actor);
       var arcana = new Arcanum(actor);
       var allArcana = arcana.getAll();
+      var focusedArcanum = null;
+      var activeArcanum = [];
+      if (allArcana && allArcana.length > 0) {
+        var rulingArcana = allArcana.filter(a => a.importance == 'ruling');
+        if (rulingArcana.length > 0) {
+          focusedArcanum = rulingArcana[0].name
+          activeArcanum = rulingArcana.map(a => a.name)
+        }
+      }
 
       mageInfo.mana = {
         current: mana.getCurrentValue(),
@@ -130,10 +140,10 @@ export default class MageActorSheet extends CharacterActorSheet {
 
       //Add MtA default values
       defaultValues = {...defaultValues, ...{
-        "focused-mage-sight-arcanum": allArcana.filter(a => a.importance == 'ruling')[0].name,
-        "mage-sight-arcana": allArcana.filter(a => a.importance == 'ruling').map(a => a.name),
+        "focused-mage-sight-arcanum": focusedArcanum,
+        "mage-sight-arcana": activeArcanum,
         activeManaCost: 0,
-        activeDuration: mageInfo.gnosis.system.rank + 1,
+        activeDuration: gnosisRank + 1,
       }};
 
       //Update with chosen form values
@@ -284,7 +294,8 @@ export default class MageActorSheet extends CharacterActorSheet {
     var magicSkills = actorArcana.getAll();
     var manaCost = 0;
     var gnosis = actor.items.find(f => f.type == 'skill' && f.name.toLowerCase() == 'gnosis');
-    var duration = gnosis.system.rank + 1;
+    var gnosisRank = gnosis ? gnosis.system.rank : 0;
+    var duration = gnosisRank + 1;
 
     magicSkills = magicSkills.filter(s => arcana ? arcana.indexOf(s.name) != -1 : s.importance == 'ruling');
 
@@ -329,7 +340,7 @@ export default class MageActorSheet extends CharacterActorSheet {
     let rolls = [];
     let arcanum;
     const gnosis = actor.items.find(f => f.type == 'skill' && f.name.toLowerCase() == 'gnosis');
-    const gnosisRanks = gnosis.system.rank + 1;
+    const gnosisRanks = gnosis ? gnosis.system.rank + 1 : 0;
 
     let dicePool = gnosisRanks;
 
@@ -392,7 +403,7 @@ export default class MageActorSheet extends CharacterActorSheet {
     let rolls = [];
     let arcanum;
     const gnosis = actor.items.find(f => f.type == 'skill' && f.name.toLowerCase() == 'gnosis');
-    const gnosisRanks = gnosis.system.rank + 1;
+    const gnosisRanks = gnosis ? gnosis.system.rank + 1 : 0;
 
     let dicePool = gnosisRanks;
 

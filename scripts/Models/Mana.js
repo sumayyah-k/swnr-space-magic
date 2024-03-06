@@ -8,7 +8,7 @@ export default class {
 
     this.gnosis = actor.items.find(f => f.type == 'skill' && f.name.toLowerCase() == 'gnosis');
 
-    this.gnosisInfo = Gnosis.byRank(this.gnosis.system.rank);
+    this.gnosisInfo = Gnosis.byRank(this.gnosis ? this.gnosis.system.rank : -1);
   }
 
   getCurrentValue() {
@@ -16,12 +16,14 @@ export default class {
   }
 
   getMax() {
-    console.log('swnr-mage',this.gnosis)
-    return this.gnosisInfo.mana.max;
+    if (this.gnosisInfo) {
+      return this.gnosisInfo.mana.max;
+    }
+    return 0;
   }
 
   setCurrentValue(val) {
-    if (val >= this.gnosisInfo.mana.max) {
+    if (this.gnosisInfo && val >= this.gnosisInfo.mana.max) {
       val = this.gnosisInfo.mana.max;
     } else if (val <= 0) {
       val = 0;
@@ -35,8 +37,10 @@ export default class {
 
   async addRestMana() {
     var mana = await this.getCurrentValue();
-
-    var newMana = mana + this.gnosisInfo.mana.perTurn;
+    var newMana = mana;
+    if (this.gnosisInfo) {
+      newMana+= this.gnosisInfo.mana.perTurn;
+    }
 
     return this.setCurrentValue(newMana);
   }
