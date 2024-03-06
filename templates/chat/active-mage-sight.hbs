@@ -1,0 +1,39 @@
+<div class="swnr-mta-active-mage-sight-chat">
+  <h2>{{actor.name}} activates Active Mage Sight.</h2>
+  <table>
+    <tbody>
+      <tr><th>Mana Cost</th><td>{{manaCost}}</td></tr>
+      <tr><th>Duration w/out Strain</th><td>{{duration}} min.</td></tr>
+      <tr><th>Arcana</th><td>{{ arcana }}</td></tr>
+    </tbody>
+  </table>
+  <div class="swnr-mta-collapse-wrap">
+    <h4 class="swnr-mta-collapse-title">General Info
+      <span>Expand</span>
+    </h4>
+    <div class="swnr-mta-collapse-content">
+      <p>Active Mage Sight requires more concentration from the mage, and overlays the mage’s perception with the SupernalWorld of her Path. It automatically uses the mage’s two Path Ruling Arcana, has no cost to add any third Ruling Arcanum, and costs one point of Mana per scene to include a Common or Inferior Arcanum.</p>
+      <p>Active Mage Sight allows the mage a much greater sensory experience with regards to the Supernal correspondences of the Arcana used, interpreted into the mage’s Path. The mage hallucinates, seeing the connections of the Arcana all around her. Mage Sight highlights all phenomena related to the Arcana used, but making sense of the torrent of Patterns is often difficult, and the mage can only determine the symbols related to phenomena within her senses — her Sight won’t let her see through walls or perceive entities and objects in a state of Twilight. Unveiling spells and several Attainments allow more specialized analysis of a mage’s surroundings, either adding capabilities to Mage Sight or granting extra senses for more information.</p>
+      <p>Each Arcanum has a minor mechanical effect, relating to the base level of perception granted by Active Sight.</p>
+      <p>In addition to the individual arcanum effect, any supernatural effect falling under the purview of the Arcanum that the mage can see is highlighted if she is using the correct Sight. Note that Peripheral Mage Sight is triggered by all supernatural events regardless of Arcana, but unless the mage uses an applicable Active Sight she gains no information about the phenomenon — only that it must be related to an Arcanum she didn’t use.</p>
+      <p>Active Mage Sight of any Arcanum also reveals all Awakened spells as they are being cast. The mage can see another will- worker’s Nimbus flare as he forms the Imago and casts the spell (which, in turn, gives the observant mage a chance to use the Counterspell Attainment if she knows the Arcanum involved).</p>
+      <p>Concealment magic, of whatever type, can hide a target from Active Mage Sight, but only if the concealment would logically mask the target from the purview of the Arcanum in question. Even then, if the concealment power uses the same magical principles as the detecting Arcanum, the mage still has a chance to see through it. For example, a light-based invisibility spell would conceal a target from Mind Sight, but Life Sight could still detect the living being, with or without the assistance of photons. Likewise, some vampires employ a kind of mental “invisibility” that causes observers to ignore them. This power would conceal a target from Forces Sight (it isn’t light-based) or Time Sight, but not Mind Sight (since both the concealment power and the Arcanum are working on the same principles).</p>
+    </div>
+  </div>
+  <div class="swnr-mta-collapse-wrap">
+    <h4 class="swnr-mta-collapse-title">System
+      <span>Expand</span>
+    </h4>
+    <div class="swnr-mta-collapse-content">
+      <p>Entering active Mage Sight is a reflexive action when only using Ruling Arcana, and an instant action otherwise. Leaving it is always reflexive. If the Storyteller determines that a mage’s Active Mage Sight could logically pierce a concealment effect, use a Clash of Wills (see p. 117), pitting the observing mage’s Gnosis + Arcanum against the defender’s dice pool for the concealment power. While a character is using Active Mage Sight, she suffers a –2 modifier to all rolls unrelated to using or perceiving magic. In addition, Mage Sight is draining. A mage can maintain Active Mage Sight for a number of minutes equal to her Gnosis. After that, she must spend a Willpower point to keep it active for the remainder of the scene.</p>
+    </div>
+  </div>
+  {{#each magicSkills as |arcanum|}}
+  <div class="swnr-mta-collapse-wrap">
+    <h4 class="swnr-mta-collapse-title">{{arcanum.name}}
+      <span>Expand</span>
+    </h4>
+    <div class="swnr-mta-collapse-content">{{{arcanum.activeMageSightEffect}}}</div>
+  </div>
+  {{/each}}
+</div>

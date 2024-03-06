@@ -1,0 +1,215 @@
+<div class="dice-roll swnr-mage-chat-roll-wrap">
+  <div  class="swnr-mage-chat-roll-content">
+    <h2>
+      {{actor.name}} casts
+      {{#if calculatedValues.self-created}}
+        self-created
+      {{/if}}
+      {{ formVals.swnr-space-magic-casting-method }} {{calculatedValues.name}}
+      {{#if calculatedValues.grimoire}}
+        from Grimoire
+      {{/if}}
+    </h2>
+    <table class="swnr-mage-chat-roll-table">
+      <tbody>
+        <tr><th>Gnosis</th><td>{{gnosis.system.rank}}</td></tr>
+        <tr><th>Arcanum</th><td>{{calculatedValues.arcanum }}</td></tr>
+        <tr><th>Practice</th><td>{{calculatedValues.practiceData.name }}</td></tr>
+        {{#if calculatedValues.withstand}}
+        <tr><th>Withstand</th><td>{{calculatedValues.withstand }}</td></tr>
+        {{/if}}
+        <tr><th>
+          {{#swnr-space-magic-if-equals calculatedValues.primary-factor 'potency'}}
+            <span title="Primary Factor">*</span>
+          {{/swnr-space-magic-if-equals}}
+          Potency
+          {{#if calculatedValues.potency-advanced}}
+          <span title="Advanced">(Advanced)</span>
+          {{/if}}
+        </th><td>{{ calculatedValues.potency }}</td></tr>
+        <tr><th>
+          {{#swnr-space-magic-if-equals calculatedValues.primary-factor 'duration'}}
+            <span title="Primary Factor">*</span>
+          {{/swnr-space-magic-if-equals}}
+          Duration
+          {{#if calculatedValues.duration-advanced}}
+          <span title="Advanced">(Advanced)</span>
+          {{/if}}
+        </th><td>{{calculatedValues.durationData.name }}</td></tr>
+        <tr><th>
+          Range
+          {{#if calculatedValues.range-advanced}}
+          <span title="Advanced">(Advanced)</span>
+          {{/if}}
+        </th><td>{{calculatedValues.rangeData.name }}</td></tr>
+        <tr><th>
+          Scale
+          {{#if calculatedValues.scale-advanced}}
+          <span title="Advanced">(Advanced)</span>
+          {{/if}}
+        </th><td>{{calculatedValues.scaleData.name }}</td></tr>
+        <tr><th>
+          Casting Time
+          {{#if calculatedValues.casting-time-advanced}}
+          <span title="Advanced">(Advanced)</span>
+          {{/if}}
+        </th><td>
+          {{#if calculatedValues.casting-time-advanced}}
+            {{calculatedValues.casting-time-turns }} turn(s)
+          {{else}}
+            {{calculatedValues.castTimeData.name }}
+          {{/if}}
+          </td></tr>
+        <tr><th>Yantra Bonus</th><td>{{calculatedValues.yantradice }}</td></tr>
+        <tr><th>Used Dedicated Tool</th><td>{{#if calculatedValues.dedicated-tool }}Yes{{else}}No{{/if}}</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><th>Reach</th><td>{{ calculatedValues.reach }}/{{ calculatedValues.reachMax }}</td></tr>
+        <tr><th>Mana Cost</th><td>{{ calculatedValues.manaCost }}</td></tr>
+        {{#swnr-space-magic-if-not-equal paradoxRoll null}}
+          <tr><th>Paradox Dice</th><td>{{ calculatedValues.paradoxDice }}</td></tr>
+          <tr><th>Containing Paradox</th><td>
+            {{#if calculatedValues.contain-paradox}}
+              Yes
+            {{else}}
+              No
+            {{/if}}
+          </td></tr>
+        {{/swnr-space-magic-if-not-equal}}
+      </tfoot>
+    </table>
+    {{#if calculatedValues.potency-advanced}}
+      <div>Note: +2 to withstand dispellation</div>
+    {{/if}}
+  </div>
+  <div class="dice-result">
+    <h4 class="swnr-mage-chat-roll-section-title">Spell Cast Roll</h4>
+    <div class="dice-tooltip" style="display: none;">
+      <div class="dice-formula swnr-mage-chat-roll-dice-formula">{{r.formula}}</div>
+      <section class="tooltip-part">
+        <div class="dice">
+          <ol class="dice-rolls">
+            {{#each r.dice as |dice|}}
+              {{#each dice.results as |roll|}}
+                <li class="roll die d10
+                {{#if roll.success}}success{{/if}}
+                {{#if roll.exploded}}exploded{{/if}}
+                ">{{roll.result}}</li>
+              {{/each}}
+            {{/each}}
+          </ol>
+        </div>
+      </section>
+    </div>
+    <h4 class="dice-total swnr-mage-chat-roll-total-successes swnr-mage-chat-roll-result-{{successType}}">
+      {{#swnr-space-magic-if-equals successType 'exceptional'}}
+        Exceptional Cast
+      {{/swnr-space-magic-if-equals}}
+      {{#swnr-space-magic-if-equals successType 'success'}}
+        Successfully Cast
+      {{/swnr-space-magic-if-equals}}
+      {{#swnr-space-magic-if-equals successType 'failure'}}
+        Not Cast
+      {{/swnr-space-magic-if-equals}}
+      {{#swnr-space-magic-if-equals successType 'dramafail'}}
+        Dramatic Failure to Cast
+      {{/swnr-space-magic-if-equals}}
+      <small>Successes: {{r.result}}</small>
+    </h4>
+  </div>
+  {{#if paradoxRoll}}
+    <div class="dice-result">
+      <h4 class="swnr-mage-chat-roll-section-title">Paradox</h4>
+      <div class="dice-tooltip" style="display: none;">
+        <div class="dice-formula swnr-mage-chat-roll-dice-formula">{{paradoxRoll.formula}}</div>
+        <section class="tooltip-part">
+          <div class="dice">
+            <ol class="dice-rolls">
+              {{#each paradoxRoll.dice as |dice|}}
+                {{#each dice.results as |roll|}}
+                  <li class="roll die d10
+                  {{#if roll.success}}success{{/if}}
+                  {{#if roll.exploded}}exploded{{/if}}
+                  ">{{roll.result}}</li>
+                {{/each}}
+              {{/each}}
+            </ol>
+          </div>
+        </section>
+      </div>
+      <h4 class="dice-total swnr-mage-chat-roll-total-successes swnr-mage-chat-roll-result-{{paradoxSuccessType}}">
+        {{#swnr-space-magic-if-equals paradoxSuccessType 'exceptional'}}
+          No Paradox, but in a cool way...
+        {{/swnr-space-magic-if-equals}}
+        {{#swnr-space-magic-if-equals paradoxSuccessType 'success'}}
+          No Paradox
+        {{/swnr-space-magic-if-equals}}
+        {{#swnr-space-magic-if-equals paradoxSuccessType 'failure'}}
+          Paradox Occurs
+        {{/swnr-space-magic-if-equals}}
+        {{#swnr-space-magic-if-equals paradoxSuccessType 'dramafail'}}
+          Paradox Occurs, Condition gained
+        {{/swnr-space-magic-if-equals}}
+        <small>Successes: {{paradoxRoll.result}}</small>
+      </h4>
+    </div>
+
+    {{#if paradoxDmgRoll}}
+    <div class="dice-result">
+      <h4 class="swnr-mage-chat-roll-section-title">Contain Paradox Damage</h4>
+      <div class="dice-tooltip" style="display: none;">
+        <div class="dice-formula swnr-mage-chat-roll-dice-formula">{{paradoxDmgRoll.formula}}</div>
+        <section class="tooltip-part">
+          <div class="dice">
+            <ol class="dice-rolls">
+              {{#each paradoxDmgRoll.dice as |dice|}}
+                {{#each dice.results as |roll|}}
+                  <li class="roll die d10
+                  {{#if roll.success}}success{{/if}}
+                  {{#if roll.exploded}}exploded{{/if}}
+                  ">{{roll.result}}</li>
+                {{/each}}
+              {{/each}}
+            </ol>
+          </div>
+        </section>
+      </div>
+      <h4 class="dice-total swnr-mage-chat-roll-total-successes swnr-mage-chat-roll-result-{{paradoxSuccessType}}">
+        <small>{{paradoxDmgRoll.result}} Damage</small>
+      </h4>
+    </div>
+  {{/if}}
+  {{/if}}
+</div>
+<div>
+{{#swnr-space-magic-if-equals successType 'exceptional'}}
+  <p>The spell's effect takes place better than imagined. The character regains one spent point of Willpower, and the player may choose one of the following results;</p>
+  <ul>
+    <li>A bonus step in the primary spell factor.</li>
+    <li>A Reach in the primary spell factor.</li>
+    <li>A Condition which will give Arcane Beats when resolved, on either the mage or her subject.</li>
+    <li>All Mana spent on the spell is refunded, and the mage receives one more point of Mana.</li>
+    <li>The spell ignores any Withstand levels and takes effect at full Potency.</li>
+  </ul>
+{{/swnr-space-magic-if-equals}}
+{{#swnr-space-magic-if-equals successType 'success'}}
+  <p>The spell’s effect takes place as imagined.</p>
+{{/swnr-space-magic-if-equals}}
+{{#swnr-space-magic-if-equals successType 'failure'}}
+  <p>The magic does not work, the mage’s imagination is not made real.</p>
+{{/swnr-space-magic-if-equals}}
+{{#swnr-space-magic-if-equals successType 'dramafail'}}
+  <p>The magic does not work. The caster gains a Condition based on the intended outcome of the spell.</p>
+{{/swnr-space-magic-if-equals}}
+</div>
+
+{{#if calculatedValues.spell}}
+  <div class="swnr-mta-collapse-wrap">
+    <h4 class="swnr-mta-collapse-title">Spell Description
+      <span>Expand</span>
+    </h4>
+    <div class="swnr-mta-collapse-content">
+      {{{ calculatedValues.spell.system.description}}}
+    </div>
+  </div>
+{{/if}}

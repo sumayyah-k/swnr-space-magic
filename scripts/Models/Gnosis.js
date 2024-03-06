@@ -15,4 +15,24 @@ export default class {
   static byRank(rank) {
     return this.gnosisInfo[rank] || null;
   }
+
+  static getRitualIntervals(rank, fromGrimoire) {
+    var ritualIntervals = [];
+    var amount = this.gnosisInfo[(rank || 0)].ritualInterval.amount;
+    if (fromGrimoire) {
+      amount = amount * 2;
+    }
+
+    for (var i = 0; i <= 5; i++) {
+      ritualIntervals.push({
+        id: i,
+        name: ((i+1)*amount) + ' '
+          + (this.gnosisInfo[(rank || 0)].ritualInterval.unit == 'hour' ? "Hour" : "Minute")
+          + ((i+1)*amount == 1 ? '' : 's'),
+        additionalDice: i,
+      });
+    }
+
+    return ritualIntervals;
+  }
 }

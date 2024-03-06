@@ -1,0 +1,68 @@
+<div class="swnr-mta-active-mage-sight-chat swnr-mage-chat-roll-wrap">
+  <div class="dice-roll">
+    <div  class="swnr-mage-chat-roll-content">
+      <h2>{{actor.name}} attempts a revelation.</h2>
+        <table>
+          <tbody>
+            <tr><th>Arcanum</th><td>{{arcanum.name}}</td></tr>
+          </tbody>
+        </table>
+    </div>
+    <div class="dice-result">
+      <h4 class="swnr-mage-chat-roll-section-title">Revelation Roll</h4>
+      <div class="dice-tooltip" style="display: none;">
+        <div class="dice-formula swnr-mage-chat-roll-dice-formula">{{r.formula}}</div>
+        <section class="tooltip-part">
+          <div class="dice">
+            <ol class="dice-rolls">
+              {{#each r.dice as |dice|}}
+                {{#each dice.results as |roll|}}
+                  <li class="roll die d10
+                  {{#if roll.success}}success{{/if}}
+                  {{#if roll.exploded}}exploded{{/if}}
+                  ">{{roll.result}}</li>
+                {{/each}}
+              {{/each}}
+            </ol>
+          </div>
+        </section>
+      </div>
+      <h4 class="dice-total swnr-mage-chat-roll-total-successes swnr-mage-chat-roll-result-{{successType}}">
+        {{#swnr-space-magic-if-equals successType 'exceptional'}}
+          Exceptional Success
+        {{/swnr-space-magic-if-equals}}
+        {{#swnr-space-magic-if-equals successType 'success'}}
+          Success
+        {{/swnr-space-magic-if-equals}}
+        {{#swnr-space-magic-if-equals successType 'failure'}}
+          Failure
+        {{/swnr-space-magic-if-equals}}
+        {{#swnr-space-magic-if-equals successType 'dramafail'}}
+          Dramatic Failure
+        {{/swnr-space-magic-if-equals}}
+        <small>Successes: {{r.result}}</small>
+      </h4>
+
+        {{#swnr-space-magic-if-equals successType 'exceptional'}}
+          <p>The mage discovers the surface information of the Myster and can either lower the Myster's Opacity rating by 1, or, at the Storyteller's discretion, uncover one piece of deep information.</p>
+        {{/swnr-space-magic-if-equals}}
+        {{#swnr-space-magic-if-equals successType 'success'}}
+          <p>The mage discovers the surface information (p. 94) of the Mystery.</p>
+        {{/swnr-space-magic-if-equals}}
+        {{#swnr-space-magic-if-equals successType 'failure'}}
+          <p>The mage is unable to Reveal anything about the subject. She can still attempt to Scrutinize it however.</p>
+        {{/swnr-space-magic-if-equals}}
+        {{#swnr-space-magic-if-equals successType 'dramafail'}}
+          <p>The mage overloads her own perceptions and the subject of her study with Mana, akin to spilling a bottle of ink on a page she was deciphering. No Scrutiny or Revelation of that subject is possible - by <em>any</em> mage - for the next 24 hours. The Prime spell "Cleanse Pattern" can dissolve the Mana before then, allowing further Scrutiny.</em></p>
+        {{/swnr-space-magic-if-equals}}
+    </div>
+  </div>
+  <div class="swnr-mta-collapse-wrap">
+    <h4 class="swnr-mta-collapse-title">General Info
+      <span>Expand</span>
+    </h4>
+    <div class="swnr-mta-collapse-content">
+      <p>Revelation is an instant action. It can be undertaken when a mage first encounters a Mystery, revealing only the surface information (see p. 94), and also when a mage has unraveled some or all of the Mystery’s Opacity.</p>
+    </div>
+  </div>
+</div>

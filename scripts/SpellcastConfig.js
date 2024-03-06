@@ -6,79 +6,10 @@ import {
 } from "./utils.js";
 import Mana from "./Models/Mana.js";
 import Gnosis from "./Models/Gnosis.js";
+import Arcanum from "./Models/Arcanum.js";
+import Spell from "./Models/Spell.js";
 
 export class SpellcastConfig extends FormApplication {
-
-  practices = [
-    {id: 'compelling', name: "Compelling", rank: 0, desc: ""},
-    {id: 'knowing', name: "Knowing", rank: 0, desc: ""},
-    {id: 'unveiling', name: "Unveiling", rank: 0, desc: ""},
-    {id: 'ruling', name: "Ruling", rank: 1, desc: ""},
-    {id: 'shielding', name: "Shielding", rank: 1, desc: ""},
-    {id: 'veiling', name: "Veiling", rank: 1, desc: ""},
-    {id: 'fraying', name: "Fraying", rank: 2, desc: ""},
-    {id: 'perfecting', name: "Perfecting", rank: 2, desc: ""},
-    {id: 'weaving', name: "Weaving", rank: 2, desc: ""},
-    {id: 'paterning', name: "Paterning", rank: 3, desc: ""},
-    {id: 'unraveling', name: "Unraveling", rank: 3, desc: ""},
-    {id: 'making', name: "Making", rank: 4, desc: ""},
-    {id: 'unmaking', name: "Unmaking", rank: 4, desc: ""},
-  ];
-
-  castingMethods = {
-    improvised: {name: "Improvised", desc: ""},
-    rote: {name: "Rote", desc: ""},
-    praxis: {name: "Praxis", desc: ""},
-  }
-
-  primaryFactors = {
-    potency: {name: "Potency", desc: ""},
-    duration: {name: "Duration", desc: ""},
-  }
-
-  spellDurations = [
-    {id: "1_turn", name: "1 turn", dicePenalty: 0, advanced: false, desc: ""},
-    {id: "2_turns", name: "2 turns", dicePenalty: 2,  advanced: false, desc: ""},
-    {id: "3_turns", name: "3 turns", dicePenalty: 4,  advanced: false, desc: ""},
-    {id: "5_turns", name: "5 turns", dicePenalty: 6,  advanced: false, desc: ""},
-    {id: "10_turns", name: "10 turns", dicePenalty: 8,  advanced: false, desc: ""},
-    {id: "20_turns", name: "20 turns", dicePenalty: 10,  advanced: false, desc: ""},
-    {id: "30_turns", name: "30 turns", dicePenalty: 12,  advanced: false, desc: ""},
-    {id: "40_turns", name: "40 turns", dicePenalty: 14,  advanced: false, desc: ""},
-    {id: "50_turns", name: "50 turns", dicePenalty: 16,  advanced: false, desc: ""},
-    {id: "60_turns", name: "60 turns", dicePenalty: 18,  advanced: false, desc: ""},
-    {id: "70_turns", name: "70 turns", dicePenalty: 20,  advanced: false, desc: ""},
-    {id: "scene", name: "One scene/hour", dicePenalty: 0,  advanced: true, desc: ""},
-    {id: "day", name: "One Day", dicePenalty: 2,  advanced: true, desc: ""},
-    {id: "week", name: "One Week", dicePenalty: 4,  advanced: true, desc: ""},
-    {id: "month", name: "One Month", dicePenalty: 6,  advanced: true, desc: ""},
-    {id: "year", name: "One Year", dicePenalty: 8,  advanced: true, desc: ""},
-    {id: "indefinite", name: "Indefinite (Cost: 1 mana, 1 reach)", dicePenalty: 10,  advanced: true, desc: ""},
-  ];
-
-  ranges = [
-    {id: "touch", name: "Self/Touch", advanced: false},
-    {id: "aimed", name: "Aimed", advanced: false},
-    {id: "sensory", name: "Sensory", advanced: true},
-    {id: "remote", name: "Remote Viewed", advanced: true},
-  ];
-
-  scales = [
-    {id: "1", name: "1 subject, size 5, Arm's reach", advanced: false, dicePenalty: 0},
-    {id: "2", name: "2 subjects, size 6, Small Room", advanced: false, dicePenalty: 2},
-    {id: "4", name: "4 subjects, size 7, Large Room", advanced: false, dicePenalty: 4},
-    {id: "8", name: "8 subjects, size 8, Single Floor", advanced: false, dicePenalty: 6},
-    {id: "16", name: "16 subjects, size 9, Small House", advanced: false, dicePenalty: 8},
-    {id: "A5", name: "5 subjects, size 5, Large House", advanced: true, dicePenalty: 0},
-    {id: "A10", name: "10 subjects, size 10, Small Warehouse", advanced: true, dicePenalty: 2},
-    {id: "A20", name: "20 subjects, size 15, Supermarket", advanced: true, dicePenalty: 4},
-    {id: "A40", name: "40 subjects, size 20, Shopping Mall", advanced: true, dicePenalty: 6},
-    {id: "A80", name: "80 subjects, size 25, City Block", advanced: true, dicePenalty: 8},
-    {id: "A160", name: "160 subjects, size 30, Small Neighborhood", advanced: true, dicePenalty: 10},
-    {id: "A320", name: "320 subjects, size 35, Small Neighborhood", advanced: true, dicePenalty: 12},
-    {id: "A640", name: "640 subjects, size 40, Small Neighborhood", advanced: true, dicePenalty: 14},
-    {id: "A1280", name: "1280 subjects, size 45, Small Neighborhood", advanced: true, dicePenalty: 16},
-  ];
 
   constructor(opts, data) {
     super(opts, { submitOnChange: true, closeOnSubmit: false });
@@ -86,6 +17,12 @@ export class SpellcastConfig extends FormApplication {
     console.log("swnr-mage", "OBJECT", this.object);
 
     this.actor = game.actors?.get(data.actorId);
+    this.spell = null;
+    console.log();
+    if (data.spellId) {
+      this.spell = this.actor.items.get(data.spellId);
+      console.log('swnr-mage', 'spell', this.spell);
+    }
 
     // this.valueChange = {
     //   dicePool: false,
@@ -143,17 +80,8 @@ export class SpellcastConfig extends FormApplication {
     if (token) {
       actorId = token.document.actor.id;
       actor = game.actors.get(actorId);
-      magicSkills = actor.items.contents.filter((i) =>
-        filterSkillsBySystem(token, i)
-      );
-
-      magicSkills = magicSkills.map((i) => {
-        return {
-          name: i.name,
-          rank: i.system.rank,
-          actor: actorId,
-        };
-      });
+      var arcana = new Arcanum(actor);
+      magicSkills = arcana.getAll();
 
       spellsById = actor.items.contents
         .filter((i) => i.type == "power")
@@ -176,26 +104,22 @@ export class SpellcastConfig extends FormApplication {
 
     mageInfo.gnosisData = Gnosis.byRank(mageInfo.gnosis.system.rank);
 
-    var ritualIntervals = [];
-    for (var i = 0; i <= 5; i++) {
-      ritualIntervals.push({
-        id: i,
-        name: ((i+1)*mageInfo.gnosisData.ritualInterval.amount) + ' '
-          + (mageInfo.gnosisData.ritualInterval.unit == 'hour' ? "Hour" : "Minute")
-          + ((i+1)*mageInfo.gnosisData.ritualInterval.amount == 1 ? '' : 's'),
-        additionalDice: i,
-      });
-    }
-
     var availableArcana = magicSkills.filter((s) => s.name != "Gnosis" && s.rank >= 0);
+    var ritualIntervals;
 
     var defaultValues = {
+      name: 'spell',
       arcanum: [],
       chosenArcanum: [],
+      withstand: null,
+      "casting-method": 'improvised',
+      grimoire: false,
+      "self-created": false,
       practice: 'compelling',
       practiceData: null,
       'primary-factor': 'potency',
       dicePool: mageInfo.gnosis.system.rank + 1,
+      diceRoteQuality: false,
       manaCost: 0,
       reach: 0,
       reachMax:0,
@@ -216,8 +140,29 @@ export class SpellcastConfig extends FormApplication {
       "scale": "1",
       "scale-advanced": false,
       yantradice: 0,
+      totalDicePenalties: 0,
+      effectiveYantraBonus: 0,
       "dedicated-tool": false,
     };
+
+    if (this.spell) {
+      console.log('swnr-mage', 'spell', this.spell);
+      defaultValues.name = this.spell.name;
+      defaultValues.spell = this.spell;
+      defaultValues["casting-method"] = 'rote';
+      if (this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_ARCANUM)) {
+        defaultValues.arcanum = [this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_ARCANUM)];
+      }
+      if (this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_PRACTICE)) {
+        defaultValues.practice = this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_PRACTICE);
+      }
+      if (this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_PRIMARY_FACTOR)) {
+        defaultValues['primary-factor'] = this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_PRIMARY_FACTOR);
+      }
+      if (this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_WITHSTAND)) {
+        defaultValues['withstand'] = this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_WITHSTAND);
+      }
+    }
 
     if (this.formData) {
       var flagRegex = new RegExp( MageMagicAddon.ID + "-", "gi");
@@ -232,128 +177,161 @@ export class SpellcastConfig extends FormApplication {
           defaultValues[key] = this.formData[k];
         }
       }
+    } else {
+      ritualIntervals = Gnosis.getRitualIntervals(mageInfo.gnosis.system.rank);
+    }
 
-      if (defaultValues['casting-method'] == 'improvised') {
+    //Getting base reach from highest arcanum and practice
+    var chosenArcanum = availableArcana.filter((a) => defaultValues.arcanum.indexOf(a.name) != -1);
+    var highestArcanum = null;
+
+    if(chosenArcanum.length > 0) {
+      highestArcanum = chosenArcanum.sort((a, b) => b.rank - a.rank).shift();
+    }
+    console.log('swnr-mage', 'arcanumz', highestArcanum, chosenArcanum);
+    this.spellDurations = Spell.spellDurations;
+    if (highestArcanum) {
+      // Improvised Casting mana cost
+      if (defaultValues['casting-method'] == 'improvised' && highestArcanum.importance != 'ruling') {
         defaultValues.manaCost ++;
       }
 
-      //Getting base reach from highest arcanum and practice
-      var chosenArcanum = availableArcana.filter((a) => defaultValues.arcanum.indexOf(a.name) != -1);
-      var highestArcanum = null;
-
-      if(chosenArcanum.length > 0) {
-        highestArcanum = chosenArcanum.sort((a, b) => b.rank - a.rank).shift();
-      }
-
-      if (highestArcanum) {
-        defaultValues.freePrimaryFactorDice = (parseInt(highestArcanum.rank, 10)) * 2;
-        if (defaultValues['primary-factor'] == 'potency') {
-          defaultValues.freePotency = parseInt(highestArcanum.rank, 10) + 1;
-        }
-
-        //Adjust dice penalty display for durations
-        if (defaultValues['primary-factor'] == 'duration') {
-          this.spellDurations = this.spellDurations.map((i => {
-            if (defaultValues.freePrimaryFactorDice > i.dicePenalty) {
-              i.adjustedDicePenalty = 0;
-            } else {
-              i.adjustedDicePenalty = i.dicePenalty - defaultValues.freePrimaryFactorDice;
-            }
-            return i;
-          }));
-        }
-      }
-
-      if (defaultValues['casting-method'] != 'rote' && highestArcanum) {
-        defaultValues.dicePool += highestArcanum.rank + 1;
-      } else if (defaultValues['casting-method'] == 'rote') {
-        defaultValues.dicePool += 5;
-      }
-
-      defaultValues.practiceData = this.practices.find((p) => p.id == defaultValues.practice);
-      defaultValues.durationData = this.spellDurations.find((d) => d.id == defaultValues.duration);
-      defaultValues.castTimeData = ritualIntervals.find((d) => d.id == defaultValues['casting-time']);
-      defaultValues.rangeData = this.ranges.find((d) => d.id == defaultValues['range']);
-      defaultValues.scaleData = this.scales.find((d) => d.id == defaultValues['scale']);
-
-      if (defaultValues.practiceData && highestArcanum) {
-        if (defaultValues['casting-method'] != 'rote') {
-          defaultValues.reachMax = highestArcanum.rank - defaultValues.practiceData.rank + 1;
-        } else {
-          defaultValues.reachMax = 4 - defaultValues.practiceData.rank + 1;
-        }
-      }
-
-      // Potency Dice Pool Mod
+      //Calculate free potency from highest arcanum
+      defaultValues.freePrimaryFactorDice = (parseInt(highestArcanum.rank, 10)) * 2;
       if (defaultValues['primary-factor'] == 'potency') {
-        var tempDiceMod = ((defaultValues.potency - 1) * 2);
-        if (tempDiceMod > defaultValues.freePrimaryFactorDice) {
-          defaultValues.dicePool -= tempDiceMod - defaultValues.freePrimaryFactorDice;
-        }
-      } else {
-        defaultValues.dicePool -= ((defaultValues.potency - 1) * 2)
+        defaultValues.freePotency = parseInt(highestArcanum.rank, 10) + 1;
       }
 
-      // Duration Dice Pool Mod
+      //Adjust dice penalty display for durations
       if (defaultValues['primary-factor'] == 'duration') {
-        defaultValues.dicePool -= this.spellDurations.find(i => i.id == defaultValues.duration).adjustedDicePenalty;
-      } else {
-        defaultValues.dicePool -= this.spellDurations.find(i => i.id == defaultValues.duration).dicePenalty;
-      }
-      if (defaultValues.duration == 'indefinite') {
-        defaultValues.manaCost++;
-        defaultValues.reach++;
-      }
-
-      // Casting Time Modifiers
-      if (!defaultValues['casting-time-advanced']) {
-        defaultValues.dicePool += ritualIntervals[defaultValues['casting-time']].additionalDice;
-      }
-
-      //Scale Dice Penalty
-      defaultValues.dicePool -= defaultValues.scaleData.dicePenalty;
-
-      //Yantra Dice
-      defaultValues.dicePool += defaultValues.yantradice;
-
-      if (defaultValues['additional-reach']) {
-        defaultValues.reach += defaultValues['additional-reach'];
-      }
-
-      // Adding reach for advanced options
-      if (defaultValues['potency-advanced']) {
-        defaultValues.reach++;
-      }
-      if (defaultValues['duration-advanced']) {
-        defaultValues.reach++;
-      }
-      if (defaultValues['casting-time-advanced']) {
-        defaultValues.reach++;
-      }
-      if (defaultValues['range-advanced']) {
-        defaultValues.reach++;
-      }
-      if (defaultValues['scale-advanced']) {
-        defaultValues.reach++;
-      }
-
-      //Paradox from reach
-      if (defaultValues.reach > defaultValues.reachMax) {
-        if (defaultValues.paradoxDice === null) {
-          defaultValues.paradoxDice = 0;
-        }
-        defaultValues.paradoxDice += (defaultValues.reach - defaultValues.reachMax);
-      }
-
-      if (defaultValues['potency-mana']) {
-        defaultValues.manaCost += defaultValues['potency-mana'];
-        defaultValues.paradoxDice -= defaultValues['potency-mana'];
-      }
-
-      if (defaultValues['dedicated-tool']) {
-        defaultValues.paradoxDice -= 2;
+        this.spellDurations = Spell.spellDurations.map((i => {
+          if (defaultValues.freePrimaryFactorDice > i.dicePenalty) {
+            i.adjustedDicePenalty = 0;
+          } else {
+            i.adjustedDicePenalty = i.dicePenalty - defaultValues.freePrimaryFactorDice;
+          }
+          return i;
+        }));
       }
     }
+
+    if (defaultValues['casting-method'] != 'rote' && highestArcanum) {
+      defaultValues.dicePool += highestArcanum.rank + 1;
+    } else if (defaultValues['casting-method'] == 'rote') {
+      defaultValues.dicePool += 5;
+    }
+
+    // Get array of ritua intervals
+    ritualIntervals = Gnosis.getRitualIntervals(mageInfo.gnosis.system.rank, defaultValues.grimoire);
+
+    // reset casting time if not valid with grimoire
+    if (defaultValues['casting-method'] == 'rote' && defaultValues.grimoire && defaultValues['casting-time-advanced']) {
+      defaultValues['casting-time'] = 0;
+      defaultValues['casting-time-advanced'] = false;
+    }
+
+    //Get data for factors
+    defaultValues.practiceData = Spell.practices.find((p) => p.id == defaultValues.practice);
+    defaultValues.durationData = this.spellDurations.find((d) => d.id == defaultValues.duration);
+    defaultValues.castTimeData = ritualIntervals.find((d) => d.id == defaultValues['casting-time']);
+    defaultValues.rangeData = Spell.ranges.find((d) => d.id == defaultValues['range']);
+    defaultValues.scaleData = Spell.scales.find((d) => d.id == defaultValues['scale']);
+
+    if (defaultValues.practiceData && highestArcanum) {
+      if (defaultValues['casting-method'] != 'rote') {
+        defaultValues.reachMax = highestArcanum.rank - defaultValues.practiceData.rank + 1;
+      } else {
+        defaultValues.reachMax = 4 - defaultValues.practiceData.rank + 1;
+      }
+    }
+
+    // Rote quality roll for grimoire and self created spells
+    if (defaultValues['casting-method'] == 'rote' && (defaultValues.grimoire || defaultValues['self-created'])) {
+      defaultValues.diceRoteQuality = true;
+    }
+
+    // Potency Dice Pool Mod
+    if (defaultValues['primary-factor'] == 'potency') {
+      var tempDiceMod = ((defaultValues.potency - 1) * 2);
+      if (tempDiceMod > defaultValues.freePrimaryFactorDice) {
+        defaultValues.dicePool -= tempDiceMod - defaultValues.freePrimaryFactorDice;
+        defaultValues.totalDicePenalties += tempDiceMod - defaultValues.freePrimaryFactorDice;
+      }
+    } else {
+      defaultValues.dicePool -= ((defaultValues.potency - 1) * 2)
+      defaultValues.totalDicePenalties += ((defaultValues.potency - 1) * 2)
+    }
+
+    // Duration Dice Pool Mod
+    if (defaultValues['primary-factor'] == 'duration') {
+      defaultValues.dicePool -= this.spellDurations.find(i => i.id == defaultValues.duration).adjustedDicePenalty;
+      defaultValues.totalDicePenalties += this.spellDurations.find(i => i.id == defaultValues.duration).adjustedDicePenalty;
+    } else {
+      defaultValues.dicePool -= this.spellDurations.find(i => i.id == defaultValues.duration).dicePenalty;
+      defaultValues.totalDicePenalties += this.spellDurations.find(i => i.id == defaultValues.duration).dicePenalty;
+    }
+    if (defaultValues.duration == 'indefinite') {
+      defaultValues.manaCost++;
+      defaultValues.reach++;
+    }
+
+    // Casting Time Modifiers
+    if (!defaultValues['casting-time-advanced']) {
+      defaultValues.dicePool += ritualIntervals[defaultValues['casting-time']].additionalDice;
+    }
+
+    //Scale Dice Penalty
+    defaultValues.dicePool -= defaultValues.scaleData.dicePenalty;
+    defaultValues.totalDicePenalties += defaultValues.scaleData.dicePenalty;
+
+    //Yantra Dice
+    defaultValues.effectiveYantraBonus = defaultValues.yantradice;
+    if ((parseInt(defaultValues.yantradice, 10) - parseInt(defaultValues.totalDicePenalties, 10)) > 5) {
+      defaultValues.effectiveYantraBonus = 5 + defaultValues.totalDicePenalties;
+    }
+
+    defaultValues.dicePool += defaultValues.effectiveYantraBonus;
+
+    if (defaultValues['additional-reach']) {
+      defaultValues.reach += defaultValues['additional-reach'];
+    }
+
+    // Adding reach for advanced options
+    if (defaultValues['potency-advanced']) {
+      defaultValues.reach++;
+    }
+    if (defaultValues['duration-advanced']) {
+      defaultValues.reach++;
+    }
+    if (defaultValues['casting-time-advanced']) {
+      defaultValues.reach++;
+    }
+    if (defaultValues['range-advanced']) {
+      defaultValues.reach++;
+    }
+    if (defaultValues['scale-advanced']) {
+      defaultValues.reach++;
+    }
+
+    //Paradox from reach
+    if (defaultValues.reach > defaultValues.reachMax) {
+      if (defaultValues.paradoxDice === null) {
+        defaultValues.paradoxDice = 0;
+      }
+      defaultValues.paradoxDice += (defaultValues.reach - defaultValues.reachMax);
+    }
+
+    if (defaultValues['potency-mana']) {
+      defaultValues.manaCost += defaultValues['potency-mana'];
+      defaultValues.paradoxDice -= defaultValues['potency-mana'];
+    }
+
+    if (defaultValues['dedicated-tool']) {
+      defaultValues.paradoxDice -= 2;
+    }
+
+
+
 
     console.log('swnr-mage', 144, magicSkills, defaultValues);
 
@@ -370,10 +348,6 @@ export class SpellcastConfig extends FormApplication {
       uncastable = true;
       castErrors.push('Dice pool cannot be lower than -5.');
     }
-    if (defaultValues.yantradice > 5) {
-      uncastable = true;
-      castErrors.push('Yantra\'s dice bonus cannot be higher thant 5.');
-    }
 
     return {
       token,
@@ -385,83 +359,18 @@ export class SpellcastConfig extends FormApplication {
       mageInfo,
       defaultValues,
       //Field Options
-      primaryFactors: this.primaryFactors,
-      castingMethods: this.castingMethods,
-      spellDurations: this.spellDurations.filter(d => d.advanced == defaultValues['duration-advanced']),
+      primaryFactors: Spell.primaryFactors,
+      castingMethods: Spell.castingMethods,
+      spellDurations: Spell.spellDurations.filter(d => d.advanced == defaultValues['duration-advanced']),
       ritualIntervals,
-      ranges: this.ranges.filter(d => d.advanced == defaultValues['range-advanced']),
-      scales: this.scales.filter(d => d.advanced == defaultValues['scale-advanced']),
-      practices: this.practices.reduce((acc, p) => {
-        if (highestArcanum && highestArcanum.rank >= p.rank) {
-          acc[p.rank][p.id] = p;
-        }
-        return acc;
-      },[{}, {}, {}, {}, {}]),
+      ranges: Spell.ranges.filter(d => d.advanced == defaultValues['range-advanced']),
+      scales: Spell.scales.filter(d => d.advanced == defaultValues['scale-advanced']),
+      practices: Spell.rankedPractices(highestArcanum),
       //Validation
       uncastable,
       castErrors,
     };
   }
-
-  // async _handleCastButtonClick(event) {
-  //   const clickedElement = $(event.currentTarget);
-  //   const rank = clickedElement.data().rank;
-  //   const name = clickedElement.data().name;
-  //   const actorID = clickedElement.data().actor;
-  //   if (actorID) {
-  //     const actor = game.actors.get(actorID);
-
-  //     // Construct the Roll instance
-  //     let r = new Roll("1d20 + @rank", { rank: rank });
-
-  //     // The parsed terms of the roll formula
-  //     console.log(r.terms); // [Die, OperatorTerm, NumericTerm, OperatorTerm, NumericTerm]
-
-  //     // Execute the roll
-  //     await r.evaluate({ async: true });
-  //     // let chatData = {
-  //     //   type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-  //     //   rolls: [r],
-  //     //   content: "My HTML Content",
-  //     //   //etc.
-  //     // };
-  //     // ChatMessage.applyRollMode(chatData, "roll");
-  //     // ChatMessage.create(chatData);
-
-  //     const rollMode = game.settings.get("core", "rollMode");
-  //     var stats = {};
-  //     stats[name] = rank;
-  //     const data = {
-  //       actor: this.actor,
-  //       stats,
-  //       totalMod: rank,
-  //     };
-  //     const chatContent = await renderTemplate(
-  //       "modules/swnr-space-magic/templates/chat-roll.html",
-  //       data
-  //     );
-  //     const chatMessage = getDocumentClass("ChatMessage");
-  //     chatMessage.create(
-  //       chatMessage.applyRollMode(
-  //         {
-  //           speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-  //           roll: JSON.stringify(r.toJSON()),
-  //           content: chatContent,
-  //           type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-  //         },
-  //         rollMode
-  //       )
-  //     );
-
-  //     // The resulting equation after it was rolled
-  //     console.log(r.result); // 16 + 2 + 4
-
-  //     // The total resulting from the roll
-  //     console.log(r.total); // 22
-
-  //     MageMagicAddon.log(true, "Button Clicked!", { name, rank, actor, r });
-  //   }
-  // }
 
   async _rollSpell(actor, formVals) {
     let numDice = 2;
@@ -480,6 +389,8 @@ export class SpellcastConfig extends FormApplication {
     if (this.calculatedValues.dicePool < 1) {
       r = new Roll("1d10cs=8", {dicePool: 1});
       isChanceDie = true;
+    } else if (this.calculatedValues.diceRoteQuality) {
+      r = new Roll(this.calculatedValues.dicePool + "d10xo<8x10cs>=8", {dicePool: this.calculatedValues.dicePool});
     } else {
       //pg212
       r = new Roll(this.calculatedValues.dicePool + "d10x10cs>=8", {dicePool: this.calculatedValues.dicePool});
@@ -597,12 +508,12 @@ export class SpellcastConfig extends FormApplication {
     });
 
     html.on("change", ".magic-casting-panel-content-field", (event) => {
-      console.log(
-        "swnr-mage",
-        "activateEventListeners->_updateObject.formData",
-        formData,
-        html
-      );
+      // console.log(
+      //   "swnr-mage",
+      //   "activateEventListeners->_updateObject.formData",
+      //   formData,
+      //   html
+      // );
       // this.formData = formData;
       // sc._updateObject(event, formData).bind(this);
       this.render();
@@ -611,7 +522,7 @@ export class SpellcastConfig extends FormApplication {
 
   async _updateObject(event, formData) {
 
-    console.log('swnr-mage', 'updateObject formdata', formData);
+    console.log('swnr-mage', 'spellcastconfig updateObject formdata', formData);
 
     this.formData = formData;
 

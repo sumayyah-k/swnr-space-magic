@@ -1,6 +1,6 @@
 <form class="magic-casting-modal">
   <header>
-    <h1>Cast spell as {{ token.document.name }}</h1>
+    <h1>Cast {{ defaultValues.name }} as {{ token.document.name }}</h1>
   </header>
   <div class="magic-casting-content">
     <aside class="magic-casting-sidebar">
@@ -61,6 +61,36 @@
               >{{p.name}}</option>
               {{/each}}
           </select>
+
+          {{#swnr-space-magic-if-equals defaultValues.casting-method 'rote'}}
+          <div class="form-group">
+            <label>
+              <input
+                type="checkbox"
+                name="{{flag}}-grimoire"
+                {{#if defaultValues.grimoire }}
+                  checked="checked"
+                {{/if}}
+                class="magic-casting-panel-content-field"
+              >
+              From Grimoire
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <input
+                type="checkbox"
+                name="{{flag}}-self-created"
+                {{#if defaultValues.self-created }}
+                  checked="checked"
+                {{/if}}
+                class="magic-casting-panel-content-field"
+              >
+              Self Created
+            </label>
+          </div>
+          {{/swnr-space-magic-if-equals}}
         </div>
       </div>
       <div class="magic-casting-panel">
@@ -76,6 +106,14 @@
               >{{p.name}}</option>
               {{/each}}
           </select>
+        </div>
+      </div>
+      <div class="magic-casting-panel">
+        <div class="magic-casting-panel-title">
+          Withstand
+        </div>
+        <div class="magic-casting-panel-content">
+          <input type="text" name="withstand" class="magic-casting-panel-content-field" value="{{defaultValues.withstand}}"/>
         </div>
       </div>
     </aside>
@@ -161,6 +199,9 @@
             {{#if defaultValues.casting-time-advanced }}
               checked="checked"
             {{/if}}
+            {{#if defaultValues.grimoire }}
+              disabled="disabled"
+            {{/if}}
           >
         </div>
       </fieldset>
@@ -223,6 +264,7 @@
           <input type="number" name="{{flag}}-yantradice" value="{{defaultValues.yantradice}}" class="magic-casting-panel-content-field">
         </div>
         <div>Cannot be higher than +5, cannot use more than {{mageInfo.gnosisData.yantras}} yantras.</div>
+        <div>Effective Yantra Bonus: {{defaultValues.effectiveYantraBonus}}</div>
       </fieldset>
 
       <fieldset>
@@ -275,6 +317,10 @@
                 (Chance Die)
               {{/swnr-space-magic-if-lte}}
             {{/swnr-space-magic-if-lt}}
+
+            {{#if defaultValues.diceRoteQuality}}
+              <span class="magic-casting-badge">rote</span>
+            {{/if}}
           </td>
         </tr>
         <tr>

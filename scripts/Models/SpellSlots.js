@@ -71,23 +71,21 @@ export default class SpellSlots {
    * @param {Object} existing An existing object containing an actor's spell slots
    * @returns
    */
-  static async fillSpellSlots(actorId, existing) {
-    if (actorId) {
-      var actor = game.actors.get(actorId);
+  static async fillSpellSlots(actor, existing) {
+    if (actor) {
       var chClass = actor?.system.class;
       var level = actor?.system.level;
       var maxSpellSlots = this.getMaxSpellSlots(chClass, level.value);
-
+      console.log('swnr-mage', 'fill max', maxSpellSlots);
       if (!existing) {
-        existing = await game.actors
-          .get(actorId)
-          ?.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.SPELLSLOTS);
+        existing = await actor.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.SPELLSLOTS);
       }
+      console.log('swnr-mage', 'fill existing', existing);
 
       if (!existing) {
         for (var lvl in maxSpellSlots) {
           for (var i = 0; i < maxSpellSlots[lvl]; i++) {
-            await this.createSpellSlot(actorId, {
+            await this.createSpellSlot(actor.id, {
               class: chClass,
               level: lvl,
             });
@@ -101,13 +99,34 @@ export default class SpellSlots {
       }
 
       if (existing) {
+        //make the number of slots match what it should be (max)
+        for (var lvl in maxSpellSlots) {
+          var existingForLevel = Object.values(existing).filter(s => s.level == lvl);
+          if (maxSpellSlots[lvl] > existingForLevel.length) {
+            var numToCreate = maxSpellSlots[lvl] - existingForLevel.length;
+            console.log('swnr-mage', 'fill - need to create ' + numToCreate + ' lvl ' + lvl + ' slots');
+
+            for (var i = 0; i < numToCreate; i++) {
+              await this.createSpellSlot(actor.id, {
+                class: chClass,
+                level: lvl,
+              });
+            }
+          }
+
+          if (maxSpellSlots[lvl] < existingForLevel.length) {
+            var numToDetroy = existingForLevel.length - maxSpellSlots[lvl];
+            console.log('swnr-mage', 'fill - need to remove ' + numToDetroy + ' lvl ' + lvl + ' slots');
+          }
+        }
+
         existing = Object.values(existing).reduce((acc, i) => {
           acc[i.id] = i;
           acc[i.id].isUsed = false;
           return acc;
         }, {});
 
-        this.updateActorSlots(actorId, existing);
+        this.updateActorSlots(actor.id, existing);
 
         return existing;
       }

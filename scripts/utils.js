@@ -25,6 +25,7 @@ export function validateSkillsExist(token, ) {
 }
 
 export function isArcanist(actor) {
+  console.log('swnr-mage', 'utils-actor', actor);
   return actor.system.class.toLowerCase().trim() == "arcanist";
 }
 export function isMagister(actor) {

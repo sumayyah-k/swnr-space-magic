@@ -3,6 +3,8 @@ import { filterSkillsBySystem, isMtAMage, isArcanist, isMagister, isSwNMage } fr
 import SpellSlots from './Models/SpellSlots.js';
 import Mana from "./Models/Mana.js";
 import {SpellcastConfig} from "./SpellcastConfig.js";
+import Arcanum from "./Models/Arcanum.js";
+import Gnosis from "./Models/Gnosis.js";
 
 export class MageConfig extends FormApplication {
   static get defaultOptions() {
@@ -27,6 +29,7 @@ export class MageConfig extends FormApplication {
       template: MageMagicAddon.TEMPLATES.SPELLCASTING,
       title: "Grimoire",
       actorId: actorId,
+      actor: game.actors?.get(actorId),
       popOut: true,
       resizable: true,
       minimizable: true,
@@ -59,17 +62,8 @@ export class MageConfig extends FormApplication {
     if (token) {
       actorId = token.document.actor.id;
       actor = game.actors.get(actorId);
-      magicSkills = actor.items.contents.filter((i) =>
-        filterSkillsBySystem(token, i)
-      );
-
-      magicSkills = magicSkills.map((i) => {
-        return {
-          name: i.name,
-          rank: i.system.rank,
-          actor: actorId,
-        };
-      });
+      var arcana = new Arcanum(actor);
+      magicSkills = arcana.getAll();
 
       spells = actor.items.contents
         .filter((i) => i.type == "power")
@@ -136,18 +130,53 @@ export class MageConfig extends FormApplication {
       ?.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ACTIVE_MAGIC_TAB);
 
     const mtAMage = isMtAMage(actor);
+    var defaultValues = {};
 
     const strain = actor.system.systemStrain;
     var mageInfo = {};
     if (mtAMage) {
       mageInfo.gnosis = actor.items.find(f => f.type == 'skill' && f.name.toLowerCase() == 'gnosis')
+      mageInfo.gnosisData = Gnosis.byRank(mageInfo.gnosis.system.rank);
+      mageInfo.maxSafeRolls = mageInfo.gnosis.system.rank;
+      mageInfo.scrutinyPenalty = Math.ceil((mageInfo.gnosis.system.rank + 1) / 2);
       var mana = new Mana(actor);
+      var arcana = new Arcanum(actor);
+      var allArcana = arcana.getAll();
 
       mageInfo.mana = {
         current: mana.getCurrentValue(),
         max: mana.getMax(),
       };
+
+      //Add MtA default values
+      defaultValues = {...defaultValues, ...{
+        "focused-mage-sight-arcanum": allArcana.filter(a => a.importance == 'ruling')[0].name,
+        "mage-sight-arcana": allArcana.filter(a => a.importance == 'ruling').map(a => a.name),
+        activeManaCost: 0,
+        activeDuration: mageInfo.gnosis.system.rank + 1,
+      }};
+
+      //Update with chosen form values
+      if (this.formData) {
+        console.log('swnr-mage', 'formData', this.formData)
+        defaultValues["focused-mage-sight-arcanum"] = this.formData["focused-mage-sight-arcanum"];
+        defaultValues['mage-sight-arcana'] = this.formData['mage-sight-arcana[]'].filter(i => i);
+      }
+
+      //Active mage sight mana cost adjustments
+      console.log('swnr-mage', 'default Values', defaultValues['mage-sight-arcana'])
+
+      for (var a of defaultValues['mage-sight-arcana']) {
+        var arcanum = allArcana.find(i => i.name == a);
+        console.log('swnr-mage', 'arcanum', arcanum)
+        if (arcanum.importance != 'ruling') {
+          defaultValues.activeManaCost++;
+        }
+      }
     }
+    console.log('swnr-mage', 'default Values', defaultValues)
+    this.calculatedValues = defaultValues;
+
     return {
       token,
       actor: actorId,
@@ -164,6 +193,7 @@ export class MageConfig extends FormApplication {
       flag: MageMagicAddon.FLAGS.ID + "-" + MageMagicAddon.FLAGS.SPELLSLOTS,
       strain,
       mageInfo,
+      defaultValues,
     };
   }
 
@@ -263,16 +293,192 @@ export class MageConfig extends FormApplication {
     SpellSlots.fillSpellSlots(actorId);
   }
 
-  async _handleButtonClick(event) {
+  async _handleActiveMageSightClick(event, actor, formData) {
+    console.log('swnr-mage', formData);
+    var arcana;
+    if (formData) {
+      arcana = formData['mage-sight-arcana[]']
+    }
+
+    var actorArcana = new Arcanum(actor);
+    var magicSkills = actorArcana.getAll();
+    var manaCost = 0;
+    var gnosis = actor.items.find(f => f.type == 'skill' && f.name.toLowerCase() == 'gnosis');
+    var duration = gnosis.system.rank + 1;
+
+    magicSkills = magicSkills.filter(s => arcana ? arcana.indexOf(s.name) != -1 : s.importance == 'ruling');
+
+    if (!arcana) {
+      arcana = magicSkills.map(s => s.name);
+    }
+
+    for (const s of magicSkills) {
+      if (s.importance !== 'ruling') {
+        manaCost++;
+      }
+    }
+
+    console.log('swnr-mage', 'active sight skills', magicSkills);
+    const data = {
+      actor: actor,
+      arcana,
+      magicSkills,
+      manaCost,
+      duration
+    };
+    const chatContent = await renderTemplate(
+      "modules/swnr-space-magic/templates/chat/active-mage-sight.hbs",
+      data
+    );
+    const chatMessage = getDocumentClass("ChatMessage");
+    const create = await chatMessage.create(
+        {
+          speaker: ChatMessage.getSpeaker({ actor: actor }),
+          content: chatContent,
+          type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+        }
+    );
+    console.log('swnr-mage', 292, create);
+  }
+
+  async _handleFocusedRevelation(event, actor, formData) {
+    let r;
+    let paradoxRoll;
+    let paradoxDmgRoll;
+    let isChanceDie = false;
+    let rolls = [];
+    let arcanum;
+    const gnosis = actor.items.find(f => f.type == 'skill' && f.name.toLowerCase() == 'gnosis');
+    const gnosisRanks = gnosis.system.rank + 1;
+
+    let dicePool = gnosisRanks;
+
+    if (this.calculatedValues['focused-mage-sight-arcanum']) {
+      arcanum = actor.items.find(f => f.type == 'skill' && f.name.toLowerCase() == this.calculatedValues['focused-mage-sight-arcanum'].toLowerCase());
+      console.log('swnr-mage', 'focusedArcanum', arcanum);
+      dicePool += (arcanum.system.rank + 1);
+    }
+
+    if (dicePool < 1) {
+      r = new Roll("1d10cs=8", {dicePool: 1});
+      isChanceDie = true;
+    } else {
+      r = new Roll(dicePool + "d10x10cs>=8", {dicePool});
+    }
+
+    console.log("swnr-mage", r.terms);
+    await r.evaluate({ async: true });
+    rolls.push(r);
+
+    var successType = 'failure';
+    if (isChanceDie && r.dice[0].results[0].result == 1) {
+      successType = 'dramafail';
+    } else if (r.result >= 5) {
+      successType = 'exceptional';
+    } else if (r.result > 0) {
+      successType = 'success';
+    }
+
+    let data = {
+      actor,
+      gnosis,
+      r,
+      successType,
+      arcanum,
+    };
+
+    console.log('swnr-mage', 'paradoxRoll', paradoxRoll);
+    const chatContent = await renderTemplate(
+      "modules/swnr-space-magic/templates/chat/focused-mage-sight-revelation.hbs",
+      data
+    );
+
+    let chatData = {
+      type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+      rolls,
+      content: chatContent,
+      //etc.
+    };
+
+    ChatMessage.applyRollMode(chatData, "roll");
+    ChatMessage.create(chatData);
+  }
+
+  async _handleFocusedScrutiny(event, actor) {
+    let r;
+    let paradoxRoll;
+    let paradoxDmgRoll;
+    let isChanceDie = false;
+    let rolls = [];
+    let arcanum;
+    const gnosis = actor.items.find(f => f.type == 'skill' && f.name.toLowerCase() == 'gnosis');
+    const gnosisRanks = gnosis.system.rank + 1;
+
+    let dicePool = gnosisRanks;
+
+    if (this.calculatedValues['focused-mage-sight-arcanum']) {
+      arcanum = actor.items.find(f => f.type == 'skill' && f.name.toLowerCase() == this.calculatedValues['focused-mage-sight-arcanum'].toLowerCase());
+      console.log('swnr-mage', 'focusedArcanum', arcanum);
+      dicePool += (arcanum.system.rank + 1);
+    }
+
+    if (dicePool < 1) {
+      r = new Roll("1d10cs=8", {dicePool: 1});
+      isChanceDie = true;
+    } else {
+      r = new Roll(dicePool + "d10x10cs>=8", {dicePool});
+    }
+
+    console.log("swnr-mage", r.terms);
+    await r.evaluate({ async: true });
+    rolls.push(r);
+
+    var successType = 'failure';
+    if (isChanceDie && r.dice[0].results[0].result == 1) {
+      successType = 'dramafail';
+    } else if (r.result >= 5) {
+      successType = 'exceptional';
+    } else if (r.result > 0) {
+      successType = 'success';
+    }
+
+    let data = {
+      actor,
+      gnosis,
+      r,
+      successType,
+      arcanum,
+    };
+
+    console.log('swnr-mage', 'paradoxRoll', paradoxRoll);
+    const chatContent = await renderTemplate(
+      "modules/swnr-space-magic/templates/chat/focused-mage-sight-scrutiny.hbs",
+      data
+    );
+
+    let chatData = {
+      type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+      rolls,
+      content: chatContent,
+      //etc.
+    };
+
+    ChatMessage.applyRollMode(chatData, "roll");
+    ChatMessage.create(chatData);
+  }
+
+  async _handleButtonClick(event, html) {
     const clickedElement = $(event.currentTarget);
     const action = clickedElement.data().action;
     const slotId = clickedElement.parents("[data-slot-id]")?.data()?.slotId;
     const castLevel = clickedElement.data()?.castLevel;
     const spellId = clickedElement.data()?.spellId;
+    const skillId = clickedElement.data()?.skill;
 
     const actor = game.actors?.get(this.options.actorId);
     const swNMage = isSwNMage(actor);
     const mtAMage = isMtAMage(actor);
+
     switch (action) {
       case "rest": {
         if (swNMage) {
@@ -309,6 +515,14 @@ export class MageConfig extends FormApplication {
           spellId
         );
         this.render();
+        break;
+      }
+
+      case "edit-spell": {
+        event.preventDefault();
+        event.stopPropagation();
+        const item = actor.getEmbeddedDocument("Item", spellId);
+        if (item instanceof Item) item.sheet?.render(true);
         break;
       }
 
@@ -360,6 +574,57 @@ export class MageConfig extends FormApplication {
         break;
       }
 
+      case "toggle-skill-importance": {
+        if (skillId) {
+          const skill = actor.items.get(skillId);
+          const importance = skill.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_ARCANA_IMPORTANCE);
+          if (!importance) {
+            await skill.setFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_ARCANA_IMPORTANCE, 'ruling');
+          } else if (importance == 'ruling') {
+            await skill.setFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_ARCANA_IMPORTANCE, 'inferior');
+          } else if (importance == 'inferior') {
+            await skill.unsetFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_ARCANA_IMPORTANCE)
+          }
+        }
+        // if (actor.system.systemStrain.value > 0) {
+        //   actor.system.systemStrain.value -= 1;
+        // }
+        this.render();
+        break;
+      }
+
+      case 'active-mage-sight': {
+        this._handleActiveMageSightClick(event, actor, this.formData);
+        break;
+      }
+
+      case 'focused-mage-sight-revelation': {
+        console.log('swnr-mage', 441, this.formData);
+
+        this._handleFocusedRevelation(event, actor, this.formData);
+        break;
+      }
+
+      case 'focused-mage-sight-scrutiny': {
+        console.log('swnr-mage', 447, this.formData);
+
+        this._handleFocusedScrutiny(event, actor, this.formData);
+        break;
+      }
+
+      case 'mta-cast-spell': {
+        console.log("swnr-mage", "open improvised spellcast menu", actor.Id, spellId);
+        try {
+          new SpellcastConfig(null, {
+            actorId: actor.id,
+            spellId
+          }).render(true);
+        } catch (e) {
+          console.error(e);
+        }
+        break;
+      }
+
       default:
         MageMagicAddon.log(false, "Invalid action detected", action);
     }
@@ -368,7 +633,16 @@ export class MageConfig extends FormApplication {
   activateListeners(html) {
     super.activateListeners(html);
 
-    html.on("click", "[data-action]", this._handleButtonClick.bind(this));
+    const actor = this.options.actor;
+
+    // html.on("click", "[data-action]", this._handleButtonClick.bind(this));
+    html.on("click", "[data-action]", (event) => {
+      this._handleButtonClick(event, html);
+    });
+
+    html.on("change", ".input-mage-sight-arcana", (event) => {
+      this.render();
+    });
 
     html.on("click", ".swnr-mage-improvised-spellcasting-btn", (event) => {
       var actorId = event.target.dataset.actor;
@@ -381,10 +655,22 @@ export class MageConfig extends FormApplication {
         console.error(e);
       }
     });
+
+    Hooks.on("updateItem", (item) => {
+      console.log('swnr-mage', 'updateItem', actor, item)
+
+      if (actor.items.find(i => item.id == i.id)) {
+        this.render();
+      }
+    });
   }
 
   async _updateObject(event, formData) {
-    if (!this.object.id) return;
+    console.log('swnr-mage', 'mageConfig updateObject formdata', formData);
+
+    this.formData = formData;
+
+    if (!this.object || !this.object.id) return;
 
     return this.object.update(formData);
   }
