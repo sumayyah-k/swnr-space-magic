@@ -55,6 +55,13 @@ export class SpellcastConfig extends FormApplication {
       minimizable: true,
       closeOnSubmit: false,
       submitOnChange: true,
+      tabs: [
+        {
+          navSelector: ".magic-casting-spells-nav",
+          contentSelector: ".tab-wrap",
+          initial: "spells",
+        }
+      ]
     };
       console.log("swnr-mage", 26, defaults, overrides);
 
@@ -105,6 +112,7 @@ export class SpellcastConfig extends FormApplication {
       arcanum: [],
       chosenArcanum: [],
       withstand: null,
+      'withstand-value': 0,
       "casting-method": 'improvised',
       grimoire: false,
       "self-created": false,
@@ -114,10 +122,13 @@ export class SpellcastConfig extends FormApplication {
       dicePool: mageInfo.gnosis.system.rank + 1,
       diceRoteQuality: false,
       manaCost: 0,
+      "spell-reach": [],
       reach: 0,
       reachMax:0,
+      spellReachData: [],
       potency: 1,
       freePotency: 1,
+      effectivePotency: 1,
       paradoxDice: null,
       "additional-reach": 0,
       "contain-paradox": false,
@@ -130,19 +141,50 @@ export class SpellcastConfig extends FormApplication {
       "casting-time-turns": 1, //advanced only
       "range": "touch",
       "range-advanced": false,
+      rangeAimedDistances: {
+        short: mageInfo.gnosis.system.rank * 10,
+        med: mageInfo.gnosis.system.rank * 20,
+        long: mageInfo.gnosis.system.rank * 40,
+        max: mageInfo.gnosis.system.rank * 80,
+      },
       "scale": "1",
       "scale-advanced": false,
       yantradice: 0,
+      yantras: [],
+      maxYantras: false,
       totalDicePenalties: 0,
+      yantraNames: [],
+      yantraData: [],
+      totalYantraBonus: 0,
       effectiveYantraBonus: 0,
       "dedicated-tool": false,
+      "spend-willpower": false,
+      "additional-dice": 0,
     };
+
+    var itemYantras = actor.items.contents
+      .filter((i) => i.type == "item" && i.flags[MageMagicAddon.ID] && i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.MTA_SPELL_IS_YANTRA])
+      .map(i => {
+        return {
+          id: i.id,
+          name: i.name,
+          type: 'custom',
+          bonus: i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.MTA_SPELL_YANTRA_BONUS],
+          desc: i.system.description
+        }
+      });
+
+    var reachOptions = [];
 
     if (this.spell) {
       console.log('swnr-mage', 'spell', this.spell);
       defaultValues.name = this.spell.name;
       defaultValues.spell = this.spell;
-      defaultValues["casting-method"] = 'rote';
+      if (this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_IS_ROTE)) {
+        defaultValues["casting-method"] = 'rote';
+      } else if (this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_IS_PRAXIS)) {
+        defaultValues["casting-method"] = 'praxis';
+      }
       if (this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_ARCANUM)) {
         defaultValues.arcanum = [this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_ARCANUM)];
       }
@@ -154,6 +196,20 @@ export class SpellcastConfig extends FormApplication {
       }
       if (this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_WITHSTAND)) {
         defaultValues['withstand'] = this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_WITHSTAND);
+      }
+      if (this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_REACH)) {
+        var spellReachOpts = this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_REACH);
+        for (var r of spellReachOpts) {
+          r.disabled = false;
+          if (r.variant == 'addon') {
+            var arcanum = availableArcana.find(a => a.name == r.prereq.key);
+            if (!arcanum || arcanum.rank < parseInt(r.prereq.dots, 10)) {
+              r.disabled = true;
+            }
+            console.log('swnr-mage', 'addon check', r.prereq, availableArcana)
+          }
+          reachOptions.push(r);
+        }
       }
     }
 
@@ -174,6 +230,18 @@ export class SpellcastConfig extends FormApplication {
       ritualIntervals = Gnosis.getRitualIntervals(mageInfo.gnosis.system.rank);
     }
 
+    // Add stuff for spell's addons, doing it here, before, arcanum stuff, so that all calculates correctly
+    if (defaultValues['spell-reach']) {
+      for (var r of defaultValues['spell-reach']) {
+        defaultValues.spellReachData.push(reachOptions[r]);
+        if (reachOptions[r].variant == 'reach') {
+          defaultValues.reach += parseInt(reachOptions[r].reachCost, 10);
+        } else if (reachOptions[r].variant == 'addon') {
+          defaultValues.arcanum.push(reachOptions[r].prereq.key)
+        }
+      }
+    }
+
     //Getting base reach from highest arcanum and practice
     var chosenArcanum = availableArcana.filter((a) => defaultValues.arcanum.indexOf(a.name) != -1);
     var highestArcanum = null;
@@ -181,7 +249,15 @@ export class SpellcastConfig extends FormApplication {
     if(chosenArcanum.length > 0) {
       highestArcanum = chosenArcanum.sort((a, b) => b.rank - a.rank).shift();
     }
-    console.log('swnr-mage', 'arcanumz', highestArcanum, chosenArcanum);
+
+    //Add reach if changing primary factor of spell
+    if (this.spell) {
+      var pfactor = this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_PRIMARY_FACTOR);
+      if (defaultValues['primary-factor'] != pfactor) {
+        defaultValues.reach++;
+      }
+    }
+
     this.spellDurations = Spell.spellDurations;
     if (highestArcanum) {
       // Improvised Casting mana cost
@@ -207,6 +283,8 @@ export class SpellcastConfig extends FormApplication {
         }));
       }
     }
+
+    defaultValues.dicePool += parseInt(defaultValues['additional-dice'], 10);
 
     if (defaultValues['casting-method'] != 'rote' && highestArcanum) {
       defaultValues.dicePool += highestArcanum.rank + 1;
@@ -255,6 +333,11 @@ export class SpellcastConfig extends FormApplication {
       defaultValues.totalDicePenalties += ((defaultValues.potency - 1) * 2)
     }
 
+    //Effective Potency
+    console.log('swnr-mage', 'withstand-value', defaultValues['withstand-value']);
+    if (defaultValues['withstand-value']) {
+      defaultValues.effectivePotency = defaultValues.potency - defaultValues['withstand-value'];
+    }
     // Duration Dice Pool Mod
     if (defaultValues['primary-factor'] == 'duration') {
       defaultValues.dicePool -= this.spellDurations.find(i => i.id == defaultValues.duration).adjustedDicePenalty;
@@ -278,12 +361,43 @@ export class SpellcastConfig extends FormApplication {
     defaultValues.totalDicePenalties += defaultValues.scaleData.dicePenalty;
 
     //Yantra Dice
-    defaultValues.effectiveYantraBonus = defaultValues.yantradice;
-    if ((parseInt(defaultValues.yantradice, 10) - parseInt(defaultValues.totalDicePenalties, 10)) > 5) {
+    var yantradice = parseInt(defaultValues.yantradice, 10);
+    var count = 0;
+    for (var vkey of defaultValues.yantras) {
+      let yantra = [...Spell.commonYantras, ...itemYantras].find(y => y.id == vkey);
+
+      if (yantra) {
+        defaultValues.yantraNames.push(yantra.name + ' (+' + yantra.bonus + ')');
+        defaultValues.yantraData.push(yantra);
+        console.log('swnr-mage', 'yantra-bonus', vkey, yantra.bonus);
+        yantradice += yantra.bonus;
+
+      }
+
+      if (vkey == 'dedicatedTool') {
+        defaultValues['dedicated-tool'] = true;
+      }
+
+      if (count != 0) {
+        defaultValues['casting-time-turns']++;
+      }
+      count++;
+    }
+
+    defaultValues.totalYantraBonus = yantradice;
+    defaultValues.effectiveYantraBonus = yantradice;
+    if ((yantradice - parseInt(defaultValues.totalDicePenalties, 10)) > 5) {
       defaultValues.effectiveYantraBonus = 5 + defaultValues.totalDicePenalties;
     }
 
+    defaultValues.maxYantras = defaultValues.yantras.length >= mageInfo.gnosisData.yantras;
+
     defaultValues.dicePool += defaultValues.effectiveYantraBonus;
+
+    // Willpower bonus
+    if (defaultValues['spend-willpower']) {
+      defaultValues.dicePool += 3;
+    }
 
     if (defaultValues['additional-reach']) {
       defaultValues.reach += defaultValues['additional-reach'];
@@ -311,7 +425,7 @@ export class SpellcastConfig extends FormApplication {
       if (defaultValues.paradoxDice === null) {
         defaultValues.paradoxDice = 0;
       }
-      defaultValues.paradoxDice += (defaultValues.reach - defaultValues.reachMax);
+      defaultValues.paradoxDice += (defaultValues.reach - defaultValues.reachMax) * mageInfo.gnosisData.paradox;
     }
 
     if (defaultValues['potency-mana']) {
@@ -319,12 +433,9 @@ export class SpellcastConfig extends FormApplication {
       defaultValues.paradoxDice -= defaultValues['potency-mana'];
     }
 
-    if (defaultValues['dedicated-tool']) {
+    if (defaultValues.paradoxDice && defaultValues['dedicated-tool']) {
       defaultValues.paradoxDice -= 2;
     }
-
-
-
 
     console.log('swnr-mage', 144, magicSkills, defaultValues);
 
@@ -344,7 +455,7 @@ export class SpellcastConfig extends FormApplication {
 
     return {
       token,
-      actor: actorId,
+      actor: actor,
       spellsById,
       flag: MageMagicAddon.ID,
       availableArcana,
@@ -359,6 +470,8 @@ export class SpellcastConfig extends FormApplication {
       ranges: Spell.ranges.filter(d => d.advanced == defaultValues['range-advanced']),
       scales: Spell.scales.filter(d => d.advanced == defaultValues['scale-advanced']),
       practices: Spell.rankedPractices(highestArcanum),
+      yantras: [...Spell.commonYantras, ...itemYantras],
+      reachOptions,
       //Validation
       uncastable,
       castErrors,
@@ -376,6 +489,7 @@ export class SpellcastConfig extends FormApplication {
     let r;
     let paradoxRoll;
     let paradoxDmgRoll;
+    let aimedRoll;
     let isChanceDie = false;
     let isParadoxChanceDie = false;
     let rolls = [];
@@ -433,6 +547,45 @@ export class SpellcastConfig extends FormApplication {
       }
     }
 
+    if (this.calculatedValues.range == 'aimed') {
+      var stat = actor.system.stats.dex.mod; //actor dex mod
+      var skill = actor.items.find(i => i.type == 'skill' && i.name=='Shoot'); //actor shoot ranks
+      var attackBonus = actor.system.ab;
+      var skillRanks;
+      if (skill) {
+        skillRanks = skill.system.rank;
+      }
+      aimedRoll = new Roll('1d20+@stat+@skill+@attackBonus', {stat, skill: skillRanks, attackBonus});
+
+      await aimedRoll.evaluate({async: true});
+
+      rolls.push(aimedRoll);
+    }
+
+    // Deduct Stuff
+    var doUpdate = false;
+    var doReload = false;
+    var updateData = {data:{}};
+
+    if (this.calculatedValues['spend-willpower']) {
+      doUpdate = true;
+      updateData.data.systemStrain = { value: actor.data.data.systemStrain.value + 1 };
+    }
+
+    if (this.calculatedValues.manaCost) {
+      var mana = new Mana(actor);
+      mana.decrement();
+    }
+
+    if(doUpdate) {
+      await actor.update(updateData);
+      doReload = true;
+    }
+
+    if (doReload) {
+      Hooks.call('reRenderMageActorSheet', actor.id);
+    }
+
     let data = {
       actor,
       gnosis,
@@ -440,6 +593,7 @@ export class SpellcastConfig extends FormApplication {
       r,
       paradoxRoll,
       paradoxDmgRoll,
+      aimedRoll,
       calculatedValues: this.calculatedValues,
       successType,
       paradoxSuccessType,

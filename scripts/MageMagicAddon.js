@@ -14,6 +14,12 @@ export class MageMagicAddon {
     MTA_SPELL_PRACTICE: "practice",
     MTA_SPELL_PRIMARY_FACTOR: "primary-factor",
     MTA_SPELL_WITHSTAND: "withstand",
+    MTA_SPELL_IS_ROTE: "is-rote",
+    MTA_SPELL_IS_PRAXIS: "is-praxis",
+    MTA_SPELL_REACH: "reach",
+    //Items
+    MTA_SPELL_IS_YANTRA: "is-yantra",
+    MTA_SPELL_YANTRA_BONUS: "yantra-bonus",
   };
 
   static TEMPLATES = {
@@ -22,6 +28,7 @@ export class MageMagicAddon {
     CHATROLL: `modules/${this.ID}/templates/chat/chat-roll.hbs`,
     ITEMSHEET: `modules/${this.ID}/templates/sheets/item.hbs`,
     ACTORSHEET: `modules/${this.ID}/templates/sheets/actor.hbs`,
+    YANTRASHEET: `modules/${this.ID}/templates/sheets/yantra.hbs`,
   };
 
   //   static initialize() {

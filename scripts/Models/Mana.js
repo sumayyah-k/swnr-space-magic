@@ -22,6 +22,11 @@ export default class {
     return 0;
   }
 
+  decrement() {
+    var current = this.getCurrentValue();
+    return this.setCurrentValue(current -1);
+  }
+
   setCurrentValue(val) {
     if (this.gnosisInfo && val >= this.gnosisInfo.mana.max) {
       val = this.gnosisInfo.mana.max;

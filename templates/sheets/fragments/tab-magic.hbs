@@ -133,8 +133,8 @@
               {{#each spells as |spelllist level|}}
                 <h3>Level {{level}}</h3>
                 {{#each spelllist as |spell|}}
-                  <article class="magic-casting-spell-def">
-                      <div class="magic-casting-spell-def-title">
+                  <article class="magic-casting-spell-def swnr-mta-collapse-wrap">
+                      <div class="magic-casting-spell-def-title swnr-mta-collapse-title">
                         <h4><a class="item" data-tab="spell-{{spell.id}}">{{ spell.name }}</a></h4>
                         <div class="magic-casting-spell-def-title-controls">
                           <button
@@ -185,7 +185,7 @@
                           {{/if}}
                         </div>
                       </div>
-                      <div class="magic-casting-spell-def-description">
+                      <div class="magic-casting-spell-def-description swnr-mta-collapse-content">
                           {{{ spell.system.description }}}
                       </div>
                   </article>

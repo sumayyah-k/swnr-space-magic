@@ -1,11 +1,14 @@
+:root {
+  --primary-color: #eedb5d;
+  --primary-color-text: #333;
+}
 .mage-hotbar-button:disabled {
     opacity: .5;
     cursor: not-allowed;
 }
 
 .magic-casting-modal {
-    --primary-color: #eedb5d;
-    --primary-color-text: #333;
+
     background: #333;
     display:flex;
     flex-direction: row;
@@ -395,4 +398,58 @@ ul.swnr-mage-info-list {
   list-style-type: disc;
   margin-left:1rem;
   font-size:.85rem;
+}
+
+.yantras-wrap {
+  display:flex;
+  flex-direction: column;
+}
+
+.yantras-wrap .yantra-wrap .yantra-desc {
+  font-size:.85em;
+  color: #adadad;
+}
+
+.window-content fieldset.item-reach {
+  position: relative;
+  border: 1px solid var(--primary-color);
+  padding:.25rem .25rem .25rem 2rem;
+  margin-bottom:.25rem;
+}
+
+.window-content fieldset.item-reach legend {
+  position: absolute;
+  top:0;
+  left:0;
+  bottom:0;
+  width:1.5rem;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
+}
+
+.window-content fieldset.item-reach legend span {
+  text-align: center;
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+  line-height: 1.5rem;
+  padding: .5rem;
+}
+
+.window-content fieldset.item-reach .item-btn-reach-remove {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top:0;
+  right:0;
+  width:1rem;
+  height:1rem;
+  font-size:2rem;
+  line-height: 1rem;
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
 }

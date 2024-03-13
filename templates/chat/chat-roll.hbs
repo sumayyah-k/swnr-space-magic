@@ -60,7 +60,21 @@
             {{calculatedValues.castTimeData.name }}
           {{/if}}
           </td></tr>
-        <tr><th>Yantra Bonus</th><td>{{calculatedValues.yantradice }}</td></tr>
+        {{#if calculatedValues.spend-willpower}}
+          <tr><th>Strain for +3?</th><td>{{#if calculatedValues.spend-willpower }}Yes{{else}}No{{/if}}</td></tr>
+        {{/if}}
+        {{#if calculatedValues.yantraNames}}
+          <tr><th>Yantras</th><td>{{calculatedValues.yantraNames }}</td></tr>
+        {{/if}}
+        {{#if calculatedValues.additional-dice}}
+          <tr><th>Additional Dice</th><td>{{calculatedValues.additional-dice }}</td></tr>
+        {{/if}}
+        {{#if calculatedValues.yantradice}}
+          <tr><th>Extra Yantra Bonus</th><td>{{calculatedValues.yantradice }}</td></tr>
+        {{/if}}
+        {{#if calculatedValues.effectiveYantraBonus}}
+          <tr><th>Effective Yantra Bonus</th><td>{{calculatedValues.effectiveYantraBonus }}</td></tr>
+        {{/if}}
         <tr><th>Used Dedicated Tool</th><td>{{#if calculatedValues.dedicated-tool }}Yes{{else}}No{{/if}}</td></tr>
       </tbody>
       <tfoot>
@@ -155,14 +169,40 @@
     </div>
 
     {{#if paradoxDmgRoll}}
+      <div class="dice-result">
+        <h4 class="swnr-mage-chat-roll-section-title">Contain Paradox Damage</h4>
+        <div class="dice-tooltip" style="display: none;">
+          <div class="dice-formula swnr-mage-chat-roll-dice-formula">{{paradoxDmgRoll.formula}}</div>
+          <section class="tooltip-part">
+            <div class="dice">
+              <ol class="dice-rolls">
+                {{#each paradoxDmgRoll.dice as |dice|}}
+                  {{#each dice.results as |roll|}}
+                    <li class="roll die d10
+                    {{#if roll.success}}success{{/if}}
+                    {{#if roll.exploded}}exploded{{/if}}
+                    ">{{roll.result}}</li>
+                  {{/each}}
+                {{/each}}
+              </ol>
+            </div>
+          </section>
+        </div>
+        <h4 class="dice-total swnr-mage-chat-roll-total-successes swnr-mage-chat-roll-result-{{paradoxSuccessType}}">
+          <small>{{paradoxDmgRoll.result}} Damage</small>
+        </h4>
+      </div>
+    {{/if}}
+  {{/if}}
+  {{#if aimedRoll}}
     <div class="dice-result">
-      <h4 class="swnr-mage-chat-roll-section-title">Contain Paradox Damage</h4>
+      <h4 class="swnr-mage-chat-roll-section-title">Aimed To Hit Roll</h4>
       <div class="dice-tooltip" style="display: none;">
-        <div class="dice-formula swnr-mage-chat-roll-dice-formula">{{paradoxDmgRoll.formula}}</div>
+        <div class="dice-formula swnr-mage-chat-roll-dice-formula">{{aimedRoll.formula}}</div>
         <section class="tooltip-part">
           <div class="dice">
             <ol class="dice-rolls">
-              {{#each paradoxDmgRoll.dice as |dice|}}
+              {{#each aimedRoll.dice as |dice|}}
                 {{#each dice.results as |roll|}}
                   <li class="roll die d10
                   {{#if roll.success}}success{{/if}}
@@ -174,11 +214,11 @@
           </div>
         </section>
       </div>
-      <h4 class="dice-total swnr-mage-chat-roll-total-successes swnr-mage-chat-roll-result-{{paradoxSuccessType}}">
-        <small>{{paradoxDmgRoll.result}} Damage</small>
+      <h4 class="dice-total swnr-mage-chat-roll-total-successes">
+        {{log aimedRoll}}
+        To Hit: {{aimedRoll.total}}
       </h4>
     </div>
-  {{/if}}
   {{/if}}
 </div>
 <div>
@@ -205,11 +245,40 @@
 
 {{#if calculatedValues.spell}}
   <div class="swnr-mta-collapse-wrap">
-    <h4 class="swnr-mta-collapse-title">Spell Description
+    <h3 class="swnr-mta-collapse-title">Spell Description
       <span>Expand</span>
-    </h4>
+    </h3>
     <div class="swnr-mta-collapse-content">
       {{{ calculatedValues.spell.system.description}}}
+      {{log calculatedValues.spellReachData}}
+      {{#if calculatedValues.spellReachData}}
+        {{#each calculatedValues.spellReachData}}
+          <p>
+            <strong>
+              {{#swnr-space-magic-if-equals this.variant 'addon'}}
+                {{this.prereq.key}} {{this.prereq.dots}}
+              {{else}}
+                +{{this.reachCost}} Reach
+              {{/swnr-space-magic-if-equals}}
+            </strong>
+            {{ this.desc}}
+          </p>
+        {{/each}}
+      {{/if}}
+    </div>
+  </div>
+{{/if}}
+
+{{#if calculatedValues.yantraData}}
+  <div class="swnr-mta-collapse-wrap">
+    <h3 class="swnr-mta-collapse-title">Yantras
+      <span>Expand</span>
+    </h3>
+    <div class="swnr-mta-collapse-content">
+      {{#each calculatedValues.yantraData}}
+        <h3>{{this.name}} (+{{this.bonus}})</h3>
+        <div>{{{ this.desc}}}</div>
+      {{/each}}
     </div>
   </div>
 {{/if}}

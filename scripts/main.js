@@ -4,7 +4,6 @@ import { MageConfig } from "./MageConfig.js";
 import MageActorSheet from "./Sheets/MageActorSheet.js";
 import MageItemSheet from "./Sheets/MageItemSheet.js";
 
-
 async function preloadTemplates() {
   const list = await fetch("modules/swnr-space-magic/scripts/templates.json");
   const files = await list.json();

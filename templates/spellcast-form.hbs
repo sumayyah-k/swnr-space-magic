@@ -1,6 +1,7 @@
 <form class="magic-casting-modal">
+  {{log this}}
   <header>
-    <h1>Cast {{ defaultValues.name }} as {{ token.document.name }}</h1>
+    <h1>Cast {{ defaultValues.name }} as {{ actor.name }}</h1>
   </header>
   <div class="magic-casting-content">
     <aside class="magic-casting-sidebar">
@@ -114,165 +115,324 @@
         </div>
         <div class="magic-casting-panel-content">
           <input type="text" name="withstand" class="magic-casting-panel-content-field" value="{{defaultValues.withstand}}"/>
+
+          {{#if defaultValues.withstand}}
+            <div class="form-group form-group-stacked">
+              <label>Withstand Amount</label>
+              <input
+                type="number"
+                name="{{flag}}-withstand-value"
+                value="{{defaultValues.withstand-value}}"
+              />
+            </div>
+          {{/if}}
         </div>
       </div>
     </aside>
     <main class="magic-casting-spell-list">
-      <fieldset>
-        <div class="form-group">
-          <label>Potency</label>
-          <input type="number" name="{{flag}}-potency" value="{{defaultValues.potency}}" class="magic-casting-panel-content-field">
-        </div>
-        <div class="form-group">
-          <label>Advanced Potency</label>
-          <input
-            type="checkbox"
-            name="{{flag}}-potency-advanced"
-            {{#if defaultValues.potency-advanced }}
-              checked="checked"
-            {{/if}}
-            class="magic-casting-panel-content-field"
-          >
-        </div>
-        {{#if defaultValues.freePotency}}
-          <div>Free Potency: {{ defaultValues.freePotency }}</div>
-        {{/if}}
-        {{#if defaultValues.potency-advanced}}
-          <div>+2 to withstand dispellation</div>
-        {{/if}}
-      </fieldset>
-      <fieldset>
-        <div class="form-group">
-          <label>Duration</label>
-          <select name="{{flag}}-duration" class="magic-casting-panel-content-field">
-            {{#each spellDurations}}
-            <option
-              value="{{this.id}}"
-              {{#swnr-space-magic-if-equals this.id ../defaultValues.duration}}
-                selected="selected"
-              {{/swnr-space-magic-if-equals}}
-            >{{this.name}} 
-            {{#swnr-space-magic-if-equals ../defaultValues.primary-factor 'duration'}}
-              (-{{ this.adjustedDicePenalty }} Dice)</option>
-            {{else}}
-              (-{{ this.dicePenalty }} Dice)</option>
-            {{/swnr-space-magic-if-equals}}
-            {{/each}}
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Advanced</label>
-          <input
-            type="checkbox"
-            name="{{flag}}-duration-advanced"
-            class="magic-casting-panel-content-field"
-            {{#if defaultValues.duration-advanced }}
-              checked="checked"
-            {{/if}}
-          >
-        </div>
-      </fieldset>
-      <fieldset>
-        <div class="form-group">
-          <label>Casting Time</label>
-          {{#if defaultValues.casting-time-advanced }}
-            <div>{{defaultValues.casting-time-turns}} turn(s)</div>
-          {{else}}
-            <select name="{{flag}}-casting-time" class="magic-casting-panel-content-field">
-              {{#each ritualIntervals}}
-              <option
-                value="{{this.id}}"
-                {{#swnr-space-magic-if-equals this.id ../defaultValues.casting-time}}
-                  selected="selected"
-                {{/swnr-space-magic-if-equals}}
-              >{{this.name}} (+{{ this.additionalDice }} Dice)</option>
-              {{/each}}
-            </select>
+      <nav class="tabs magic-casting-spells-nav" data-group="spell-options">
+        <a
+          type="button"
+          class="item mage-spell-options-tab"
+          data-tab="spell-factors"
+        >
+            Factors
+        </a>
+        <a
+          type="button"
+          class="item mage-spell-options-tab"
+          data-tab="spell-yantras"
+        >
+            Yantras
+        </a>
+        <a
+          type="button"
+          class="item mage-spell-options-tab"
+          data-tab="spell-other"
+        >
+            Other Modifiers
+        </a>
+      </nav>
+      <div class="tab-wrap">
+        <div class="tab" data-tab="spell-factors" data-group="spell-options">
+          {{#swnr-space-magic-if-equals defaultValues.casting-method 'improvised'}}
+          <fieldset>
+            <div class="form-group form-group-stacked">
+              <label>Practice: {{defaultValues.practiceData.name}}</label>
+              <div>{{defaultValues.practiceData.desc}}</div>
+            </div>
+          </fieldset>
+          {{/swnr-space-magic-if-equals}}
+          {{#if defaultValues.spell}}
+          <fieldset>
+            <div class="form-group form-group-stacked">
+              <label>Spell: {{defaultValues.spell.name}}</label>
+              <div>{{{defaultValues.spell.system.description}}}</div>
+            </div>
+          </fieldset>
           {{/if}}
-        </div>
-        <div class="form-group">
-          <label>Advanced: Immediate Cast</label>
-          <input
-            type="checkbox"
-            name="{{flag}}-casting-time-advanced"
-            class="magic-casting-panel-content-field"
-            {{#if defaultValues.casting-time-advanced }}
-              checked="checked"
+          <fieldset>
+            <div class="form-group">
+              <label>Potency</label>
+              <input type="number" name="{{flag}}-potency" value="{{defaultValues.potency}}" class="magic-casting-panel-content-field">
+            </div>
+            <div class="form-group">
+              <label>Advanced Potency</label>
+              <input
+                type="checkbox"
+                name="{{flag}}-potency-advanced"
+                {{#if defaultValues.potency-advanced }}
+                  checked="checked"
+                {{/if}}
+                class="magic-casting-panel-content-field"
+              >
+            </div>
+            {{#if defaultValues.freePotency}}
+              <div>
+                Free Potency: {{ defaultValues.freePotency }}
+                {{#if defaultValues.withstand-value}}
+                  Potency after Withstand: {{defaultValues.effectivePotency}}
+                {{/if}}
+              </div>
             {{/if}}
-            {{#if defaultValues.grimoire }}
-              disabled="disabled"
+            {{#if defaultValues.potency-advanced}}
+              <div>+2 to withstand dispellation</div>
             {{/if}}
-          >
+          </fieldset>
+          <fieldset>
+            <div class="form-group">
+              <label>Duration</label>
+              <select name="{{flag}}-duration" class="magic-casting-panel-content-field">
+                {{#each spellDurations}}
+                <option
+                  value="{{this.id}}"
+                  {{#swnr-space-magic-if-equals this.id ../defaultValues.duration}}
+                    selected="selected"
+                  {{/swnr-space-magic-if-equals}}
+                >{{this.name}} 
+                {{#swnr-space-magic-if-equals ../defaultValues.primary-factor 'duration'}}
+                  (-{{ this.adjustedDicePenalty }} Dice)</option>
+                {{else}}
+                  (-{{ this.dicePenalty }} Dice)</option>
+                {{/swnr-space-magic-if-equals}}
+                {{/each}}
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Advanced</label>
+              <input
+                type="checkbox"
+                name="{{flag}}-duration-advanced"
+                class="magic-casting-panel-content-field"
+                {{#if defaultValues.duration-advanced }}
+                  checked="checked"
+                {{/if}}
+              >
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="form-group">
+              <label>Casting Time</label>
+              {{#if defaultValues.casting-time-advanced }}
+                <div>{{defaultValues.casting-time-turns}} turn(s)</div>
+              {{else}}
+                <select name="{{flag}}-casting-time" class="magic-casting-panel-content-field">
+                  {{#each ritualIntervals}}
+                  <option
+                    value="{{this.id}}"
+                    {{#swnr-space-magic-if-equals this.id ../defaultValues.casting-time}}
+                      selected="selected"
+                    {{/swnr-space-magic-if-equals}}
+                  >{{this.name}} (+{{ this.additionalDice }} Dice)</option>
+                  {{/each}}
+                </select>
+              {{/if}}
+            </div>
+            <div class="form-group">
+              <label>Advanced: Immediate Cast</label>
+              <input
+                type="checkbox"
+                name="{{flag}}-casting-time-advanced"
+                class="magic-casting-panel-content-field"
+                {{#if defaultValues.casting-time-advanced }}
+                  checked="checked"
+                {{/if}}
+                {{#if defaultValues.grimoire }}
+                  disabled="disabled"
+                {{/if}}
+              >
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="form-group">
+              <label>Range</label>
+              <select name="{{flag}}-range" class="magic-casting-panel-content-field">
+                {{#each ranges}}
+                <option
+                  value="{{this.id}}"
+                  {{#swnr-space-magic-if-equals this.id ../defaultValues.range}}
+                    selected="selected"
+                  {{/swnr-space-magic-if-equals}}
+                >{{this.name}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Advanced</label>
+              <input
+                type="checkbox"
+                name="{{flag}}-range-advanced"
+                class="magic-casting-panel-content-field"
+                {{#if defaultValues.range-advanced }}
+                  checked="checked"
+                {{/if}}
+              >
+            </div>
+            {{#swnr-space-magic-if-equals defaultValues.range 'aimed'}}
+              <div>
+                Range: Short: {{defaultValues.rangeAimedDistances.short}}, Med: {{defaultValues.rangeAimedDistances.med}}, Long: {{defaultValues.rangeAimedDistances.long}}, Max: {{defaultValues.rangeAimedDistances.max}}
+              </div>
+            {{/swnr-space-magic-if-equals}}
+          </fieldset>
+          <fieldset>
+            <div class="form-group">
+              <label>Scale</label>
+              <select name="{{flag}}-scale" class="magic-casting-panel-content-field">
+                {{#each scales}}
+                <option
+                  value="{{this.id}}"
+                  {{#swnr-space-magic-if-equals this.id ../defaultValues.scale}}
+                    selected="selected"
+                  {{/swnr-space-magic-if-equals}}
+                >{{this.name}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Advanced</label>
+              <input
+                type="checkbox"
+                name="{{flag}}-scale-advanced"
+                class="magic-casting-panel-content-field"
+                {{#if defaultValues.scale-advanced }}
+                  checked="checked"
+                {{/if}}
+              >
+            </div>
+          </fieldset>
+          {{#if reachOptions}}
+            <fieldset>
+              <div class="form-group">
+                <label>Reach &amp; Add-ons</label>
+                <div class="yantras-wrap">
+                  {{#each reachOptions as |reach index|}}
+                    <label class="yantra-wrap">
+                      <div class="yantra-title">
+                          <input
+                          type="checkbox"
+                          name="{{ ../flag }}-spell-reach[]"
+                          value="{{ index }}"
+                          class="magic-casting-panel-content-field"
+                          {{#swnr-space-magic-if-contains index ../defaultValues.spell-reach }}
+                            checked="checked"
+                          {{/swnr-space-magic-if-contains}}
+                          {{#if reach.disabled}}
+                              disabled="disabled"
+                            {{/if}}
+                        />
+                        <strong>
+                          {{#swnr-space-magic-if-equals reach.variant 'addon'}}
+                            {{reach.prereq.key}} {{reach.prereq.dots}}
+                          {{else}}
+                            +{{reach.reachCost}} Reach:
+                          {{/swnr-space-magic-if-equals}}
+                        </strong>
+                      </div>
+                      <div class="yantra-desc">{{{ reach.desc }}}</div>
+                    </label>
+                  {{/each}}
+                </div>
+              </div>
+            </fieldset>
+          {{/if}}
+          <fieldset>
+            <div class="form-group">
+              <label>Additional Reach</label>
+              <input type="number" name="{{flag}}-additional-reach" value="{{defaultValues.additional-reach}}" class="magic-casting-panel-content-field">
+            </div>
+          </fieldset>
         </div>
-      </fieldset>
-      <fieldset>
-        <div class="form-group">
-          <label>Range</label>
-          <select name="{{flag}}-range" class="magic-casting-panel-content-field">
-            {{#each ranges}}
-            <option
-              value="{{this.id}}"
-              {{#swnr-space-magic-if-equals this.id ../defaultValues.range}}
-                selected="selected"
-              {{/swnr-space-magic-if-equals}}
-            >{{this.name}}</option>
-            {{/each}}
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Advanced</label>
-          <input
-            type="checkbox"
-            name="{{flag}}-range-advanced"
-            class="magic-casting-panel-content-field"
-            {{#if defaultValues.range-advanced }}
-              checked="checked"
-            {{/if}}
-          >
-        </div>
-      </fieldset>
-      <fieldset>
-        <div class="form-group">
-          <label>Scale</label>
-          <select name="{{flag}}-scale" class="magic-casting-panel-content-field">
-            {{#each scales}}
-            <option
-              value="{{this.id}}"
-              {{#swnr-space-magic-if-equals this.id ../defaultValues.scale}}
-                selected="selected"
-              {{/swnr-space-magic-if-equals}}
-            >{{this.name}}</option>
-            {{/each}}
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Advanced</label>
-          <input
-            type="checkbox"
-            name="{{flag}}-scale-advanced"
-            class="magic-casting-panel-content-field"
-            {{#if defaultValues.scale-advanced }}
-              checked="checked"
-            {{/if}}
-          >
-        </div>
-      </fieldset>
+        <div class="tab" data-tab="spell-yantras" data-group="spell-options">
+          <fieldset>
+            <div class="form-group">
+              <label>Yantras</label>
+              <div class="yantras-wrap">
+                {{#each yantras}}
+                  <label class="yantra-wrap">
+                    <div class="yantra-title">
+                        <input
+                        type="checkbox"
+                        name="{{ ../flag }}-yantras[]"
+                        value="{{ this.id }}"
+                        class="magic-casting-panel-content-field"
+                        {{#swnr-space-magic-if-contains this.id ../defaultValues.yantras }}
+                          checked="checked"
+                        {{else}}
+                          {{#if ../defaultValues.maxYantras}}
+                            disabled="disabled"
+                          {{/if}}
+                        {{/swnr-space-magic-if-contains}}
+                      />
+                      {{ this.name}} (+{{this.bonus}})
+                    </div>
+                    <div class="yantra-desc">{{{ this.desc }}}</div>
+                  </label>
+                {{/each}}
+              </div>
+            </div>
+          </fieldset>
 
-      <fieldset>
-        <div class="form-group">
-          <label>Yantra Bonus</label>
-          <input type="number" name="{{flag}}-yantradice" value="{{defaultValues.yantradice}}" class="magic-casting-panel-content-field">
+          <fieldset>
+            <div class="form-group">
+              <label>Extra Yantra Bonus</label>
+              <input type="number" name="{{flag}}-yantradice" value="{{defaultValues.yantradice}}" class="magic-casting-panel-content-field">
+            </div>
+            <div>Cannot be higher than +5, cannot use more than {{mageInfo.gnosisData.yantras}} yantras.</div>
+            <div>Effective Yantra Bonus: {{defaultValues.effectiveYantraBonus}} (Total: {{defaultValues.totalYantraBonus}})</div>
+          </fieldset>
         </div>
-        <div>Cannot be higher than +5, cannot use more than {{mageInfo.gnosisData.yantras}} yantras.</div>
-        <div>Effective Yantra Bonus: {{defaultValues.effectiveYantraBonus}}</div>
-      </fieldset>
+        <div class="tab" data-tab="spell-other" data-group="spell-options">
+          <fieldset>
+            <div class="form-group">
+              <label>Spend Strain for +3 dice?</label>
+              <input
+                type="checkbox"
+                name="{{flag}}-spend-willpower"
+                class="magic-casting-panel-content-field"
+                {{#if defaultValues.spend-willpower }}
+                  checked="checked"
+                {{/if}}
+                {{#swnr-space-magic-if-equals actor.system.systemStrain.value actor.system.systemStrain.max}}
+                  disabled="disabled"
+                {{/swnr-space-magic-if-equals}}
+              >
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="form-group">
+              <label>Additional Spellcasting Dice</label>
+              <input
+                type="number"
+                name="{{flag}}-additional-dice"
+                class="magic-casting-panel-content-field"
+                value="{{ defaultValues.additional-dice }}"
+              >
+            </div>
+            <div><small>From Fate magic, Foci, Artifacts, etc.</small></div>
+          </fieldset>
+        </div>
+      </div>
 
-      <fieldset>
-        <div class="form-group">
-          <label>Additional Reach</label>
-          <input type="number" name="{{flag}}-additional-reach" value="{{defaultValues.additional-reach}}" class="magic-casting-panel-content-field">
-        </div>
-      </fieldset>
 
       {{#swnr-space-magic-if-not-equal defaultValues.paradoxDice null}}
       <fieldset>
@@ -293,16 +453,14 @@
         </div>
         <div class="form-group">
           <label>Dedicated Magical Tool</label>
-          <input
-            type="checkbox"
-            name="{{flag}}-dedicated-tool"
-            class="magic-casting-panel-content-field"
+
             {{#if defaultValues.dedicated-tool }}
-              checked="checked"
+              Yes
+            {{ else }}
+              No
             {{/if}}
-          >
         </div>
-        <div>Must be one of used Yantras.</div>
+        <div><small>Must be one of used Yantras.</small></div>
       </fieldset>
       {{/swnr-space-magic-if-not-equal}}
       <table>

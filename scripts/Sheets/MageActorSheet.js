@@ -19,7 +19,7 @@ export default class MageActorSheet extends CharacterActorSheet {
         {
           navSelector: ".magic-casting-spells-nav",
           contentSelector: ".magic-casting-spell-level-panels",
-          initial: "spells",
+          initial: "spell-factors",
         }
       ]
     });
@@ -540,7 +540,11 @@ export default class MageActorSheet extends CharacterActorSheet {
 
       case "add-strain": {
         if (actor.system.systemStrain.value < actor.system.systemStrain.max) {
-          actor.system.systemStrain.value += 1;
+          await this.actor.update({
+            data: {
+              systemStrain: { value: actor.system.systemStrain.value + 1 },
+            },
+          });
         }
         this.render();
         break;
@@ -548,7 +552,11 @@ export default class MageActorSheet extends CharacterActorSheet {
 
       case "subtract-strain": {
         if (actor.system.systemStrain.value > 0) {
-          actor.system.systemStrain.value -= 1;
+          await this.actor.update({
+            data: {
+              systemStrain: { value: actor.system.systemStrain.value - 1 },
+            },
+          });
         }
         this.render();
         break;
@@ -612,14 +620,25 @@ export default class MageActorSheet extends CharacterActorSheet {
 
   activateListeners(html) {
     super.activateListeners(html);
-
-    const actor = this.options.actor;
+    const sheet = this;
+    const actor = this.object;
 
     // html.on("click", "[data-action]", this._handleButtonClick.bind(this));
     html.on("click", "[data-action]", (event) => {
       this._handleButtonClick(event, html);
     });
 
+    html.on("change", ".input-mage-sight-arcana", (event) => {
+      this.render();
+    });
+
+    Hooks.on('reRenderMageActorSheet', (actorId) => {
+      console.log('swnr-mage', 'should we rerender?', actorId, actor)
+      if (actorId == actor.id) {
+        console.log('swnr-mage', 'doing the rerender', sheet);
+        sheet.render();
+      }
+    })
     html.on("change", ".input-mage-sight-arcana", (event) => {
       this.render();
     });

@@ -1,68 +1,31 @@
 <form class="{{cssClass}}" autocomplete="off">
   {{> "systems/swnr/templates/items/fragments/desc.html"}}
   <main>
-    <div class="form-group">
-      <label>
-        <input
-          type="checkbox"
-          name="flags.swnr-space-magic.is-mta-spell"
-          {{#if item.flags.swnr-space-magic.is-mta-spell}}
-            checked="checked"
-          {{/if}}
-        >
-        Is MtA Spell?
-      </label>
-    </div>
-    {{#if item.flags.swnr-space-magic.is-mta-spell}}
+    {{#swnr-space-magic-if-equals item.type 'power'}}
       <div class="form-group">
-        <label>Arcanum</label>
-        <select name="flags.swnr-space-magic.arcanum">
-          {{#select item.flags.swnr-space-magic.arcanum}}
-            {{#each arcana as |arcanum|}}
-              <option value="{{arcanum}}">{{arcanum}}</option>
-            {{/each}}
-          {{/select}}
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Practice</label>
-        <select name="flags.swnr-space-magic.practice" class="magic-casting-panel-content-field">
-          {{#select item.flags.swnr-space-magic.practice}}
-            {{#each practices as |rankpractices rank|}}
-            <optgroup label="{{rank}} dot">
-              {{#each rankpractices as |p k|}}
-              <option value="{{k}}">{{p.name}}</option>
-              {{/each}}
-            </optgroup>
-            {{/each}}
-          {{/select}}
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Primary Factor</label>
-        <select name="flags.swnr-space-magic.primary-factor">
-          {{#select item.flags.swnr-space-magic.primary-factor}}
-            <option value="potency">Potency</option>
-            <option value="duration">Duration</option>
-          {{/select}}
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Withstand</label>
-        <input type="text" name="flags.swnr-space-magic.withstand" value="{{item.flags.swnr-space-magic.withstand}}" />
-      </div>
-    {{else}}
-      <div class="flex gap-1">
-        <div>
-          <label for="data.source">{{localize 'swnr.sheet.source'}}: </label>
+        <label>
           <input
-            type="text"
-            class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
-            name="data.source"
-            value="{{data.data.source}}"
-          />
+            type="checkbox"
+            name="flags.swnr-space-magic.is-mta-spell"
+            {{#if item.flags.swnr-space-magic.is-mta-spell}}
+              checked="checked"
+            {{/if}}
+          >
+          Is MtA Spell?
+        </label>
+      </div>
+      {{#if item.flags.swnr-space-magic.is-mta-spell}}
+        <div class="form-group">
+          <label>Arcanum</label>
+          <select name="flags.swnr-space-magic.arcanum">
+            {{#select item.flags.swnr-space-magic.arcanum}}
+              {{#each arcana as |arcanum|}}
+                <option value="{{arcanum}}">{{arcanum}}</option>
+              {{/each}}
+            {{/select}}
+          </select>
         </div>
-        <div>
+        <div class="form-group">
           <label for="">{{localize 'swnr.sheet.level'}}: </label>
           <input
             type="number"
@@ -74,92 +37,273 @@
             max="5"
           />
         </div>
-        <div>
-        <label for="">{{localize 'swnr.sheet.powers.roll'}}:</label>
-          <input
-            type="text"
-            class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
-            name="data.roll"
-            value="{{data.data.roll}}"
-          />
+        <div class="form-group">
+          <label>Practice</label>
+          <select name="flags.swnr-space-magic.practice" class="magic-casting-panel-content-field">
+            {{#select item.flags.swnr-space-magic.practice}}
+              {{#each practices as |rankpractices rank|}}
+              <optgroup label="{{rank}} dot">
+                {{#each rankpractices as |p k|}}
+                <option value="{{k}}">{{p.name}}</option>
+                {{/each}}
+              </optgroup>
+              {{/each}}
+            {{/select}}
+          </select>
         </div>
-
-        <div>
-          <label for="">{{localize 'swnr.sheet.powers.duration'}}:</label>
-          <input
-            type="text"
-            class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
-            name="data.duration"
-            value="{{data.data.duration}}"
-          />
+        <div class="form-group">
+          <label>Primary Factor</label>
+          <select name="flags.swnr-space-magic.primary-factor">
+            {{#select item.flags.swnr-space-magic.primary-factor}}
+              <option value="potency">Potency</option>
+              <option value="duration">Duration</option>
+            {{/select}}
+          </select>
         </div>
-
-        <div class="flexcol">
-          <label for="">{{localize 'swnr.sheet.powers.save'}}:</label>
-            <select
-              class="px-1 border border-gray-800 bg-gray-400 bg-opacity-75 rounded-md"
-              name="data.save"
-            >
-              {{#select data.data.save}}
-              <option value="">-</option>
-              <option value="physical">{{localize 'swnr.sheet.saves.physical'}}</option>
-              <option value="mental">{{localize 'swnr.sheet.saves.mental'}}</option>
-              <option value="evasion">{{localize 'swnr.sheet.saves.evasion'}}</option>
-              {{#if useHomebrewLuckSave}}
-                <option value="luck">{{localize 'swnr.sheet.saves.luck'}}</option>
-              {{/if}}
-              {{/select}}
-            </select>
-        </div>  
-      </div>
-      <div class="flex gap-1">
-        <div>
-          <label for=""><br>{{localize 'swnr.sheet.powers.range'}}:</label>
-          <input
-            type="text"
-            class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
-            name="data.range"
-            value="{{data.data.range}}"
-          />
+        <div class="form-group">
+          <label>Withstand</label>
+          <input type="text" name="flags.swnr-space-magic.withstand" value="{{item.flags.swnr-space-magic.withstand}}" />
         </div>
-        <div class="flex flex-col">
-        <label for="data.skill">{{localize 'swnr.sheet.powers.skill'}}:</label>
-          <input
-            type="text"
-            class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
-            name="data.skill"
-            value="{{data.data.skill}}"
-          />
-        </div>
-
-
-        <div class="flexcol">
-          <label for=""><br>{{localize 'swnr.effort.title'}}:</label>
-            <select
-              class="px-1 border border-gray-800 bg-gray-400 bg-opacity-75 rounded-md"
-              name="data.effort"
-            >
-              {{#select data.data.effort}}
-              <option value="">-</option>
-              <option value="day">{{localize 'swnr.effort.day'}}</option>
-              <option value="scene">{{localize 'swnr.effort.scene'}}</option>
-              <option value="current">{{localize 'swnr.effort.current'}}</option>
-              {{/select}}
-            </select>
-        </div>
-
-        <div class="flex items-center">
-          <label class="flex items-center gap-1"><br><br>
+        <div class="form-group">
+          <label>
             <input
-              class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
               type="checkbox"
-              name="data.prepared"
-              {{checked data.data.prepared}}
-          />
-            <div>{{localize 'swnr.sheet.powers.prepared'}}</div>
+              name="flags.swnr-space-magic.is-rote"
+              {{#if item.flags.swnr-space-magic.is-rote}}
+                checked="checked"
+              {{/if}}
+            >
+            Is Rote?
           </label>
         </div>
-      </div>
-    {{/if}}
+        <div class="form-group">
+          <label>
+            <input
+              type="checkbox"
+              name="flags.swnr-space-magic.is-praxis"
+              {{#if item.flags.swnr-space-magic.is-praxis}}
+                checked="checked"
+              {{/if}}
+            >
+            Is Praxis?
+          </label>
+        </div>
+        {{#each item.flags.swnr-space-magic.reach as |reach index|}}
+          <fieldset class="item-reach">
+            <legend><span>
+              {{#swnr-space-magic-if-equals reach.variant 'addon'}}
+              Add-on
+              {{else}}
+              Reach
+              {{/swnr-space-magic-if-equals}}
+            </span></legend>
+            <buttton
+              type="button"
+              data-action="remove-reach"
+              data-index="{{index}}"
+              title="Remove"
+              class="item-btn-reach-remove"
+            >&times;</buttton>
+            <div class="form-group form-group-stacked">
+              <label>Description</label>
+              <textarea
+                name="flags.swnr-space-magic.reach[{{index}}].desc"
+                class="swnr-space-magic-reach-field"
+                data-index="{{index}}"
+                data-field="desc"
+              >{{reach.desc}}</textarea>
+            </div>
+            {{#swnr-space-magic-if-equals reach.variant 'addon'}}
+              <div class="form-group">
+                <label>Arcanum</label>
+                <select
+                  name="flags.swnr-space-magic.reach[{{index}}].prereq.key"
+                  class="swnr-space-magic-reach-field"
+                  data-index="{{index}}"
+                  data-field="prereq"
+                  data-subfield="key"
+                >
+                  {{#select reach.prereq.key}}
+                    {{#each ../arcana as |arcanum|}}
+                      <option value="{{arcanum}}">{{arcanum}}</option>
+                    {{/each}}
+                  {{/select}}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="">{{localize 'swnr.sheet.level'}}: </label>
+                <input
+                  type="number"
+                  class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md swnr-space-magic-reach-field"
+                  name="flags.swnr-space-magic.reach[{{index}}].prereq.dots"
+                  value="{{reach.prereq.dots}}"
+                  step="1"
+                  min="0"
+                  max="5"
+                  data-index="{{index}}"
+                  data-field="prereq"
+                  data-subfield="dots"
+                />
+              </div>
+            {{else}}
+              <div class="form-group">
+                <label>Reach Cost</label>
+                <input
+                  type="text"
+                  name="flags.swnr-space-magic.reach[{{index}}].reachCost"
+                  value="{{reach.reachCost}}"
+                  data-index="{{index}}"
+                  data-field="reachCost"
+                  class="swnr-space-magic-reach-field"
+                />
+              </div>
+            {{/swnr-space-magic-if-equals}}
+          </fieldset>
+        {{/each}}
+        <div class="flex gap-1">
+          <button type="button" data-action="add-reach" data-variant="reach">Add Reach</button>
+          <button type="button" data-action="add-reach" data-variant="addon">Add Addon</button>
+        </div>
+      {{else}}
+        <div class="flex gap-1">
+          <div>
+            <label for="data.source">{{localize 'swnr.sheet.source'}}: </label>
+            <input
+              type="text"
+              class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
+              name="data.source"
+              value="{{data.data.source}}"
+            />
+          </div>
+          <div>
+            <label for="">{{localize 'swnr.sheet.level'}}: </label>
+            <input
+              type="number"
+              class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
+              name="data.level"
+              value="{{data.data.level}}"
+              step="1"
+              min="0"
+              max="5"
+            />
+          </div>
+          <div>
+          <label for="">{{localize 'swnr.sheet.powers.roll'}}:</label>
+            <input
+              type="text"
+              class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
+              name="data.roll"
+              value="{{data.data.roll}}"
+            />
+          </div>
+
+          <div>
+            <label for="">{{localize 'swnr.sheet.powers.duration'}}:</label>
+            <input
+              type="text"
+              class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
+              name="data.duration"
+              value="{{data.data.duration}}"
+            />
+          </div>
+
+          <div class="flexcol">
+            <label for="">{{localize 'swnr.sheet.powers.save'}}:</label>
+              <select
+                class="px-1 border border-gray-800 bg-gray-400 bg-opacity-75 rounded-md"
+                name="data.save"
+              >
+                {{#select data.data.save}}
+                <option value="">-</option>
+                <option value="physical">{{localize 'swnr.sheet.saves.physical'}}</option>
+                <option value="mental">{{localize 'swnr.sheet.saves.mental'}}</option>
+                <option value="evasion">{{localize 'swnr.sheet.saves.evasion'}}</option>
+                {{#if useHomebrewLuckSave}}
+                  <option value="luck">{{localize 'swnr.sheet.saves.luck'}}</option>
+                {{/if}}
+                {{/select}}
+              </select>
+          </div>  
+        </div>
+        <div class="flex gap-1">
+          <div>
+            <label for=""><br>{{localize 'swnr.sheet.powers.range'}}:</label>
+            <input
+              type="text"
+              class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
+              name="data.range"
+              value="{{data.data.range}}"
+            />
+          </div>
+          <div class="flex flex-col">
+          <label for="data.skill">{{localize 'swnr.sheet.powers.skill'}}:</label>
+            <input
+              type="text"
+              class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
+              name="data.skill"
+              value="{{data.data.skill}}"
+            />
+          </div>
+
+
+          <div class="flexcol">
+            <label for=""><br>{{localize 'swnr.effort.title'}}:</label>
+              <select
+                class="px-1 border border-gray-800 bg-gray-400 bg-opacity-75 rounded-md"
+                name="data.effort"
+              >
+                {{#select data.data.effort}}
+                <option value="">-</option>
+                <option value="day">{{localize 'swnr.effort.day'}}</option>
+                <option value="scene">{{localize 'swnr.effort.scene'}}</option>
+                <option value="current">{{localize 'swnr.effort.current'}}</option>
+                {{/select}}
+              </select>
+          </div>
+
+          <div class="flex items-center">
+            <label class="flex items-center gap-1"><br><br>
+              <input
+                class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
+                type="checkbox"
+                name="data.prepared"
+                {{checked data.data.prepared}}
+            />
+              <div>{{localize 'swnr.sheet.powers.prepared'}}</div>
+            </label>
+          </div>
+        </div>
+      {{/if}}
+    {{else}}
+      {{> "systems/swnr/templates/items/fragments/item-base.html"}}
+      {{#swnr-space-magic-if-equals item.type 'item'}}
+        <div class="form-group">
+          <label>
+            <input
+              type="checkbox"
+              name="flags.swnr-space-magic.is-yantra"
+              {{#if item.flags.swnr-space-magic.is-yantra}}
+                checked="checked"
+              {{/if}}
+            >
+            Is yantra?
+          </label>
+        </div>
+        {{#if item.flags.swnr-space-magic.is-yantra}}
+          <div class="form-group">
+            <label for="">Yantra Bonus: </label>
+            <input
+              type="number"
+              class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
+              name="flags.swnr-space-magic.yantra-bonus"
+              value="{{item.flags.swnr-space-magic.yantra-bonus}}"
+              step="1"
+              min="0"
+              max="5"
+            />
+          </div>
+        {{/if}}
+      {{/swnr-space-magic-if-equals}}
+    {{/swnr-space-magic-if-equals}}
   </main>
 </form>
