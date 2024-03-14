@@ -8,7 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Changelog
+
+### Changed
+
+- Added more informatiion about MtA stuff to the readme and fixed the old instructions.
 
 ## [1.3.0] - 2024-03-13
 
@@ -33,6 +38,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - add item sheet
 - add mage sight
 
+### Removed
+
+- The hotbar button has been removed as everything from the old modal was moved into the actor sheet
 
 ## [1.1.0] - 2024-02-28
 
