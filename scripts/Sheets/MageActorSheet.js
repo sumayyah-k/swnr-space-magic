@@ -228,7 +228,7 @@ export default class MageActorSheet extends CharacterActorSheet {
           const newStrain = Math.max(data.systemStrain.value - 1, 0);
           const newHP = isFrail
               ? data.health.value
-              : Math.min(data.health.value + data.level.value, data.health.max);
+              : data.health.max;
           await this.actor.update({
               data: {
                   systemStrain: { value: newStrain },
@@ -670,7 +670,7 @@ export default class MageActorSheet extends CharacterActorSheet {
   //   // if (!defaultSheet) {
   //   //   new DocumentSheetConfig(this.actor).render(true)
   //   //   if (game.user.isGM) alert(`Default Freeform Sheet not defined for actor type ${this.actor.type}`)
-  //   //   return 
+  //   //   return
   //   // }
   //   // this.actor.freeformSheet(defaultSheet)
   //   this.close()

@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Added more informatiion about MtA stuff to the readme and fixed the old instructions.
+- Heal to full on rest
 
 ## [1.3.0] - 2024-03-13
 
