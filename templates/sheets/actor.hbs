@@ -36,9 +36,11 @@
         <a class="item" data-tab="powers">
           {{localize 'swnr.sheet.tabs.powers'}}
         </a>
+        {{#if showMagicTab}}
         <a class="item" data-tab="magic">
           Magic
         </a>
+        {{/if}}
         <a class="item" data-tab="stats">
           {{localize 'swnr.sheet.tabs.stats'}}
         </a>
@@ -56,9 +58,11 @@
         {{>
          "systems/swnr/templates/actors/fragments/char/tab-inv.html" actor=actor
         }}
+        {{#if showMagicTab}}
         {{>
          "modules/swnr-space-magic/templates/sheets/fragments/tab-magic.hbs" actor=actor
         }}
+        {{/if}}
         {{>
          "systems/swnr/templates/actors/fragments/char/tab-power.html" actor=actor
         }}

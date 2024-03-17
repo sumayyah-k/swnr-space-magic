@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added more informatiion about MtA stuff to the readme and fixed the old instructions.
 - Heal to full on rest
+- Conditionally show the magic tab
 
 ## [1.3.0] - 2024-03-13
 

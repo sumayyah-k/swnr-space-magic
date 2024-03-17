@@ -178,6 +178,7 @@ export default class MageActorSheet extends CharacterActorSheet {
       isMagister: isMagister(actor),
       isSwNMage: swNMage,
       mtAMage,
+      showMagicTab: swNMage || mtAMage ? true : false,
       flag: MageMagicAddon.FLAGS.ID + "-" + MageMagicAddon.FLAGS.SPELLSLOTS,
       strain,
       mageInfo,
