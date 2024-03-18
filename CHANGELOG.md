@@ -10,12 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Changelog
+- Delete Spell Button on Magic Tab
 
 ### Changed
 
-- Added more informatiion about MtA stuff to the readme and fixed the old instructions.
+- Added more information about MtA stuff to the readme and fixed the old instructions.
 - Heal to full on rest
 - Conditionally show the magic tab
+- Changed the "is MtAw spell" to a dropdown to account for Attainments and CotBS spells as  power types
+- The Magic tab only shows spells now
 
 ## [1.3.0] - 2024-03-13
 

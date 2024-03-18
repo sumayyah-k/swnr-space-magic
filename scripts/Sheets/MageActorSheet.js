@@ -39,15 +39,26 @@ export default class MageActorSheet extends CharacterActorSheet {
     var actor = {};
     var numSpellSlots = null;
     var spellSlotsByLevel = null;
-
     actor = this.object;
+    const swNMage = await isSwNMage(actor);
+    const mtAMage = isMtAMage(actor);
+
     console.log('swnr-mage', 'actor', this.object, this);
     actorId = actor.id;
     var arcana = new Arcanum(actor);
     magicSkills = arcana.getAll();
 
     spells = actor.items.contents
-      .filter((i) => i.type == "power")
+      .filter((i) => {
+        console.log('swnr-mage', 'spell check', i.name, i.flags)
+        return (
+          i.type == "power"
+          && i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE]
+          && ["spell", "mageSpell"].indexOf(
+            i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE]
+          ) != -1
+        );
+      })
       .reduce((acc, i) => {
         if (!acc.hasOwnProperty(i.system.level)) {
           acc[i.system.level] = [];
@@ -63,9 +74,6 @@ export default class MageActorSheet extends CharacterActorSheet {
         acc[i.id] = i;
         return acc;
       }, {});
-
-    const swNMage = await isSwNMage(actor);
-    const mtAMage = isMtAMage(actor);
 
     if (swNMage) {
       const spellSlots = await SpellSlots.getForActor(actorId);

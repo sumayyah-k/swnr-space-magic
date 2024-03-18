@@ -11,6 +11,11 @@ export default class MageItemSheet extends ItemSheet{
     const context = super.getData();
     const arcanum = new Arcanum(null);
     return {...context, ...{
+      powerTypeOptions: [
+        {value: 'spell', label: 'SWN Spell'},
+        {value: 'mageSpell', label: 'MtAw Spell'},
+        {value: 'attainment', label: 'Attainment'},
+      ],
       arcana: arcanum.names,
       practices: Spell.rankedPractices(null, true),
     }}

@@ -133,7 +133,7 @@
               {{#each spells as |spelllist level|}}
                 <h3>Level {{level}}</h3>
                 {{#each spelllist as |spell|}}
-                  <article class="magic-casting-spell-def swnr-mta-collapse-wrap">
+                  <article class="magic-casting-spell-def swnr-mta-collapse-wrap item" data-item-id="{{spell.id}}">
                       <div class="magic-casting-spell-def-title swnr-mta-collapse-title">
                         <h4><a class="item" data-tab="spell-{{spell.id}}">{{ spell.name }}</a></h4>
                         <div class="magic-casting-spell-def-title-controls">
@@ -146,6 +146,13 @@
                             title="Edit Spell"
                           >
                             <i class="fa fa-edit"></i>
+                          </button>
+                          <button
+                            type="button"
+                            class="magic-casting-prepare-btn item-delete"
+                            title="Remove Spell"
+                          >
+                            <i class="fa fa-trash"></i>
                           </button>
                           {{#if ../../isMagister}}
                             <button

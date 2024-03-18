@@ -18,6 +18,7 @@ export class MageMagicAddon {
     MTA_SPELL_IS_PRAXIS: "is-praxis",
     MTA_SPELL_REACH: "reach",
     //Items
+    ITEM_POWER_TYPE: "power-type",
     MTA_SPELL_IS_YANTRA: "is-yantra",
     MTA_SPELL_YANTRA_BONUS: "yantra-bonus",
   };

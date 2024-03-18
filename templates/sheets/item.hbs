@@ -4,17 +4,24 @@
     {{#swnr-space-magic-if-equals item.type 'power'}}
       <div class="form-group">
         <label>
-          <input
-            type="checkbox"
-            name="flags.swnr-space-magic.is-mta-spell"
-            {{#if item.flags.swnr-space-magic.is-mta-spell}}
-              checked="checked"
-            {{/if}}
+          Power Type
+        </label>
+          <select
+            name="flags.swnr-space-magic.power-type"
           >
-          Is MtA Spell?
+            <option value=""></option>
+            {{#each powerTypeOptions}}
+              <option
+                value="{{this.value}}"
+                {{#swnr-space-magic-if-equals ../item.flags.swnr-space-magic.power-type this.value }}
+                  selected="selected"
+                {{/swnr-space-magic-if-equals}}
+              >{{this.label}}</option>
+            {{/each}}
+          </select>
         </label>
       </div>
-      {{#if item.flags.swnr-space-magic.is-mta-spell}}
+      {{#swnr-space-magic-if-equals item.flags.swnr-space-magic.power-type 'mageSpell' }}
         <div class="form-group">
           <label>Arcanum</label>
           <select name="flags.swnr-space-magic.arcanum">
@@ -223,7 +230,7 @@
                 {{/if}}
                 {{/select}}
               </select>
-          </div>  
+          </div>
         </div>
         <div class="flex gap-1">
           <div>
@@ -273,7 +280,7 @@
             </label>
           </div>
         </div>
-      {{/if}}
+      {{/swnr-space-magic-if-equals}}
     {{else}}
       {{> "systems/swnr/templates/items/fragments/item-base.html"}}
       {{#swnr-space-magic-if-equals item.type 'item'}}
