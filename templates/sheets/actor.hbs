@@ -11,6 +11,10 @@
   }}
   <div class="flex gap-2">
     <div class="flex flex-col flex-shrink flex-wrap">
+      <div class="form-group swnr-mage-temp-hp">
+        <label for="data.health.temp">Temp HP</label>
+        <input type="number" step="1" name="data.health.temp" value="{{actor.data.data.health.temp}}" data-dtype="Number" min="0" />
+      </div>
         {{>
         "systems/swnr/templates/actors/fragments/char/sidebar.html"
         actor=actor

@@ -209,7 +209,7 @@
                   {{#swnr-space-magic-if-equals this.id ../defaultValues.duration}}
                     selected="selected"
                   {{/swnr-space-magic-if-equals}}
-                >{{this.name}} 
+                >{{this.name}}
                 {{#swnr-space-magic-if-equals ../defaultValues.primary-factor 'duration'}}
                   (-{{ this.adjustedDicePenalty }} Dice)</option>
                 {{else}}
@@ -463,6 +463,11 @@
         <div><small>Must be one of used Yantras.</small></div>
       </fieldset>
       {{/swnr-space-magic-if-not-equal}}
+      {{#if defaultValues.activeSpellReachPenalty }}
+        <div class="swnr-mage-alert swnr-mage-alert-info">
+          Reach penalty from active spells: {{defaultValues.activeSpellReachPenalty}}
+        </div>
+      {{/if}}
       <table>
         <tr>
           <th>Dice Pool</th>
@@ -513,11 +518,13 @@
         >Cast Spell</button>
       </div>
       {{#if uncastable}}
-        <ul class="magic-casting-panel-errors">
-          {{#each castErrors}}
-            <li>{{this}}</li>
-          {{/each}}
-        </ul>
+        <div class="swnr-mage-alert swnr-mage-alert-danger">
+          <ul class="magic-casting-panel-errors">
+            {{#each castErrors}}
+              <li>{{this}}</li>
+            {{/each}}
+          </ul>
+        </div>
       {{/if}}
     </main>
   </div>

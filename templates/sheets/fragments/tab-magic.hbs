@@ -3,15 +3,19 @@
     <div class="magic-casting-content">
       <aside class="magic-casting-sidebar">
         {{#if isSwNMage }}
-          <h2>Spell Slots</h2>
-          {{#each numSpellSlots as |levels class|}}
-          <h3>{{class}}</h3>
-          <ul>
-            {{#each levels as |slots level|}}
-              <li>{{level}}: {{slots.available}}/{{slots.max}}</li>
-            {{/each}}
-          </ul>
-          {{/each}}
+          <div class="magic-casting-panel">
+            <div class="magic-casting-panel-title">Spell Slots</div>
+            <div class="magic-casting-panel-content magic-casting-panel-content-padding">
+              {{#each numSpellSlots as |levels class|}}
+              <h3>{{class}}</h3>
+              <ul>
+                {{#each levels as |slots level|}}
+                  <li>{{level}}: {{slots.available}}/{{slots.max}}</li>
+                {{/each}}
+              </ul>
+              {{/each}}
+            </div>
+          </div>
         {{/if}}
         {{#if mtAMage}}
         <div class="magic-casting-panel">
@@ -25,8 +29,8 @@
           <div class="magic-casting-panel-content magic-casting-panel-content-controls-right">
             <div class="magic-casting-panel-content-stat">{{strain.value}}/{{strain.max}}</div>
             <div class="magic-casting-panel-content-controls">
-              <button type="button" data-action="add-strain">+</button>
-              <button type="button" data-action="subtract-strain">-</button>
+              <button type="button" class="swnr-mage-btn" data-action="add-strain">+</button>
+              <button type="button" class="swnr-mage-btn" data-action="subtract-strain">-</button>
             </div>
           </div>
         </div>
@@ -35,37 +39,41 @@
           <div class="magic-casting-panel-content magic-casting-panel-content-controls-right">
             <div class="magic-casting-panel-content-stat">{{mageInfo.mana.current}}/{{mageInfo.mana.max}}</div>
             <div class="magic-casting-panel-content-controls">
-              <button type="button" data-action="add-mana">+</button>
-              <button type="button" data-action="subtract-mana">-</button>
+              <button type="button" class="swnr-mage-btn" data-action="add-mana">+</button>
+              <button type="button" class="swnr-mage-btn" data-action="subtract-mana">-</button>
             </div>
           </div>
         </div>
         {{#swnr-space-magic-if-gt mageInfo.gnosis.system.rank -1}}
         {{#if magicSkills}}
-        <button type="button" class="swnr-mage-improvised-spellcasting-btn" data-actor="{{actor}}"><i class="fas fa-wand-sparkles"></i> Improvised Spellcasting</button>
+        <button type="button" class="swnr-mage-btn swnr-mage-improvised-spellcasting-btn" data-actor="{{actor}}"><i class="fas fa-wand-sparkles"></i> Improvised Spellcasting</button>
         {{/if}}
         {{/swnr-space-magic-if-gt}}
         {{/if}}
         {{#if mtAMage}}
-        <ul class="swnr-mage-arcana-list">
-          {{#each magicSkills as |skill|}}
-            {{#swnr-space-magic-if-not-equal skill.name 'Gnosis'}}
-              <li>
-                {{log skill}}
-                <button type="button" data-action="toggle-skill-importance" data-skill="{{skill.id}}">
-                  {{#if skill.importance}}
-                    {{#swnr-space-magic-if-equals skill.importance 'ruling'}}
-                      R
-                    {{else}}
-                      I
-                    {{/swnr-space-magic-if-equals}}
-                  {{/if}}
-                </button>
-                {{ skill.name }}: {{skill.rank}}/4
-              </li>
-            {{/swnr-space-magic-if-not-equal}}
-          {{/each}}
-        </ul>
+        <div class="magic-casting-panel">
+          <div class="magic-casting-panel-content magic-casting-panel-content-padding">
+            <ul class="swnr-mage-arcana-list">
+              {{#each magicSkills as |skill|}}
+                {{#swnr-space-magic-if-not-equal skill.name 'Gnosis'}}
+                  <li>
+                    {{log skill}}
+                    <button type="button" data-action="toggle-skill-importance" data-skill="{{skill.id}}">
+                      {{#if skill.importance}}
+                        {{#swnr-space-magic-if-equals skill.importance 'ruling'}}
+                          R
+                        {{else}}
+                          I
+                        {{/swnr-space-magic-if-equals}}
+                      {{/if}}
+                    </button>
+                    {{ skill.name }}: {{skill.rank}}/4
+                  </li>
+                {{/swnr-space-magic-if-not-equal}}
+              {{/each}}
+            </ul>
+          </div>
+        </div>
         {{/if}}
       </aside>
 
@@ -94,177 +102,159 @@
           <section class="magic-casting-spell-level-panels" data-group="spell-list-nav">
             <div class="tab magic-casting-spell-level-panel" data-tab="spells" data-group="spell-list-nav">
               {{#if isArcanist}}
-                <h4>Prepared Spells</h4>
-                <ul>
-                  {{#each spellSlotsByLevel as |levels class|}}
-                    {{#each levels as |slots slevel|}}
-                    <h5>Level {{slevel}}</h5>
-                      {{#each slots}}
-                        <li data-slot-id="{{this.id}}" class="spell-list-prepared-slot">
+                <section class="swnr-mage-sight-section">
+                  <h3>Prepared Spells</h3>
+                  <ul>
+                    {{#each spellSlotsByLevel as |levels class|}}
+                      {{#each levels as |slots slevel|}}
+                      <h5>Level {{slevel}}</h5>
+                        {{#each slots}}
+                          <li
+                            data-slot-id="{{this.id}}"
+                            class="spell-list-prepared-slot
+                            {{#if this.isUsed}}
+                            spell-list-prepared-slot-used
+                            {{/if}}"
+                          >
 
-                          {{#if this.spell}}
+                            {{#if this.spell}}
+                              <div class="spell-list-prepared-slot-content">
+                                {{#with (lookup ../../../spellsById this.spell)~}}
+                                  <div class="spell-list-prepared-slot-img" style="background-image: url({{img}})"></div>
+                                  <div class="spell-list-prepared-slot-name">{{name}}</div>
+                                {{/with}}
+                              </div>
+                              <div class="spell-list-prepared-slot-controls">
+                                {{#if this.isUsed}}
+                                  <button
+                                    type="button"
+                                    class="swnr-mage-btn"
+                                    data-action="restoreSlot"
+                                    title="Restore Spell Slot"
+                                  ><i class="fa fa-sparkles"></i></button>
+                                {{else}}
+                                  <button
+                                    type="button"
+                                    class="swnr-mage-btn"
+                                    data-action="castBySlot"
+                                    data-spell-id="{{this.spell}}"
+                                    title="Cast"
+                                  ><i class="fa fa-wand-sparkles"></i></button>
+                                {{/if}}
+                                <button
+                                  type="button"
+                                  class="swnr-mage-btn"
+                                  data-action="unprepare"
+                                  title="Clear Spell"
+                                ><i class="fa fa-trash"></i></button>
+                              </div>
+                            {{else}}
                             <div class="spell-list-prepared-slot-content">
-                              {{#with (lookup ../../../spellsById this.spell)~}}
-                                <div class="spell-list-prepared-slot-img" style="background-image: url({{img}})"></div>
-                                <div class="spell-list-prepared-slot-name">{{name}}</div>
-                              {{/with}}
+                              <div class="spell-list-prepared-slot-img"></div>
+                              <div class="spell-list-prepared-slot-name"></div>
                             </div>
-                            <div class="spell-list-prepared-slot-controls">
-                              {{#if this.isUsed}}
-                                <button type="button" data-action="restoreSlot" title="Restore Spell Slot"><i class="fa fa-sparkles"></i></button>
-                              {{else}}
-                                <button type="button" data-action="castBySlot" data-spell-id="{{this.spell}}" title="Cast"><i class="fa fa-wand-sparkles"></i></button>
-                              {{/if}}
-                              <button type="button" data-action="unprepare" title="Clear Spell"><i class="fa fa-trash"></i></button>
-                            </div>
-                          {{else}}
-                          <div class="spell-list-prepared-slot-content">
-                            <div class="spell-list-prepared-slot-img"></div>
-                            <div class="spell-list-prepared-slot-name"></div>
-                          </div>
-                          {{/if}}
-                        </li>
+                            {{/if}}
+                          </li>
+                        {{/each}}
                       {{/each}}
                     {{/each}}
-                  {{/each}}
-                </ul>
+                  </ul>
+                </section>
               {{/if}}
-              <h3>Spell List</h3>
-              {{#each spells as |spelllist level|}}
-                <h3>Level {{level}}</h3>
-                {{#each spelllist as |spell|}}
-                  <article class="magic-casting-spell-def swnr-mta-collapse-wrap item" data-item-id="{{spell.id}}">
-                      <div class="magic-casting-spell-def-title swnr-mta-collapse-title">
-                        <h4><a class="item" data-tab="spell-{{spell.id}}">{{ spell.name }}</a></h4>
-                        <div class="magic-casting-spell-def-title-controls">
-                          <button
-                            type="button"
-                            class="magic-casting-prepare-btn"
-                            data-action="edit-spell"
-                            data-spell-id="{{spell.id}}"
-                            data-cast-level="{{level}}"
-                            title="Edit Spell"
-                          >
-                            <i class="fa fa-edit"></i>
-                          </button>
-                          <button
-                            type="button"
-                            class="magic-casting-prepare-btn item-delete"
-                            title="Remove Spell"
-                          >
-                            <i class="fa fa-trash"></i>
-                          </button>
-                          {{#if ../../isMagister}}
-                            <button
-                              type="button"
-                              class="magic-casting-cast-btn"
-                              data-action="castByLevel"
-                              data-cast-level="{{spell.system.level}}"
-                              data-spell-id="{{spell.id}}"
-                              title="Cast Spell"
-                            >
-                              <i class="fa fa-wand-sparkles"></i>
-                            </button>
-                          {{/if}}
-                          {{#if ../../isArcanist}}
-                            <button
-                              type="button"
-                              class="magic-casting-prepare-btn"
-                              data-action="prepare"
-                              data-spell-id="{{spell.id}}"
-                              data-cast-level="{{level}}"
-                              title="Prepare Spell"
-                            >
-                              <i class="fa fa-book"></i>
-                            </button>
-                          {{/if}}
-                          {{#if ../../mtAMage}}
-                            <button
-                              type="button"
-                              class="magic-casting-prepare-btn"
-                              data-action="mta-cast-spell"
-                              data-spell-id="{{spell.id}}"
-                              data-cast-level="{{level}}"
-                              title="Cast Spell"
-                            >
-                              <i class="fa fa-wand-sparkles"></i>
-                            </button>
-                          {{/if}}
-                        </div>
-                      </div>
-                      <div class="magic-casting-spell-def-description swnr-mta-collapse-content">
-                          {{{ spell.system.description }}}
-                      </div>
-                  </article>
+
+              {{#if mtAMage}}
+                {{#if activeSpells}}
+                  <section class="swnr-mage-sight-section">
+                    <h3>Active Spells</h3>
+                    {{#each activeSpells as |spell|}}
+                      {{> "modules/swnr-space-magic/templates/sheets/fragments/spell-list-item.hbs" spell=spell isMagister=isMagister isArcanist=isArcanist mtAMage=mtAMage }}
+                    {{/each}}
+                  </section>
+                {{/if}}
+              {{/if}}
+              <section class="swnr-mage-sight-section">
+                <h3>Spell List</h3>
+                {{#each spells as |spelllist level|}}
+                  <h4><span>Level {{level}}</span></h4>
+                  {{#each spelllist as |spell|}}
+                    {{>
+                      "modules/swnr-space-magic/templates/sheets/fragments/spell-list-item.hbs" spell=spell level=level isMagister=../../isMagister isArcanist=../../isArcanist mtAMage=../../mtAMage
+                    }}
+                  {{/each}}
                 {{/each}}
-              {{/each}}
+              </section>
             </div>
             {{#if mtAMage}}
               <div class="tab magic-casting-spell-level-panel mage-sight-panel" data-tab="mage-sight" data-group="spell-list-nav">
-                <h2>Mage Sight</h2>
-                <h3>Peripheral Mage Sight <small>(p. 90)</small></h3>
-                <p>See that magic is afoot, but not what it is. Only works for active magic effects but isn't restricted by arcanum.</p>
-                <h3>Active Mage Sight <small>(p. 90)</small></h3>
-                Can add strain to make it last for a scene.
-                <table>
-                  <tbody>
-                    <tr><th>Mana Cost</th><td>{{ defaultValues.activeManaCost }}</td></tr>
-                    <tr><th>Duration w/out Spending Strain</th><td>{{ defaultValues.activeDuration }} min.</td></tr>
-                  </tbody>
-                </table>
-                {{#each magicSkills as |skill|}}
-                  {{#swnr-space-magic-if-not-equal skill.name 'Gnosis'}}
-                    {{#swnr-space-magic-if-gte skill.rank 0}}
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="mage-sight-arcana[]"
-                          value="{{skill.name}}"
-                          class="input-mage-sight-arcana"
-                          {{#swnr-space-magic-if-contains skill.name ../defaultValues.mage-sight-arcana}}
-                            checked="checked"
-                          {{/swnr-space-magic-if-contains}}
-                        >
-                        {{ skill.name }}
-                      </label>
-                    {{/swnr-space-magic-if-gte}}
-                  {{/swnr-space-magic-if-not-equal}}
-                {{/each}}
-                <button type="button" data-action="active-mage-sight">Activate Mage Sight</button>
-                <h3>Focused Mage Sight <small>(p. 92)</small></h3>
-                <p>Requires active mage sight to be going.</p>
-                {{#each magicSkills as |skill|}}
-                  {{#swnr-space-magic-if-not-equal skill.name 'Gnosis'}}
-                    {{#swnr-space-magic-if-gte skill.rank 0}}
-                      <label>
-                        <input
-                          type="radio"
-                          name="focused-mage-sight-arcanum"
-                          value="{{skill.name}}"
-                          class="input-mage-sight-arcana"
-                          {{#swnr-space-magic-if-equals skill.name ../defaultValues.focused-mage-sight-arcanum}}
-                            checked="checked"
-                          {{/swnr-space-magic-if-equals}}
-                        >
-                        {{ skill.name }}
-                      </label>
-                    {{/swnr-space-magic-if-gte}}
-                  {{/swnr-space-magic-if-not-equal}}
-                {{/each}}
-                <h4>Revelation</h4>
-                <ul class="swnr-mage-info-list">
-                  <li>Instant action. When first encountering a mystery can only reveal surface info. Later can reveal deep info. Must do at least 1 Scrutiny between attempts.</li>
-                </ul>
-                <button type="button" data-action="focused-mage-sight-revelation">Revelation</button>
-                <h4>Scrutiny</h4>
-                <ul class="swnr-mage-info-list">
-                  <li>Extended action(p. 214). Costs 1 Strain to activate (not per roll). Takes 1 turn per roll.</li>
-                  <li>On success, can spend mana to add more successes up to their Gnosis's per turn Limit ({{mageInfo.gnosisData.mana.perTurn}}).</li>
-                  <li>If Clash of wills, player gets rote quality.</li>
-                  <li>Successes lower Opacity, when num successes = opacity, opacity goes down by 1.</li>
-                  <li>After {{mageInfo.maxSafeRolls}} failures add {{mageInfo.scrutinyPenalty}} to opacity.</li>
-                </ul>
-                <button type="button" data-action="focused-mage-sight-scrutiny">Scrutiny</button>
+                <section class="swnr-mage-sight-section">
+                  <h3>Peripheral Mage Sight <small>(p. 90)</small></h3>
+                  <p>See that magic is afoot, but not what it is. Only works for active magic effects but isn't restricted by arcanum.</p>
+                </section>
+                <section class="swnr-mage-sight-section">
+                  <h3>Active Mage Sight <small>(p. 90)</small></h3>
+                  Can add strain to make it last for a scene.
+                  <table>
+                    <tbody>
+                      <tr><th>Mana Cost</th><td>{{ defaultValues.activeManaCost }}</td></tr>
+                      <tr><th>Duration w/out Spending Strain</th><td>{{ defaultValues.activeDuration }} min.</td></tr>
+                    </tbody>
+                  </table>
+                  {{#each magicSkills as |skill|}}
+                    {{#swnr-space-magic-if-not-equal skill.name 'Gnosis'}}
+                      {{#swnr-space-magic-if-gte skill.rank 0}}
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="mage-sight-arcana[]"
+                            value="{{skill.name}}"
+                            class="input-mage-sight-arcana"
+                            {{#swnr-space-magic-if-contains skill.name ../defaultValues.mage-sight-arcana}}
+                              checked="checked"
+                            {{/swnr-space-magic-if-contains}}
+                          >
+                          {{ skill.name }}
+                        </label>
+                      {{/swnr-space-magic-if-gte}}
+                    {{/swnr-space-magic-if-not-equal}}
+                  {{/each}}
+                  <button type="button" class="swnr-mage-btn" data-action="active-mage-sight">Activate Mage Sight</button>
+                </section>
+                <section class="swnr-mage-sight-section">
+                  <h3>Focused Mage Sight <small>(p. 92)</small></h3>
+                  <p>Requires active mage sight to be going.</p>
+                  {{#each magicSkills as |skill|}}
+                    {{#swnr-space-magic-if-not-equal skill.name 'Gnosis'}}
+                      {{#swnr-space-magic-if-gte skill.rank 0}}
+                        <label>
+                          <input
+                            type="radio"
+                            name="focused-mage-sight-arcanum"
+                            value="{{skill.name}}"
+                            class="input-mage-sight-arcana"
+                            {{#swnr-space-magic-if-equals skill.name ../defaultValues.focused-mage-sight-arcanum}}
+                              checked="checked"
+                            {{/swnr-space-magic-if-equals}}
+                          >
+                          {{ skill.name }}
+                        </label>
+                      {{/swnr-space-magic-if-gte}}
+                    {{/swnr-space-magic-if-not-equal}}
+                  {{/each}}
+                  <h4><span>Revelation</span></h4>
+                  <ul class="swnr-mage-info-list">
+                    <li>Instant action. When first encountering a mystery can only reveal surface info. Later can reveal deep info. Must do at least 1 Scrutiny between attempts.</li>
+                  </ul>
+                  <button type="button" class="swnr-mage-btn" data-action="focused-mage-sight-revelation">Revelation</button>
+                  <h4><span>Scrutiny</span></h4>
+                  <ul class="swnr-mage-info-list">
+                    <li>Extended action(p. 214). Costs 1 Strain to activate (not per roll). Takes 1 turn per roll.</li>
+                    <li>On success, can spend mana to add more successes up to their Gnosis's per turn Limit ({{mageInfo.gnosisData.mana.perTurn}}).</li>
+                    <li>If Clash of wills, player gets rote quality.</li>
+                    <li>Successes lower Opacity, when num successes = opacity, opacity goes down by 1.</li>
+                    <li>After {{mageInfo.maxSafeRolls}} failures add {{mageInfo.scrutinyPenalty}} to opacity.</li>
+                  </ul>
+                  <button type="button" class="swnr-mage-btn" data-action="focused-mage-sight-scrutiny">Scrutiny</button>
+                </section>
               </div>
             {{/if}}
           </section>

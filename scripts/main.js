@@ -3,6 +3,7 @@ import { MageMagicAddon } from "./MageMagicAddon.js";
 import { MageConfig } from "./MageConfig.js";
 import MageActorSheet from "./Sheets/MageActorSheet.js";
 import MageItemSheet from "./Sheets/MageItemSheet.js";
+import { SWNRPower } from "../../../../systems/swnr/module/items/power.js";
 
 async function preloadTemplates() {
   const list = await fetch("modules/swnr-space-magic/scripts/templates.json");
@@ -20,12 +21,41 @@ Hooks.once("init", async () => {
   $(document).on('click', '.swnr-mta-collapse-wrap', function (e) {
     e.currentTarget.classList.toggle('swnr-mta-collapse-expanded');
     console.log('swnr-mage', 'collapse-click', e)
-  })
+  });
+
+  $(document).on("click", ".swnr-space-magic-add-active-spell", async function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const actorId = e.currentTarget.dataset.actorId;
+    const spellId = e.currentTarget.dataset.spellId;
+    const activeInfo = JSON.parse(e.currentTarget.dataset.activeInfo);
+
+    const actor = game.actors?.get(actorId);
+    const spell = actor.items?.get(spellId);
+    console.log("swnr-mage", "add active spell", actorId, spellId, actor, spell, activeInfo);
+
+    const spellData = {
+      name: 'Active Spell:' + spell.name,
+      img: spell.img,
+      type: 'power',
+      system: spell.system,
+      flags: spell.flags,
+    };
+
+    spellData.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE] = "mageActiveSpell";
+    spellData.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.SPELL_ACTIVE_INFO] = activeInfo;
+
+    // //Add spell to active spells
+    // const activeSpellData = mergeObject(spellData, {type: "activeSpell"},{insertKeys: true,overwrite: true,inplace: false,enforceTypes: true});
+    await actor.createEmbeddedDocuments("Item", [spellData]);
+    ui.notifications.info("Spell added to active spells of " + actor.name);
+  });
 });
 
 // Hooks.once('setup', function () {
-//   // 
-  
+//   //
+
 // })
 
 Hooks.once("ready", () => {
@@ -38,7 +68,6 @@ Hooks.once("ready", () => {
   Handlebars.registerHelper(MageMagicAddon.ID + "-if-contains", function (needle, haystack, options) {
     needle = Handlebars.escapeExpression(needle);
     haystack = Handlebars.escapeExpression(haystack);
-    console.log('swnr-mage', 'contains', needle, haystack, haystack.indexOf(needle) != -1)
     return haystack.indexOf(needle) != -1 ? options.fn(this) : options.inverse(this);
   });
   Handlebars.registerHelper(MageMagicAddon.ID + "-if-gt", function (arg1, arg2, options) {

@@ -1,0 +1,42 @@
+<article class="magic-casting-spell-def swnr-mta-collapse-wrap item" data-item-id="{{spell.id}}">
+  <div class="magic-casting-spell-def-title swnr-mta-collapse-title">
+    <div>
+      <a class="item" data-tab="spell-{{spell.id}}">
+        {{ spell.name }}
+        {{#if spell.flags.swnr-space-magic.relinquished}}
+          <span class="badge badge-info">Reliquished</span>
+        {{/if}}
+      </a>
+    </div>
+    <div class="magic-casting-spell-def-title-controls">
+      <button type="button" class="swnr-mage-btn magic-casting-prepare-btn" data-action="edit-spell" data-spell-id="{{spell.id}}"
+        data-cast-level="{{level}}" title="Edit Spell">
+        <i class="fa fa-edit"></i>
+      </button>
+      <button type="button" class="swnr-mage-btn magic-casting-prepare-btn item-delete" title="Remove Spell">
+        <i class="fa fa-trash"></i>
+      </button>
+      {{#if isMagister}}
+      <button type="button" class="swnr-mage-btn magic-casting-cast-btn" data-action="castByLevel"
+        data-cast-level="{{spell.system.level}}" data-spell-id="{{spell.id}}" title="Cast Spell">
+        <i class="fa fa-wand-sparkles"></i>
+      </button>
+      {{/if}}
+      {{#if isArcanist}}
+      <button type="button" class="swnr-mage-btn magic-casting-prepare-btn" data-action="prepare" data-spell-id="{{spell.id}}"
+        data-cast-level="{{level}}" title="Prepare Spell">
+        <i class="fa fa-book"></i>
+      </button>
+      {{/if}}
+      {{#if mtAMage}}
+      <button type="button" class="swnr-mage-btn magic-casting-prepare-btn" data-action="mta-cast-spell" data-spell-id="{{spell.id}}"
+        data-cast-level="{{level}}" title="Cast Spell">
+        <i class="fa fa-wand-sparkles"></i>
+      </button>
+      {{/if}}
+    </div>
+  </div>
+  <div class="magic-casting-spell-def-description swnr-mta-collapse-content">
+    {{{ spell.system.description }}}
+  </div>
+</article>

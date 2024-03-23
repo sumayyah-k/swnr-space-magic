@@ -21,117 +21,33 @@
           </select>
         </label>
       </div>
-      {{#swnr-space-magic-if-equals item.flags.swnr-space-magic.power-type 'mageSpell' }}
-        <div class="form-group">
-          <label>Arcanum</label>
-          <select name="flags.swnr-space-magic.arcanum">
-            {{#select item.flags.swnr-space-magic.arcanum}}
-              {{#each arcana as |arcanum|}}
-                <option value="{{arcanum}}">{{arcanum}}</option>
-              {{/each}}
-            {{/select}}
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="">{{localize 'swnr.sheet.level'}}: </label>
-          <input
-            type="number"
-            class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
-            name="data.level"
-            value="{{data.data.level}}"
-            step="1"
-            min="0"
-            max="5"
-          />
-        </div>
-        <div class="form-group">
-          <label>Practice</label>
-          <select name="flags.swnr-space-magic.practice" class="magic-casting-panel-content-field">
-            {{#select item.flags.swnr-space-magic.practice}}
-              {{#each practices as |rankpractices rank|}}
-              <optgroup label="{{rank}} dot">
-                {{#each rankpractices as |p k|}}
-                <option value="{{k}}">{{p.name}}</option>
-                {{/each}}
-              </optgroup>
-              {{/each}}
-            {{/select}}
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Primary Factor</label>
-          <select name="flags.swnr-space-magic.primary-factor">
-            {{#select item.flags.swnr-space-magic.primary-factor}}
-              <option value="potency">Potency</option>
-              <option value="duration">Duration</option>
-            {{/select}}
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Withstand</label>
-          <input type="text" name="flags.swnr-space-magic.withstand" value="{{item.flags.swnr-space-magic.withstand}}" />
-        </div>
-        <div class="form-group">
-          <label>
-            <input
-              type="checkbox"
-              name="flags.swnr-space-magic.is-rote"
-              {{#if item.flags.swnr-space-magic.is-rote}}
-                checked="checked"
-              {{/if}}
-            >
-            Is Rote?
-          </label>
-        </div>
-        <div class="form-group">
-          <label>
-            <input
-              type="checkbox"
-              name="flags.swnr-space-magic.is-praxis"
-              {{#if item.flags.swnr-space-magic.is-praxis}}
-                checked="checked"
-              {{/if}}
-            >
-            Is Praxis?
-          </label>
-        </div>
-        {{#each item.flags.swnr-space-magic.reach as |reach index|}}
-          <fieldset class="item-reach">
-            <legend><span>
-              {{#swnr-space-magic-if-equals reach.variant 'addon'}}
-              Add-on
-              {{else}}
-              Reach
-              {{/swnr-space-magic-if-equals}}
-            </span></legend>
-            <buttton
-              type="button"
-              data-action="remove-reach"
-              data-index="{{index}}"
-              title="Remove"
-              class="item-btn-reach-remove"
-            >&times;</buttton>
-            <div class="form-group form-group-stacked">
-              <label>Description</label>
-              <textarea
-                name="flags.swnr-space-magic.reach[{{index}}].desc"
-                class="swnr-space-magic-reach-field"
-                data-index="{{index}}"
-                data-field="desc"
-              >{{reach.desc}}</textarea>
-            </div>
-            {{#swnr-space-magic-if-equals reach.variant 'addon'}}
+      {{#swnr-space-magic-if-contains item.flags.swnr-space-magic.power-type mtAwSpellTypes }}
+        <nav class="magic-casting-spells-nav mta-power-tab-nav" data-group="power-nav">
+          <a type="button" class="item mage-spell-level-tab" data-tab="general">
+            Details
+          </a>
+          <a type="button" class="item mage-spell-level-tab" data-tab="addons">
+            Addons
+          </a>
+          {{#swnr-space-magic-if-equals item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+            <a type="button" class="item mage-spell-level-tab" data-tab="active">
+              Active Spell
+            </a>
+          {{/swnr-space-magic-if-equals}}
+        </nav>
+        <div class="mta-power-tab-content">
+          <section class="mta-power-tab-content" data-group="power-nav">
+            <div class="tab mta-power-tab" data-tab="general" data-group="power-nav">
               <div class="form-group">
                 <label>Arcanum</label>
                 <select
-                  name="flags.swnr-space-magic.reach[{{index}}].prereq.key"
-                  class="swnr-space-magic-reach-field"
-                  data-index="{{index}}"
-                  data-field="prereq"
-                  data-subfield="key"
+                  name="flags.swnr-space-magic.arcanum"
+                  {{#swnr-space-magic-if-equals item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+                    disabled="disabled"
+                  {{/swnr-space-magic-if-equals}}
                 >
-                  {{#select reach.prereq.key}}
-                    {{#each ../arcana as |arcanum|}}
+                  {{#select item.flags.swnr-space-magic.arcanum}}
+                    {{#each arcana as |arcanum|}}
                       <option value="{{arcanum}}">{{arcanum}}</option>
                     {{/each}}
                   {{/select}}
@@ -141,36 +57,252 @@
                 <label for="">{{localize 'swnr.sheet.level'}}: </label>
                 <input
                   type="number"
-                  class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md swnr-space-magic-reach-field"
-                  name="flags.swnr-space-magic.reach[{{index}}].prereq.dots"
-                  value="{{reach.prereq.dots}}"
+                  class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
+                  name="data.level"
+                  value="{{data.data.level}}"
                   step="1"
                   min="0"
                   max="5"
-                  data-index="{{index}}"
-                  data-field="prereq"
-                  data-subfield="dots"
+                  {{#swnr-space-magic-if-equals item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+                    disabled="disabled"
+                  {{/swnr-space-magic-if-equals}}
                 />
               </div>
-            {{else}}
               <div class="form-group">
-                <label>Reach Cost</label>
+                <label>Practice</label>
+                <select
+                  name="flags.swnr-space-magic.practice"
+                  class="magic-casting-panel-content-field"
+                  {{#swnr-space-magic-if-equals item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+                    disabled="disabled"
+                  {{/swnr-space-magic-if-equals}}
+                >
+                  {{#select item.flags.swnr-space-magic.practice}}
+                    {{#each practices as |rankpractices rank|}}
+                    <optgroup label="{{rank}} dot">
+                      {{#each rankpractices as |p k|}}
+                      <option value="{{k}}">{{p.name}}</option>
+                      {{/each}}
+                    </optgroup>
+                    {{/each}}
+                  {{/select}}
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Primary Factor</label>
+                <select
+                  name="flags.swnr-space-magic.primary-factor"
+                  {{#swnr-space-magic-if-equals item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+                    disabled="disabled"
+                  {{/swnr-space-magic-if-equals}}
+                >
+                  {{#select item.flags.swnr-space-magic.primary-factor}}
+                    <option value="potency">Potency</option>
+                    <option value="duration">Duration</option>
+                  {{/select}}
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Withstand</label>
                 <input
-                  type="text"
-                  name="flags.swnr-space-magic.reach[{{index}}].reachCost"
-                  value="{{reach.reachCost}}"
-                  data-index="{{index}}"
-                  data-field="reachCost"
-                  class="swnr-space-magic-reach-field"
+                  type="text" name="flags.swnr-space-magic.withstand"
+                  value="{{item.flags.swnr-space-magic.withstand}}"
+                  {{#swnr-space-magic-if-equals item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+                    disabled="disabled"
+                  {{/swnr-space-magic-if-equals}}
                 />
+              </div>
+              <div class="form-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="flags.swnr-space-magic.is-rote"
+                    {{#if item.flags.swnr-space-magic.is-rote}}
+                      checked="checked"
+                    {{/if}}
+                    {{#swnr-space-magic-if-equals item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+                      disabled="disabled"
+                    {{/swnr-space-magic-if-equals}}
+                  >
+                  Is Rote?
+                </label>
+              </div>
+              <div class="form-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="flags.swnr-space-magic.is-praxis"
+                    {{#if item.flags.swnr-space-magic.is-praxis}}
+                      checked="checked"
+                    {{/if}}
+                    {{#swnr-space-magic-if-equals item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+                      disabled="disabled"
+                    {{/swnr-space-magic-if-equals}}
+                  >
+                  Is Praxis?
+                </label>
+              </div>
+            </div>
+            <div class="tab mta-power-tab" data-tab="addons" data-group="power-nav">
+              {{#each item.flags.swnr-space-magic.reach as |reach index|}}
+              <fieldset class="item-reach">
+                <legend><span>
+                  {{#swnr-space-magic-if-equals reach.variant 'addon'}}
+                  Add-on
+                  {{else}}
+                  Reach
+                  {{/swnr-space-magic-if-equals}}
+                </span></legend>
+                {{#swnr-space-magic-if-equals ../item.flags.swnr-space-magic.power-type 'mageSpell'}}
+                  <buttton
+                    type="button"
+                    data-action="remove-reach"
+                    data-index="{{index}}"
+                    title="Remove"
+                    class="item-btn-reach-remove"
+                  >
+                    &times;</buttton>
+                {{/swnr-space-magic-if-equals}}
+                <div class="form-group form-group-stacked">
+                  <label>Description</label>
+                  <textarea
+                    name="flags.swnr-space-magic.reach[{{index}}].desc"
+                    class="swnr-space-magic-reach-field"
+                    data-index="{{index}}" data-field="desc"
+                    {{#swnr-space-magic-if-equals ../item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+                      disabled="disabled"
+                    {{/swnr-space-magic-if-equals}}
+                  >{{reach.desc}}</textarea>
+                </div>
+                {{#swnr-space-magic-if-equals reach.variant 'addon'}}
+                <div class="form-group">
+                  <label>Arcanum</label>
+                  <select
+                    name="flags.swnr-space-magic.reach[{{index}}].prereq.key"
+                    class="swnr-space-magic-reach-field"
+                    data-index="{{index}}" data-field="prereq" data-subfield="key"
+                    {{#swnr-space-magic-if-equals ../item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+                      disabled="disabled"
+                    {{/swnr-space-magic-if-equals}}
+                  >
+                    {{#select reach.prereq.key}}
+                    {{#each ../arcana as |arcanum|}}
+                    <option value="{{arcanum}}">{{arcanum}}</option>
+                    {{/each}}
+                    {{/select}}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="">{{localize 'swnr.sheet.level'}}: </label>
+                  <input type="number"
+                    class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md swnr-space-magic-reach-field"
+                    name="flags.swnr-space-magic.reach[{{index}}].prereq.dots" value="{{reach.prereq.dots}}" step="1" min="0" max="5"
+                    data-index="{{index}}" data-field="prereq" data-subfield="dots"
+                    {{#swnr-space-magic-if-equals ../item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+                    disabled="disabled"
+                    {{/swnr-space-magic-if-equals}}
+                  />
+                </div>
+                {{else}}
+                <div class="form-group">
+                  <label>Reach Cost</label>
+                  <input
+                    type="text"
+                    name="flags.swnr-space-magic.reach[{{index}}].reachCost"
+                    value="{{reach.reachCost}}"
+                    data-index="{{index}}"
+                    data-field="reachCost"
+                    class="swnr-space-magic-reach-field"
+                    {{#swnr-space-magic-if-equals ../item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+                      disabled="disabled"
+                    {{/swnr-space-magic-if-equals}}
+                  />
+                </div>
+                {{/swnr-space-magic-if-equals}}
+              </fieldset>
+              {{/each}}
+              {{#swnr-space-magic-if-equals ../item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+                <div class="flex gap-1">
+                  <button
+                    type="button"
+                    data-action="add-reach"
+                    data-variant="reach"
+                  >Add Reach</button>
+                  <button
+                    type="button"
+                    data-action="add-reach"
+                    data-variant="addon"
+                  >Add Addon</button>
+                </div>
+              {{/swnr-space-magic-if-equals}}
+            </div>
+            {{#swnr-space-magic-if-equals item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+              <div class="tab mta-power-tab" data-tab="active" data-group="power-nav">
+                Active Spell Details
+                <div class="form-group">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="flags.swnr-space-magic.relinquished"
+                      {{#if item.flags.swnr-space-magic.relinquished}}
+                        checked="checked"
+                      {{/if}}
+                    >
+                    Relinquished
+                  </label>
+                </div>
+                <table class="swnr-mage-chat-roll-table">
+                  <tbody>
+                    <tr>
+                      <th>Arcanum</th>
+                      <td>{{activeInfo.arcanum }}</td>
+                    </tr>
+                    <tr>
+                      <th>Practice</th>
+                      <td>{{activeInfo.practiceData.name }}</td>
+                    </tr>
+                    <tr>
+                      <th class="mta-power-tab-mid-head" colspan="100%">Factors</th>
+                    </tr>
+                    <tr>
+                      <th>Potency</th>
+                      <td>{{activeInfo.factors.potency }}</td>
+                    </tr>
+                    <tr>
+                      <th>Duration</th>
+                      <td>{{activeInfo.durationData.name }}</td>
+                    </tr>
+                    {{!-- <tr>
+                      <th>Casting Time</th>
+                      <td>{{activeInfo.factors.casting-time }}</td>
+                    </tr> --}}
+                    <tr>
+                      <th>Range</th>
+                      <td>{{activeInfo.rangeData.name }}</td>
+                    </tr>
+
+                    <tr>
+                      <th>Scale</th>
+                      <td>{{activeInfo.scaleData.name }}</td>
+                    </tr>
+                    <tr>
+                      <th class="mta-power-tab-mid-head" colspan="100%">Reach</th>
+                    </tr>
+                    <tr>
+                      <th>Reach</th>
+                      <td>
+                        <ul class="mta-active-power-reach-list">
+                        {{#each activeInfo.reachData}}
+                          <li>{{this.desc}}</li>
+                        {{/each}}
+                        </ul>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             {{/swnr-space-magic-if-equals}}
-          </fieldset>
-        {{/each}}
-        <div class="flex gap-1">
-          <button type="button" data-action="add-reach" data-variant="reach">Add Reach</button>
-          <button type="button" data-action="add-reach" data-variant="addon">Add Addon</button>
-        </div>
+          </section>
       {{else}}
         <div class="flex gap-1">
           <div>
@@ -280,7 +412,7 @@
             </label>
           </div>
         </div>
-      {{/swnr-space-magic-if-equals}}
+      {{/swnr-space-magic-if-contains}}
     {{else}}
       {{> "systems/swnr/templates/items/fragments/item-base.html"}}
       {{#swnr-space-magic-if-equals item.type 'item'}}

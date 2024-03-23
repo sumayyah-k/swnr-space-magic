@@ -34,6 +34,7 @@ export default class MageActorSheet extends CharacterActorSheet {
 
     var magicSkills = [];
     var spells = [];
+    var activeSpells = [];
     var spellsById = {};
     var actorId = null;
     var actor = {};
@@ -53,6 +54,7 @@ export default class MageActorSheet extends CharacterActorSheet {
         console.log('swnr-mage', 'spell check', i.name, i.flags)
         return (
           i.type == "power"
+          && i.flags[MageMagicAddon.ID]
           && i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE]
           && ["spell", "mageSpell"].indexOf(
             i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE]
@@ -123,6 +125,18 @@ export default class MageActorSheet extends CharacterActorSheet {
     const strain = actor.system.systemStrain;
     var mageInfo = {};
     if (mtAMage) {
+      activeSpells = actor.items.contents.filter((i) => {
+        console.log("swnr-mage", "spell check", i.name, i.flags);
+        return (
+          i.type == "power" &&
+          i.flags[MageMagicAddon.ID] &&
+          i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE] &&
+          ["mageActiveSpell"].indexOf(
+            i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE]
+          ) != -1
+        );
+      });
+
       mageInfo.gnosis = actor.items.find(f => f.type == 'skill' && f.name.toLowerCase() == 'gnosis')
       var gnosisRank = mageInfo.gnosis ? mageInfo.gnosis.system.rank : 0
       mageInfo.gnosisData = mageInfo.gnosis ? Gnosis.byRank(gnosisRank) : null;
@@ -182,6 +196,7 @@ export default class MageActorSheet extends CharacterActorSheet {
       spellSlotsByLevel,
       spells,
       spellsById,
+      activeSpells,
       isArcanist: isArcanist(actor),
       isMagister: isMagister(actor),
       isSwNMage: swNMage,

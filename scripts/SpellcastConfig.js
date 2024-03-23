@@ -107,24 +107,42 @@ export class SpellcastConfig extends FormApplication {
     var availableArcana = magicSkills.filter((s) => s.name != "Gnosis" && s.rank >= 0);
     var ritualIntervals;
 
+    var unrelinquishedActiveSpells = actor.items.contents
+      .filter(
+        (i) =>
+          i.type == "power" &&
+          i.flags[MageMagicAddon.ID] &&
+          i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE] &&
+          ["mageActiveSpell"].indexOf(
+            i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE]
+          ) != -1 &&
+          !i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.SPELL_RELINQUISHED]
+      ).length;
+    console.log("swnr-mage", "unrelinquished Active Spells", {
+      unrelinquishedActiveSpells,
+      max: mageInfo.gnosis.system.rank + 1,
+    });
+
     var defaultValues = {
-      name: 'spell',
+      spell: null,
+      spellId: null,
+      name: "spell",
       arcanum: [],
       chosenArcanum: [],
       withstand: null,
-      'withstand-value': 0,
-      "casting-method": 'improvised',
+      "withstand-value": 0,
+      "casting-method": "improvised",
       grimoire: false,
       "self-created": false,
-      practice: 'compelling',
+      practice: "compelling",
       practiceData: null,
-      'primary-factor': 'potency',
+      "primary-factor": "potency",
       dicePool: mageInfo.gnosis.system.rank + 1,
       diceRoteQuality: false,
       manaCost: 0,
       "spell-reach": [],
       reach: 0,
-      reachMax:0,
+      reachMax: 0,
       spellReachData: [],
       potency: 1,
       freePotency: 1,
@@ -133,13 +151,13 @@ export class SpellcastConfig extends FormApplication {
       "additional-reach": 0,
       "contain-paradox": false,
       "potency-mana": 0,
-      duration: '1_turn',
+      duration: "1_turn",
       durationData: null,
       "duration-advanced": false,
       "casting-time": 0,
       "casting-time-advanced": false,
       "casting-time-turns": 1, //advanced only
-      "range": "touch",
+      range: "touch",
       "range-advanced": false,
       rangeAimedDistances: {
         short: mageInfo.gnosis.system.rank * 10,
@@ -147,7 +165,7 @@ export class SpellcastConfig extends FormApplication {
         long: mageInfo.gnosis.system.rank * 40,
         max: mageInfo.gnosis.system.rank * 80,
       },
-      "scale": "1",
+      scale: "1",
       "scale-advanced": false,
       yantradice: 0,
       yantras: [],
@@ -160,6 +178,7 @@ export class SpellcastConfig extends FormApplication {
       "dedicated-tool": false,
       "spend-willpower": false,
       "additional-dice": 0,
+      activeSpellReachPenalty:0,
     };
 
     var itemYantras = actor.items.contents
@@ -180,6 +199,7 @@ export class SpellcastConfig extends FormApplication {
       console.log('swnr-mage', 'spell', this.spell);
       defaultValues.name = this.spell.name;
       defaultValues.spell = this.spell;
+      defaultValues.spellId = this.spell.id;
       if (this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_IS_ROTE)) {
         defaultValues["casting-method"] = 'rote';
       } else if (this.spell.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_IS_PRAXIS)) {
@@ -232,12 +252,16 @@ export class SpellcastConfig extends FormApplication {
 
     // Add stuff for spell's addons, doing it here, before, arcanum stuff, so that all calculates correctly
     if (defaultValues['spell-reach']) {
-      for (var r of defaultValues['spell-reach']) {
+      if (!Array.isArray(defaultValues["spell-reach"])) {
+        defaultValues["spell-reach"] = [defaultValues["spell-reach"]];
+      }
+      defaultValues["spell-reach"] = defaultValues["spell-reach"].map(i => parseInt(i, 10));
+      for (var r of defaultValues["spell-reach"]) {
         defaultValues.spellReachData.push(reachOptions[r]);
-        if (reachOptions[r].variant == 'reach') {
+        if (reachOptions[r].variant == "reach") {
           defaultValues.reach += parseInt(reachOptions[r].reachCost, 10);
-        } else if (reachOptions[r].variant == 'addon') {
-          defaultValues.arcanum.push(reachOptions[r].prereq.key)
+        } else if (reachOptions[r].variant == "addon") {
+          defaultValues.arcanum.push(reachOptions[r].prereq.key);
         }
       }
     }
@@ -256,6 +280,25 @@ export class SpellcastConfig extends FormApplication {
       if (defaultValues['primary-factor'] != pfactor) {
         defaultValues.reach++;
       }
+    }
+
+    //Add Reach for active spell penalty
+    console.log(
+      "swnr-mage",
+      "activeSpellReachPenalty duration",
+      defaultValues.duration
+    );
+    if (defaultValues.duration != '1_turn') {
+      defaultValues.activeSpellReachPenalty = unrelinquishedActiveSpells >=
+      mageInfo.gnosis.system.rank + 1
+        ? unrelinquishedActiveSpells - mageInfo.gnosis.system.rank
+        : 0;
+      console.log(
+        "swnr-mage",
+        "activeSpellReachPenalty",
+        defaultValues.activeSpellReachPenalty
+      );
+      defaultValues.reach += defaultValues.activeSpellReachPenalty;
     }
 
     this.spellDurations = Spell.spellDurations;
@@ -465,10 +508,16 @@ export class SpellcastConfig extends FormApplication {
       //Field Options
       primaryFactors: Spell.primaryFactors,
       castingMethods: Spell.castingMethods,
-      spellDurations: Spell.spellDurations.filter(d => d.advanced == defaultValues['duration-advanced']),
+      spellDurations: Spell.spellDurations.filter(
+        (d) => d.advanced == defaultValues["duration-advanced"]
+      ),
       ritualIntervals,
-      ranges: Spell.ranges.filter(d => d.advanced == defaultValues['range-advanced']),
-      scales: Spell.scales.filter(d => d.advanced == defaultValues['scale-advanced']),
+      ranges: Spell.ranges.filter(
+        (d) => d.advanced == defaultValues["range-advanced"]
+      ),
+      scales: Spell.scales.filter(
+        (d) => d.advanced == defaultValues["scale-advanced"]
+      ),
       practices: Spell.rankedPractices(highestArcanum),
       yantras: [...Spell.commonYantras, ...itemYantras],
       reachOptions,
@@ -586,6 +635,25 @@ export class SpellcastConfig extends FormApplication {
       Hooks.call('reRenderMageActorSheet', actor.id);
     }
 
+
+    const activeSpellInfo = {
+      arcanum: this.calculatedValues.arcanum,
+      practice: this.calculatedValues.practice,
+      "spell-reach": this.calculatedValues["spell-reach"],
+      factors: {
+        potency: this.calculatedValues.potency,
+        "potency-advanced": this.calculatedValues["potency-advanced"],
+        duration: this.calculatedValues.duration,
+        // 'duration-advanced': this.calculatedValues['duration-advanced'],
+        "casting-time": this.calculatedValues["casting-time"],
+        // 'casting-time-advanced': this.calculatedValues['casting-time-advanced'],
+        range: this.calculatedValues.range,
+        // 'range-advanced': this.calculatedValues['range-advanced'],
+        scale: this.calculatedValues.scale,
+        // 'scale-advanced': this.calculatedValues['scale-advanced'],
+      },
+    };
+
     let data = {
       actor,
       gnosis,
@@ -597,6 +665,7 @@ export class SpellcastConfig extends FormApplication {
       calculatedValues: this.calculatedValues,
       successType,
       paradoxSuccessType,
+      activeSpellInfo: JSON.stringify(activeSpellInfo),
     };
 
     console.log('swnr-mage', 'paradoxRoll', paradoxRoll);

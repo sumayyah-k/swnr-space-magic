@@ -17,6 +17,8 @@ export class MageMagicAddon {
     MTA_SPELL_IS_ROTE: "is-rote",
     MTA_SPELL_IS_PRAXIS: "is-praxis",
     MTA_SPELL_REACH: "reach",
+    SPELL_ACTIVE_INFO: "active-info",
+    SPELL_RELINQUISHED: "relinquished",
     //Items
     ITEM_POWER_TYPE: "power-type",
     MTA_SPELL_IS_YANTRA: "is-yantra",

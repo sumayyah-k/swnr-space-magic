@@ -2,54 +2,114 @@ import { MageMagicAddon } from "../MageMagicAddon.js";
 import Spell from "../Models/Spell.js";
 import Arcanum from "../Models/Arcanum.js";
 
-export default class MageItemSheet extends ItemSheet{
-  get template(){
+export default class MageItemSheet extends ItemSheet {
+  static get defaultOptions() {
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      tabs: [
+        {
+          navSelector: ".mta-power-tab-nav",
+          contentSelector: ".mta-power-tab-content",
+          initial: "general", // "addons", "active"
+        },
+      ],
+    });
+  }
+
+  get template() {
     return MageMagicAddon.TEMPLATES.ITEMSHEET;
   }
 
   async getData(options) {
     const context = super.getData();
     const arcanum = new Arcanum(null);
-    return {...context, ...{
-      powerTypeOptions: [
-        {value: 'spell', label: 'SWN Spell'},
-        {value: 'mageSpell', label: 'MtAw Spell'},
-        {value: 'attainment', label: 'Attainment'},
-      ],
-      arcana: arcanum.names,
-      practices: Spell.rankedPractices(null, true),
-    }}
+
+    var activeInfo = this.object.getFlag(
+      MageMagicAddon.ID,
+      MageMagicAddon.FLAGS.SPELL_ACTIVE_INFO
+    );
+
+    var reachInfo = this.object.getFlag(
+      MageMagicAddon.ID,
+      MageMagicAddon.FLAGS.MTA_SPELL_REACH
+    );
+
+    if (activeInfo) {
+      activeInfo = {
+        ...activeInfo,
+        ...{
+          practiceData: Spell.practices.find(
+            (p) => p.id == activeInfo.practice
+          ),
+          durationData: Spell.spellDurations.find(
+            (p) => p.id == activeInfo.factors.duration
+          ),
+          rangeData: Spell.ranges.find((p) => p.id == activeInfo.factors.range),
+          scaleData: Spell.scales.find((p) => p.id == activeInfo.factors.scale),
+          reachData: reachInfo.filter((r, i) => activeInfo['spell-reach'].indexOf(i) != -1),
+        },
+      };
+    }
+
+    return {
+      ...context,
+      ...{
+        powerTypeOptions: [
+          { value: "spell", label: "SWN Spell" },
+          { value: "mageSpell", label: "MtAw Spell" },
+          { value: "mageActiveSpell", label: "MtAw Active Spell" },
+          { value: "attainment", label: "Attainment" },
+        ],
+        arcana: arcanum.names,
+        practices: Spell.rankedPractices(null, true),
+        activeInfo,
+        mtAwSpellTypes: ["mageSpell", "mageActiveSpell"],
+      },
+    };
   }
 
   _addReach(data) {
-    var reach = this.object.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_REACH)
+    var reach = this.object.getFlag(
+      MageMagicAddon.ID,
+      MageMagicAddon.FLAGS.MTA_SPELL_REACH
+    );
     if (!reach) {
       reach = [];
     }
 
     reach.push({
-      desc: '',
-      variant: data.variant || 'reach',
+      desc: "",
+      variant: data.variant || "reach",
       reachCost: 0,
       prereq: {
-        type: 'arcanum',
+        type: "arcanum",
         key: null,
         dots: null,
-      }
+      },
     });
 
-    return this.object.setFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_REACH, reach);
+    return this.object.setFlag(
+      MageMagicAddon.ID,
+      MageMagicAddon.FLAGS.MTA_SPELL_REACH,
+      reach
+    );
   }
 
   _removeReach(data) {
-    var reach = this.object.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_REACH)
-    console.log('swnr-mage', 'remove reach', reach, data);
+    var reach = this.object.getFlag(
+      MageMagicAddon.ID,
+      MageMagicAddon.FLAGS.MTA_SPELL_REACH
+    );
+    console.log("swnr-mage", "remove reach", reach, data);
     if (data.index >= 0) {
       reach.splice(parseInt(data.index, 10), 1);
     }
     // console.log('swnr-mage', 'remove reach', reach);
 
-    return this.object.setFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_REACH, reach);
+    return this.object.setFlag(
+      MageMagicAddon.ID,
+      MageMagicAddon.FLAGS.MTA_SPELL_REACH,
+      reach
+    );
   }
 
   async _handleButtonClick(event, html) {
@@ -81,8 +141,11 @@ export default class MageItemSheet extends ItemSheet{
     });
 
     html.on("change", ".swnr-space-magic-reach-field", (event) => {
-      var reach = this.object.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_REACH);
-      console.log('swnr-mage', 'change reach', reach, event.target.dataset)
+      var reach = this.object.getFlag(
+        MageMagicAddon.ID,
+        MageMagicAddon.FLAGS.MTA_SPELL_REACH
+      );
+      console.log("swnr-mage", "change reach", reach, event.target.dataset);
       var index = event.target.dataset.index;
       var field = event.target.dataset.field;
       var subfield = event.target.dataset.subfield;
@@ -94,9 +157,13 @@ export default class MageItemSheet extends ItemSheet{
         reach[index][field] = value;
       }
 
-      this.object.setFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_SPELL_REACH, reach);
+      this.object.setFlag(
+        MageMagicAddon.ID,
+        MageMagicAddon.FLAGS.MTA_SPELL_REACH,
+        reach
+      );
 
-      console.log('swnr-mage', 'reach change', event.target);
+      console.log("swnr-mage", "reach change", event.target);
       this.render();
     });
   }

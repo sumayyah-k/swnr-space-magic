@@ -10,6 +10,13 @@
         from Grimoire
       {{/if}}
     </h2>
+    <button
+      type="button"
+      class="swnr-space-magic-add-active-spell"
+      data-actor-id="{{actor.id}}"
+      data-spell-id="{{calculatedValues.spellId}}"
+      data-active-info="{{activeSpellInfo}}"
+    >Add to Active Spells</button>
     <table class="swnr-mage-chat-roll-table">
       <tbody>
         <tr><th>Gnosis</th><td>{{gnosis.system.rank}}</td></tr>

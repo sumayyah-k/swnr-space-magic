@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Active Spell Support
+  - Button in chat to add active spell to sheet
+  - Reach penalty for going over max active spells
+  - Can relinquish active spells, just a checkbox, doesn't add strain or decrease max strain, need to figure out a SWN way to relinquish a spell safely still.
+- Temp HP field to track... temp HP...
+  - There was a spot in the system's class for temp hp, but it's not implemented fully yet... so it's just a manual thing for now.
+
+### Changed
+
+- First real pass at an actual style
+
 ## [1.4.0] - 2024-03-19
 
 ### Added
