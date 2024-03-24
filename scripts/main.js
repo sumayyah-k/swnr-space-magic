@@ -36,7 +36,7 @@ Hooks.once("init", async () => {
     console.log("swnr-mage", "add active spell", actorId, spellId, actor, spell, activeInfo);
 
     const spellData = {
-      name: 'Active Spell:' + spell.name,
+      name: spell.name,
       img: spell.img,
       type: 'power',
       system: spell.system,

@@ -1,12 +1,11 @@
 <article class="magic-casting-spell-def swnr-mta-collapse-wrap item" data-item-id="{{spell.id}}">
   <div class="magic-casting-spell-def-title swnr-mta-collapse-title">
-    <div>
-      <a class="item" data-tab="spell-{{spell.id}}">
+    <div class="magic-casting-spell-def-title-name">
+        <div class="magic-casting-spell-def-img" style="background-image: url('{{spell.img}}')"></div>
         {{ spell.name }}
         {{#if spell.flags.swnr-space-magic.relinquished}}
           <span class="badge badge-info">Reliquished</span>
         {{/if}}
-      </a>
     </div>
     <div class="magic-casting-spell-def-title-controls">
       <button type="button" class="swnr-mage-btn magic-casting-prepare-btn" data-action="edit-spell" data-spell-id="{{spell.id}}"
@@ -36,7 +35,7 @@
       {{/if}}
     </div>
   </div>
-  <div class="magic-casting-spell-def-description swnr-mta-collapse-content">
+  <div class="magic-casting-spell-def-description swnr-body-text swnr-mta-collapse-content">
     {{{ spell.system.description }}}
   </div>
 </article>
