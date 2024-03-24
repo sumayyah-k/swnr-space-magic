@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.5.2] - 2024-03-23
+## [1.5.3] - 2024-03-23
+## [1.5.2] - 2024-03-23 [YANKED]
 
 ### Fixed
 
@@ -97,8 +98,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Casting spells from modal shows details in chat and updates spell slots
 - Prepare spells as arcanist
 
-[unreleased]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.2...HEAD
-[1.5.2]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.1...1.5.2
+[unreleased]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.3...HEAD
+[1.5.3]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.1...1.5.3
 [1.5.1]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.0...1.5.1
 [1.5.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.3.0...1.4.0
