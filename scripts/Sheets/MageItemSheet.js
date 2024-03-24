@@ -50,6 +50,18 @@ export default class MageItemSheet extends ItemSheet {
       };
     }
 
+
+    var isMtAwSpell = false;
+    if (this.object.type == 'power') {
+      const powerType = this.object.getFlag(
+        MageMagicAddon.ID,
+        MageMagicAddon.FLAGS.ITEM_POWER_TYPE
+      );
+      if (powerType && ["mageSpell", "mageActiveSpell"].indexOf(powerType) != -1) {
+        isMtAwSpell = true;
+      }
+    }
+
     return {
       ...context,
       ...{
@@ -62,7 +74,7 @@ export default class MageItemSheet extends ItemSheet {
         arcana: arcanum.names,
         practices: Spell.rankedPractices(null, true),
         activeInfo,
-        mtAwSpellTypes: ["mageSpell", "mageActiveSpell"],
+        isMtAwSpell,
       },
     };
   }

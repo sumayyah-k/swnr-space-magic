@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.2] - 2024-03-23
+
+### Fixed
+
+- Item sheets for powers were showing the wrong thing when no subtype was chosen.
+- Spell Addon buttons weren't showing for non active spells
+
+## [1.5.1] - 2024-03-23
+
 ### Fixed
 
 - Moved assets into style folder in the hope they are included in the build.
@@ -88,7 +97,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Casting spells from modal shows details in chat and updates spell slots
 - Prepare spells as arcanist
 
-[unreleased]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.1...HEAD
+[unreleased]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.2...HEAD
+[1.5.2]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.1...1.5.2
 [1.5.1]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.0...1.5.1
 [1.5.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.3.0...1.4.0

@@ -21,7 +21,7 @@
           </select>
         </label>
       </div>
-      {{#swnr-space-magic-if-contains item.flags.swnr-space-magic.power-type mtAwSpellTypes }}
+      {{#if isMtAwSpell }}
         <nav class="magic-casting-spells-nav mta-power-tab-nav" data-group="power-nav">
           <a type="button" class="item mage-spell-level-tab" data-tab="general">
             Details
@@ -221,7 +221,7 @@
                 {{/swnr-space-magic-if-equals}}
               </fieldset>
               {{/each}}
-              {{#swnr-space-magic-if-equals ../item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
+              {{#swnr-space-magic-if-not-equal ../item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
                 <div class="flex gap-1">
                   <button
                     type="button"
@@ -234,7 +234,7 @@
                     data-variant="addon"
                   >Add Addon</button>
                 </div>
-              {{/swnr-space-magic-if-equals}}
+              {{/swnr-space-magic-if-not-equal}}
             </div>
             {{#swnr-space-magic-if-equals item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
               <div class="tab mta-power-tab" data-tab="active" data-group="power-nav">
@@ -412,7 +412,7 @@
             </label>
           </div>
         </div>
-      {{/swnr-space-magic-if-contains}}
+      {{/if}}
     {{else}}
       {{> "systems/swnr/templates/items/fragments/item-base.html"}}
       {{#swnr-space-magic-if-equals item.type 'item'}}
