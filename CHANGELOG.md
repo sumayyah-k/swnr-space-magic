@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Moved assets into style folder in the hope they are included in the build.
+
+## [1.5.0] - 2024-03-23
+
 ### Added
 
 - Active Spell Support
@@ -82,7 +88,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Casting spells from modal shows details in chat and updates spell slots
 - Prepare spells as arcanist
 
-[unreleased]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.4.0...HEAD
+[unreleased]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.1...HEAD
+[1.5.1]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.0...1.5.1
+[1.5.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.2.1...1.3.0
 [1.2.1]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.2.0...1.2.1

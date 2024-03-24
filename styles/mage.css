@@ -5,25 +5,25 @@
 }
 @font-face {
   font-family: "PoiretOne";
-  src: url("../assets/fonts/PoiretOne-Regular.ttf");
+  src: url("assets/fonts/PoiretOne-Regular.ttf");
 }
 @font-face {
   font-family: "Jost";
-  src: url("../assets/fonts/Jost-Regular.ttf");
+  src: url("assets/fonts/Jost-Regular.ttf");
 }
 @font-face {
   font-family: "Jost";
-  src: url("../assets/fonts/Jost-Italic.ttf");
+  src: url("assets/fonts/Jost-Italic.ttf");
   font-style: italic;
 }
 @font-face {
   font-family: "Jost";
-  src: url("../assets/fonts/Jost-Bold.ttf");
+  src: url("assets/fonts/Jost-Bold.ttf");
   font-weight: bold;
 }
 @font-face {
   font-family: "Jost";
-  src: url("../assets/fonts/Jost-BoldItalic.ttf");
+  src: url("assets/fonts/Jost-BoldItalic.ttf");
   font-weight: bold;
   font-style: italic;
 }
@@ -43,7 +43,7 @@
   background: var(--swnr-mage-body-bg);
   display:flex;
   flex-direction: row;
-  background-image: url(../assets/images/dark-rock-wall-seamless-texture-free-105.png);
+  background-image: url(assets/images/dark-rock-wall-seamless-texture-free-105.png);
   background-position: top left;
   background-size: 30rem;
 }
@@ -90,7 +90,7 @@
     flex:0;
     min-width: 10rem;
     padding:.5rem;
-    background-image: url(../assets/images/art-deco-seamless-pattern-design_1319-778.png);
+    background-image: url(assets/images/art-deco-seamless-pattern-design_1319-778.png);
     background-size: 200%;
     background-position: center top;
     border-right: 1px solid var(--primary-color);
@@ -315,7 +315,7 @@
 .magic-casting-panel-content {
   padding: .5rem 0;
   background-color: var(--swnr-mage-body-bg);
-  background-image: url(../assets/images/dark-rock-wall-seamless-texture-free-105.png);
+  background-image: url(assets/images/dark-rock-wall-seamless-texture-free-105.png);
   background-position: top left;
   background-size: 30rem;
 }
