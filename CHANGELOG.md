@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Restyled improvised casting button
+
 ## [1.5.3] - 2024-03-23
 ## [1.5.2] - 2024-03-23 [YANKED]
 

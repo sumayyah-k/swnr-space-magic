@@ -27,6 +27,105 @@
   font-weight: bold;
   font-style: italic;
 }
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-Thin.ttf");
+  font-weight: 100;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-ThinItalic.ttf");
+  font-weight: 100;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-ExtraLight.ttf");
+  font-weight: 200;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-ExtraLightItalic.ttf");
+  font-weight: 200;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-Light.ttf");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-LightItalic.ttf");
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-Regular.ttf");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-Italic.ttf");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-Medium.ttf");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-MediumItalic.ttf");
+  font-weight: 500;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-SemiBold.ttf");
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-SemiBoldItalic.ttf");
+  font-weight: 600;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-Bold.ttf");
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-BoldItalic.ttf");
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-ExtraBold.ttf");
+  font-weight: 800;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-ExtraBoldItalic.ttf");
+  font-weight: 800;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-Black.ttf");
+  font-weight: 900;
+}
+@font-face {
+  font-family: "Jost";
+  src: url("assets/fonts/Jost-BlackItalic.ttf");
+  font-weight: 900;
+  font-style: italic;
+}
 
 
 .swnr-body-text p {
@@ -87,6 +186,8 @@
   padding:.25rem;
 }
 .magic-casting-sidebar {
+    position: relative;
+    z-index: 1;
     flex:0;
     min-width: 10rem;
     padding:.5rem;
@@ -338,8 +439,48 @@
 }
 
 button.swnr-mage-improvised-spellcasting-btn {
+  position:relative;
   margin-bottom: .5rem;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'PoiretOne', sans-serif;
+  text-transform:uppercase;
+  font-size:.85rem;
+  text-align:left;
+  margin: 2rem 0;
+  /* z-index:1; */
 }
+button.swnr-mage-improvised-spellcasting-btn i {
+  display:inline-block;
+  padding:0 .5rem;
+}
+button.swnr-mage-improvised-spellcasting-btn:before,
+button.swnr-mage-improvised-spellcasting-btn:after {
+  content: '';
+  position:absolute;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  left: 50%;
+  top:50%;
+  margin-left:-3rem;
+  margin-top:-3rem;
+  border:3px double var(--primary-color);
+  z-index:-1;
+  transition:all .4s linear;
+}
+button.swnr-mage-improvised-spellcasting-btn:before {
+  width: 4rem;
+  height: 4rem;
+  margin-left: -2rem;
+  margin-top: -2rem;
+}
+button.swnr-mage-improvised-spellcasting-btn:hover:before,
+button.swnr-mage-improvised-spellcasting-btn:hover:after {
+  box-shadow: 0 0 1rem var(--primary-color),inset 0 0 1rem var(--primary-color);
+}
+
 .magic-casting-panel-content-stat {
   text-align: center;
   font-size: 2rem;
@@ -633,10 +774,7 @@ button.swnr-mage-btn {
 }
 
 button.swnr-mage-btn:hover {
-  background-color: var(--primary-color);
-  color: var(--primary-color-text);
-  border-color: var(--swnr-mage-body-bg);
-  box-shadow: inset 0 0 0.25rem rgba(0, 0, 0, .5);
+  box-shadow: inset 0 0 0.5rem var(--primary-color);
 }
 
 .swnr-mage-sight-section {
