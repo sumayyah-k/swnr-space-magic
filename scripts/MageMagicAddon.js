@@ -9,6 +9,7 @@ export class MageMagicAddon {
     ACTIVE_MAGIC_TAB: "active-magic-tab",
     MTA_MANA: "swnr-space-magic-mta-mana",
     MTA_ARCANA_IMPORTANCE: "arcana-importance",
+    ACTOR_SHEET_THEME: 'sheet-theme',
     //Spells
     MTA_SPELL_ARCANUM: "arcanum",
     MTA_SPELL_PRACTICE: "practice",

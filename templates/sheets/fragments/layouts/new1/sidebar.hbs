@@ -1,0 +1,148 @@
+<aside class="swnr-space-mage-actor-sheet-sidebar">
+  <div
+    class="swnr-space-magic-actor-picture"
+  >
+    <img
+      src="{{actor.img}}"
+      title="{{actor.name}}"
+      data-edit="img"
+    />
+    <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 771.75 1044.751">
+      <clipPath id="clip" clipPathUnits="userSpaceOnUse">
+        <path fill="#000" stroke="#000"
+          d="m30.754 155.834-.46 733.96 79.869.458 1.606 42.459 47.049 1.606v80.786l453.274-.918 1.377-80.327 46.819-.688.459-42.459 79.868-1.377.23-734.647h-80.328l-.459-42.688h-46.59V31.213l-454.88.23-1.147 80.326-45.213.46.23 41.31z" />
+      </clipPath>
+      <image height="100%" width="100%" preserveAspectRatio="xMinYMin slice" xlink:href="{{actor.img}}"
+        clip-path="url(#clip)" />
+      <path fill="red"
+        d="M128.307 0v81.117h-14.32V32.75H32.76v81.23h48.36v10.08H0v796.623h81.12v10.08H32.76v81.23h81.226v-48.366h14.32v81.117h257.561v-4.992h-252.56v-81.12h-24.32V1007h-71.24v-71.242h48.36v-20.069H5V129.053h81.107v-20.067h-48.36V37.744h71.24V86.11h24.32V4.992h252.56V0Zm257.566.002v4.99h252.582v81.121h24.305v-48.37h71.244v71.243H685.64v20.067h81.12v786.642h-81.12v20.067H734v71.242h-71.243v-48.365h-24.305v81.119H385.871v4.994h257.57v-81.121h14.329v48.367h81.22V930.77h-48.36v-10.08h81.119V522.373h.002v-398.31h-81.12v-10.08h48.362V32.751H657.77v48.367h-14.327V.002zM142.24 13.934v81.119h-42.187V46.686h-53.36v53.36h48.36v37.948h-81.12V906.75h81.12v37.947h-48.36v53.36h53.36V949.69h42.187v81.118h243.627v-.01h243.615V949.68h42.194v48.366h53.367v-53.36h-48.365V906.74h81.117V137.986h-81.117v-37.945h48.365V46.679h-53.367v48.368h-42.194v-81.12H385.867zm5 4.994h477.254v81.117h47.184v42.941h81.129v758.768h-81.131v42.94h-47.182v81.119H385.86v.01H147.24v-81.12h-47.187v-42.941h-81.12V142.988h81.12v-42.941h47.187zm8.947 8.941v81.117h-47.2v42.944h-81.12v740.885h81.12v42.943h47.2v81.117h229.68v-4.992H161.174v-81.117h-47.188v-42.944H32.867v-730.9h81.12V113.98h47.187V32.861h224.693V27.87zm229.686 0v4.994h224.709v81.118c24.064 1.667 34.914.691 47.186 0v42.943h81.12v365.45h4.989V151.931h-81.12v-42.946H615.57V27.87zM676.68 51.678h43.377v43.375H676.68zm-625 .002h43.373v43.373H51.68zm8.947 8.941V86.11l25.48.002v-25.49zm625.014 0v25.49h25.478v-25.49zM65.613 65.615H81.12v15.502H65.613zm625.018 0h15.5V81.12h-15.5zm48.26 456.76v365.45H657.77v42.944h-47.188v81.118h-224.71v4.994h229.7V935.76h47.188v-42.943h81.119V522.375ZM676.68 949.688h43.377v43.373H676.68zm-625 0h43.373v43.373H51.68zm8.947 8.94v25.49h25.48v-25.491zm625.014.01v25.49h25.478v-25.49zm-620.028 4.99H81.12v15.501H65.613zm625.018 0h15.5v15.503h-15.5z" />
+    </svg>
+  </div>
+
+  <div class="swnr-space-magic-actor-sheet-sidebar-panel">
+    <div class="swnr-space-magic-actor-sheet-sidebar-stats">
+      <div class="swnr-space-magic-actor-sheet-sidebar-stat">
+        <div class="swnr-space-magic-actor-sheet-sidebar-stat-title">
+          AB
+        </div>
+        <div class="swnr-space-magic-actor-sheet-sidebar-stat-content">
+          {{actor.data.data.ab}}
+        </div>
+      </div>
+      <div class="swnr-space-magic-actor-sheet-sidebar-stat">
+        <div class="swnr-space-magic-actor-sheet-sidebar-stat-title">
+          AC
+        </div>
+        <div class="swnr-space-magic-actor-sheet-sidebar-stat-content">
+          {{actor.data.data.ac}}
+        </div>
+      </div>
+      <div class="swnr-space-magic-actor-sheet-sidebar-stat">
+        <div class="swnr-space-magic-actor-sheet-sidebar-stat-title">
+          Move
+        </div>
+        <div class="swnr-space-magic-actor-sheet-sidebar-stat-content">
+          {{actor.data.data.speed}}m
+        </div>
+      </div>
+
+    </div>
+
+    <!-- HP -->
+
+    <!--<div class="form-group">
+      <label
+        class="hp-label hover:text-shadow hover:text-shadow-blueGray-600 cursor-pointer transition-text-shadow">{{localize
+        'swnr.sheet.hp'}}
+        <i class="fas fa-dice-d20"></i>
+      </label>
+      <div class="border border-gray-800 bg-gray-400 mx-auto rounded-md subfield">
+        <input
+          class="w-8 text-right pl-1.5 py-3.5 bg-gray-400  placeholder-blue-800 placeholder-opacity-75 rounded-md subfield"
+          type="number" step="1" name="data.health.value" value="{{actor.data.data.health.value}}" data-dtype="Number"
+          min="0" /><span>/</span><input
+          class="w-8 text-left pr-1.5 py-3.5  bg-gray-400 placeholder-blue-800 placeholder-opacity-75 rounded-md subfield"
+          type="number" name="data.health.max" value="{{actor.data.data.health.max}}" step="1" min="1"
+          data-dtype="Number" />
+      </div>
+
+    </div>
+    <div class="form-group swnr-mage-temp-hp">
+      <label for="data.health.temp">Temp HP</label>
+      <input type="number" step="1" name="data.health.temp" value="{{actor.data.data.health.temp}}" data-dtype="Number"
+        min="0" />
+    </div>
+    <div class="flex gap-2 items-center">
+      <div class="bg-green-300 border border-green-900 w-full rounded-full h-4 overflow-hidden">
+        <div class="bg-green-500 h-full rounded-full"
+          style="width: min(calc(100% * {{actor.data.data.health.value}}/{{actor.data.data.health.max}}));"></div>
+      </div>
+    </div>-->
+
+    <div class="meter-group">
+      <div class="label roboto-condensed-upper">
+        <span>{{localize 'swnr.sheet.hp'}}</span>
+      </div>
+      <div class="meter sectioned hit-points">
+        <div class="progress hit-points" role="meter" aria-valuemin="0"
+          aria-valuenow="{{ actor.data.data.health.value }}" aria-valuemax="{{ actor.data.data.health.max }}"
+          style="--bar-percentage: min(calc(100% * {{actor.data.data.health.value}}/{{actor.data.data.health.max}}))"
+        >
+          <div class="label">
+            <span class="value">{{ actor.data.data.health.value }}</span>
+            <span class="separator">&sol;</span>
+            <span class="max">{{ actor.data.data.health.max }}</span>
+          </div>
+          <input type="text" name="data.health.value" data-dtype="Number" placeholder="0" value="{{ actor.data.data.health.value }}" hidden>
+        </div>
+        <div class="tmp">
+          <input type="number" step="1" name="data.health.temp" value="{{actor.data.data.health.temp}}" data-dtype="Number"
+            min="0" />
+        </div>
+      </div>
+    </div>
+
+    <!-- strain -->
+    <!--
+    <div class="form-group">
+      <label>{{localize 'swnr.sheet.ss'}}</label>
+      <div class="border border-gray-800 bg-gray-400 mx-auto rounded-md">
+        <input
+          class="w-8 text-right pl-1.5 py-3.5 bg-gray-400  placeholder-blue-800 placeholder-opacity-75 rounded-md subfield"
+          type="number" name="data.systemStrain.value" value="{{actor.data.data.systemStrain.value}}"
+          data-dtype="Number" />/<span
+          class="inline-block text-left text-gray-300 cursor-not-allowed w-8 subfield">{{actor.data.data.systemStrain.max}}</span>
+      </div>
+    </div>
+    <div class="flex gap-2 items-center">
+      <div class="bg-blue-300 border border-blue-900 w-full rounded-full h-4 overflow-hidden">
+        <div class="bg-blue-500 h-full rounded-full"
+          style="width: min(calc(100% * {{actor.data.data.systemStrain.value}}/{{actor.data.data.systemStrain.max}}));">
+        </div>
+      </div>
+    </div>
+    -->
+
+
+    <div class="meter-group">
+      <div class="label roboto-condensed-upper">
+        <span>{{localize 'swnr.sheet.ss'}}</span>
+      </div>
+      <div class="meter sectioned strain">
+        <div class="progress strain" role="meter" aria-valuemin="0" aria-valuenow="{{ actor.data.data.systemStrain.value }}"
+          aria-valuemax="{{ actor.data.data.systemStrain.max }}"
+          style="--bar-percentage: min(calc(100% * {{actor.data.data.systemStrain.value}}/{{actor.data.data.systemStrain.max}}))">
+          <div class="label">
+            <span class="value">{{ actor.data.data.systemStrain.value }}</span>
+            <span class="separator">&sol;</span>
+            <span class="max">{{ actor.data.data.systemStrain.max }}</span>
+          </div>
+          <input type="number" step="1" name="data.systemStrain.value" data-dtype="Number" placeholder="0"
+            value="{{ actor.data.data.systemStrain.value }}" min="0" hidden>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</aside>

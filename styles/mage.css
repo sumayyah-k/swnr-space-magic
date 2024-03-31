@@ -142,9 +142,6 @@
   background: var(--swnr-mage-body-bg);
   display:flex;
   flex-direction: row;
-  background-image: url(assets/images/dark-rock-wall-seamless-texture-free-105.png);
-  background-position: top left;
-  background-size: 30rem;
 }
 .magic-casting-modal h1,
 .magic-casting-modal h2 {
@@ -191,9 +188,7 @@
     flex:0;
     min-width: 10rem;
     padding:.5rem;
-    background-image: url(assets/images/art-deco-seamless-pattern-design_1319-778.png);
-    background-size: 200%;
-    background-position: center top;
+
     border-right: 1px solid var(--primary-color);
 }
 .magic-casting-spell-list {
@@ -788,6 +783,10 @@ button.swnr-mage-btn:hover {
 .swnr-mage-sight-section h4 {
   margin-top: .75rem;
 }
+
+/**
+  ALERTS
+*/
 .swnr-mage-alert {
   position: relative;
   padding:.5rem .75rem;
@@ -816,6 +815,10 @@ button.swnr-mage-btn:hover {
   background: linear-gradient(57deg, rgb(180, 45, 45) 0%, rgba(180, 45, 45, 0) 50%);
 }
 
+/**
+  TEMP HP
+  Default layout only
+*/
 .swnr-mage-temp-hp {
   align-items: center;
 }
@@ -826,3 +829,388 @@ button.swnr-mage-btn:hover {
   max-width: 2rem;
   text-align:center;
 }
+
+/**
+  METER
+  Taken from D&D 5e
+  For HP and Strain
+*/
+.meter-group {
+  --dnd5e-color-hp-1: #1b4b29;
+  --dnd5e-color-hp-2: #3ba55d;
+  --dnd5e-color-hp-3: #276d3c;
+  --dnd5e-color-hd-1: #1b354b;
+  --dnd5e-color-hd-2: #3b7ba5;
+  --dnd5e-color-hd-3: #27506d;
+  --secondary-color: #336633;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+
+}
+
+.meter-group+.meter-group {
+  margin-top: 0.5rem;
+}
+
+.meter {
+  border: 1px solid var(--dnd5e-color-gold);
+  border-radius: 4px;
+  background: var(--dnd5e-color-light-gray);
+  height: 32px;
+  font-size: 1rem;
+  font-family: var(--dnd5e-font-roboto);
+  font-weight: bold;
+  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.25);
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--primary-color);
+}
+
+.meter.progress,
+.meter .progress {
+  --bar-percentage: 0%;
+  --border-width: 3px;
+  overflow: hidden;
+}
+
+.meter.progress::before,
+.meter .progress::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: calc(var(--bar-percentage) - var(--border-width));
+  box-shadow: 0 0 6px var(--dnd5e-shadow-45);
+  clip-path: polygon(0 0, calc(100% + 6px) 0, calc(100% + 6px) 100%, 0 100%);
+  border-radius: 4px;
+}
+
+.meter .label {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  position: relative;
+  padding-inline-start: 0.5rem;
+  padding-inline-end: 0.75rem;
+  color: var(--color-text-light-0);
+}
+
+.meter .label[hidden] {
+  display: none;
+}
+
+.meter .label .value,
+.meter .label .max {
+  text-shadow: 0 0 4px var(--dnd5e-color-gold);
+}
+
+.meter .label .separator {
+  color: var(--dnd5e-color-gold);
+}
+
+.meter .label .bonus {
+  margin-inline-start: auto;
+  font-size: var(--font-size-14);
+  opacity: 0.8;
+}
+
+@media (prefers-contrast: more) {
+
+  .meter .label .value,
+  .meter .label .max {
+    text-shadow: 0 0 2px var(--dnd5e-color-dark);
+    filter: drop-shadow(0 0 2px var(--dnd5e-color-dark));
+  }
+}
+
+.meter-group {
+
+  padding: 0 0.5rem;
+}
+
+.meter-group+.meter-group {
+  margin-top: 0.5rem;
+}
+
+.meter-group>.label {
+  font-size: .85rem;
+  color: var(--primary-color);
+  text-shadow: 0 0 6px var(--dnd5e-shadow-45);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.meter-group>.label>.config-button {
+  color: var(--primary-color);
+}
+
+.meter.hit-points .progress::before {
+  background: linear-gradient(to right, var(--dnd5e-color-hp-1) 0%, var(--dnd5e-color-hp-2) 100%);
+  border-right: 3px solid var(--dnd5e-color-hp-3);
+  border-radius: 4px 0 0 4px;
+}
+
+.meter.hit-points .temp-positive .label :is(.max, .bonus) {
+  color: color-mix(in oklab, currentcolor, blue 25%);
+}
+
+.meter.hit-points .temp-negative .label :is(.max, .bonus) {
+  color: color-mix(in oklab, currentcolor, red 25%);
+}
+
+.meter.strain .progress::before {
+  background: linear-gradient(to right, var(--dnd5e-color-hd-1) 0%, var(--dnd5e-color-hd-2) 100%);
+  border-right: 3px solid var(--dnd5e-color-hd-3);
+  border-radius: 4px 0 0 4px;
+}
+
+.meter.strain .temp-positive .label :is(.max, .bonus) {
+  color: color-mix(in oklab, currentcolor, blue 25%);
+}
+
+.meter.strain .temp-negative .label :is(.max, .bonus) {
+  color: color-mix(in oklab, currentcolor, red 25%);
+}
+
+.meter.sectioned input {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border: none;
+  font-weight: bold;
+  background: none;
+  color: #fff;
+}
+
+.meter.sectioned input:hover,
+.meter.sectioned input:focus {
+  box-shadow: 0 0 8px var(--primary-color);
+}
+
+.meter.sectioned>div {
+  height: 100%;
+}
+
+.meter.sectioned>.progress {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.meter.sectioned>.progress>input {
+  position: relative;
+}
+
+.meter.sectioned>.tmp {
+  flex: none;
+  width: 50px;
+  border-left: 1px dashed var(--primary-color);
+}
+
+.meter.sectioned>.tmp>input {
+  color: var(--secondary-color);
+}
+
+@media (prefers-contrast: more) {
+  .meter.sectioned>.tmp>input::placeholder {
+    color: #fff;
+  }
+}
+
+/**
+* ACTOR SHEET LAYOUT - NEW 1
+*/
+.swnr-space-magic-actor-sheet .window-content {
+  padding:0;
+}
+/**
+  ACTOR SHEET LAYOUT - NEW 1 - HEADER
+*/
+.swnr-space-mage-theme-layout-new1 .swnr-mage-actor-header {
+  padding:.5rem;
+}
+
+.swnr-space-mage-theme-layout-new1 .swnr-mage-actor-header .swnr-mage-actor-header-title {
+  width: 100%;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-mage-actor-header .swnr-mage-actor-header-name-form {
+  width: 100%;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-mage-actor-header .swnr-mage-actor-header-name {
+  background: transparent;
+  border:none;
+  border-radius: 0;
+  font-size: 3rem;
+  overflow: visible;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-mage-actor-header .swnr-mage-actor-header-name-form .swnr-mage-actor-header-name-save-btn {
+  display:none;
+  flex:none;
+  max-width:6rem;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-mage-actor-header .swnr-mage-actor-header-name-form.dirty .swnr-mage-actor-header-name-save-btn {
+  display:block;
+}
+/**
+  ACTOR SHEET LAYOUT - NEW 1 - SIDEBAR
+*/
+.swnr-space-mage-theme-layout-new1 .swnr-space-mage-actor-sheet-sidebar {
+  padding: .5rem;
+  width: 23rem;
+}
+
+.swnr-space-mage-theme-layout-new1 .swnr-space-mage-actor-sheet-sidebar .swnr-space-magic-actor-sheet-sidebar-panel {
+  position:relative;
+  margin-top: 2rem;
+  padding: .5rem;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-actor-picture {
+  position:relative;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-actor-picture img {
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  opacity:0;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-actor-picture svg {
+  width: 100%;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-actor-picture svg path {
+  fill: var(--primary-color);
+}
+
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-actor-sheet-sidebar-stats {
+  display:flex;
+  justify-content: space-between;
+  align-items: stretch;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-actor-sheet-sidebar-stat {
+  width:25%;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-actor-sheet-sidebar-stat-title {
+  font-size: .85rem;
+  line-height: 1.5;
+  text-align:center;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-actor-sheet-sidebar-stat-content {
+  font-size: 1.25rem;
+  padding:.5rem;
+  text-align:center;
+}
+
+/**
+  ACTOR SHEET LAYOUT - NEW 1 - MAIN NAV
+*/
+.swnr-space-magic-actor-sheet-main-nav {
+  position: absolute;
+  top:5rem;
+  left:calc(100% - .5rem);
+  display:flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.25rem;
+  z-index:-1;
+}
+
+.swnr-space-magic-actor-sheet-main-nav .item {
+  position:relative;
+  width:3rem;
+  background: var(--swnr-mage-body-bg);
+  border:1px solid var(--primary-color);
+  border-left:none;
+  color: var(--primary-color);
+  display:flex;
+  line-height:1rem;
+  font-size:1rem;
+  height:2rem;
+  justify-content: flex-end;
+  padding-right:.5rem;
+  align-items: center;
+  transition: all .2s linear;
+}
+
+.swnr-space-magic-actor-sheet-main-nav .item:hover,
+.swnr-space-magic-actor-sheet-main-nav .item.active {
+  left:.5rem;
+}
+
+/**
+  ACTOR SHEET STYLE - DECO
+*/
+.swnr-space-mage-theme-style-deco {
+  font-family: 'Jost', sans-serif;
+  background-color: var(--swnr-mage-body-bg);
+  background-image: url(assets/images/dark-rock-wall-seamless-texture-free-105.png);
+  background-position: top left;
+  background-size: 30rem;
+}
+.swnr-space-mage-theme-style-deco .swnr-mage-actor-header .swnr-mage-actor-header-name {
+  font-family: 'PoiretOne', sans-serif;
+}
+.swnr-space-mage-theme-style-deco .swnr-mage-actor-header .swnr-mage-actor-header-title .swnr-mage-actor-header-subtitle {
+  font-weight:200;
+  color: var(--primary-color);
+  margin-top:-.5rem;
+}
+
+.swnr-space-mage-theme-style-deco .swnr-space-mage-actor-sheet-sidebar {
+  background-image: url(assets/images/art-deco-seamless-pattern-design_1319-778.png);
+  background-size: 200%;
+  background-position: center top;
+  border-right: 1px solid var(--primary-color);
+}
+
+.swnr-space-mage-theme-style-deco .swnr-space-mage-actor-sheet-sidebar .swnr-space-magic-actor-sheet-sidebar-panel {
+  border: 1px solid var(--primary-color);
+  background-color: var(--swnr-mage-body-bg);
+  background-image: url(assets/images/dark-rock-wall-seamless-texture-free-105.png);
+  background-position: top left;
+  background-size: 30rem;
+}
+
+.swnr-space-mage-theme-style-deco .swnr-space-magic-actor-sheet-sidebar-stats {
+  position:relative;
+  top:-2rem;
+  width:100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  margin-bottom: -1.5rem;
+}
+
+.swnr-space-mage-theme-style-deco .swnr-space-magic-actor-sheet-sidebar-stat {
+  border:1px solid var(--primary-color);
+  box-shadow: 0 8px 5px rgba(0, 0, 0, .75)
+}
+
+.swnr-space-mage-theme-style-deco .swnr-space-magic-actor-sheet-sidebar-stat-title {
+  background: var(--primary-color);
+  color: var(--primary-color-text);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.swnr-space-mage-theme-style-deco .swnr-space-magic-actor-sheet-sidebar-stat-content {
+  font-weight: 300;
+  background-color: var(--swnr-mage-body-bg);
+  background-image: url(assets/images/dark-rock-wall-seamless-texture-free-105.png);
+  background-position: top left;
+}
+
+
+
+
+
+

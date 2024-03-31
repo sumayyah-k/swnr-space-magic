@@ -1,0 +1,26 @@
+<header class="swnr-mage-actor-header">
+  <div class="flex items-center">
+    <div class="swnr-mage-actor-header-title">
+      <div class="swnr-mage-actor-header-name-form">
+        <div
+          contenteditable
+          class="swnr-mage-actor-header-name"
+        >{{actor.name}}</div>
+        <button type="button" class="swnr-mage-actor-header-name-save-btn swnr-mage-btn">Save</button>
+      </div>
+      <div class="swnr-mage-actor-header-subtitle">
+        {{actor.data.data.class}} {{ actor.data.data.level.value}}
+      </div>
+    </div>
+    <div class="flex-col ml-2">
+      <div class="flex flex-row items-center center text-xl">
+        <a class="rest-button px-2.5" title='{{localize 'swnr.sheet.rest'}}'>
+          <i class="fas fa-bed"></i>
+        </a>
+        <a class="scene-button px-2.5" title='{{localize 'swnr.sheet.scene'}}'>
+          <i class="fas fa-hourglass-end"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>

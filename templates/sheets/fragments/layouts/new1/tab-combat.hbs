@@ -1,0 +1,246 @@
+<div class="tab combat" data-group="primary" data-tab="combat">
+  <!-- SAVING THROWS -->
+  <div class="saves col-span-4 flex-shrink-0 flex flex-row justify-between py-1 flex-wrap gap-2">
+    <div data-save-type="physical" class="save sheet-button gap-2">
+      v{{actor.data.data.save.physical}} {{localize
+      'swnr.sheet.saves.physical'}}
+      <i class="fas fa-dice-d20"></i>
+    </div>
+    <div data-save-type="evasion" class="save sheet-button gap-2">
+      v{{actor.data.data.save.evasion}} {{localize 'swnr.sheet.saves.evasion'}}
+      <i class="fas fa-dice-d20"></i>
+    </div>
+    <div data-save-type="mental" class="save sheet-button gap-2">
+      v{{actor.data.data.save.mental}} {{localize 'swnr.sheet.saves.mental'}}
+      <i class="fas fa-dice-d20"></i>
+    </div>
+    {{#if useHomebrewLuckSave}}
+    <div data-save-type="luck" class="save sheet-button gap-2">
+      v{{actor.data.data.save.luck}} {{localize 'swnr.sheet.saves.luck'}}
+      <i class="fas fa-dice-d20"></i>
+    </div>
+    {{/if}}
+  </div>
+
+  <!-- QUICK SKILLS -->
+  <div class="saves col-span-4 flex-shrink-0 flex flex-row justify-between py-1 flex-wrap gap-2">
+    <div class="gap-2">
+      {{>
+      "systems/swnr/templates/actors/fragments/quick-skill.html" quickskill=actor.data.data.tweak.quickSkill1
+      skills=itemTypes.skill
+      type=actor.type actor=actor}}
+    </div>
+    <div class="gap-2">
+      {{>
+      "systems/swnr/templates/actors/fragments/quick-skill.html" quickskill=actor.data.data.tweak.quickSkill2
+      skills=itemTypes.skill
+      type=actor.type actor=actor}}
+    </div>
+    <div class="gap-2">
+      {{>
+      "systems/swnr/templates/actors/fragments/quick-skill.html" quickskill=actor.data.data.tweak.quickSkill3
+      skills=itemTypes.skill
+      type=actor.type actor=actor}}
+    </div>
+  </div>
+
+  <div class="flex">
+    <!-- SKILLS COL -->
+    <div class="flex-col gap-2">
+      <div class="flex-col gap-3 min-w-full">
+        <h4 class="text-lg underline text-center">
+          {{localize 'swnr.sheet.tabs.skills'}}
+        </h4>
+        <div class="grid grid-cols-3 ">
+          <div>
+            {{#each itemTypes.skill as |item id|}}
+            {{#if (halfway @root.itemTypes.skill @index)}}
+
+          </div>
+          <div>
+            {{/if}}
+            <div data-item-id="{{item.id}}" class="skill p-0.5 pr-3 skillRoll
+              {{#if (mod2 @index) }}
+              bg-gray-600
+              {{/if}}
+              ">
+              <a class="inline-flex flex-wrap gap-2">
+                <i class="fas fa-dice-d20"></i>
+                {{zeroWidthBreaker item.name}}
+                {{numberFormat item.data.data.rank decimals=0 sign=true}}
+              </a>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex min-w-full">
+    <!-- EFFORT COL -->
+    <div class="flex-col w-1/3">
+      <!-- EFFORT -->
+      <div class="flex-col flex gap-1">
+        <div class="flex flexrow">
+          <div class="flex gap-1 items-center">
+            <div>
+              <h3>{{localize 'swnr.effort.title'}} {{actor.data.data.effort.value}}/{{actor.data.data.effort.max}}</h3>
+            </div>
+            <div class="bg-purple-300 border border-purple-900 w-full rounded-full h-4 overflow-hidden">
+              <div class="bg-purple-500 h-full rounded-full"
+                style="width: min(calc(100% * {{actor.data.data.effort.value}}/{{actor.data.data.effort.max}}));"></div>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2"> <!--lg:flex-row-->
+          <div class="flex flex-col">
+            <label for="data.effort.bonus">
+              {{localize 'swnr.effort.bonus'}}:
+            </label>
+            <input
+              class="w-10 text-center px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-blue-800 placeholder-opacity-75 rounded-md"
+              type="number" step="1" name="data.effort.bonus" value="{{actor.data.data.effort.bonus}}" data-dtype="Number" />
+          </div>
+          <div class="flex flex-col">
+
+            <label for="data.effort.current">
+              {{localize 'swnr.effort.current'}}:
+            </label>
+            <input
+              class="w-10 text-center px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-blue-800 placeholder-opacity-75 rounded-md"
+              type="number" min="0" step="1" max="{{concat data.effort.current data.effort.value}}" name="data.effort.current"
+              value="{{actor.data.data.effort.current}}" data-dtype="Number" />
+          </div>
+          <div class="flex flex-col">
+            <label for="data.effort.scene">
+              {{localize 'swnr.effort.scene'}}:
+            </label>
+            <input
+              class="w-10 text-center px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-blue-800 placeholder-opacity-75 rounded-md"
+              type="number" min="0" step="1" max="{{concat data.effort.scene data.effort.value}}" name="data.effort.scene"
+              value="{{actor.data.data.effort.scene}}" data-dtype="Number" />
+          </div>
+          <div class="flex flex-col">
+            <label for="data.effort.day">{{localize 'swnr.effort.day'}}:
+            </label>
+            <input
+              class="w-10 text-center px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-blue-800 placeholder-opacity-75 rounded-md"
+              type="number" min="0" step="1" max="{{concat data.effort.day data.effort.value}}" name="data.effort.day"
+              value="{{actor.data.data.effort.day}}" data-dtype="Number" />
+          </div>
+        </div>
+      </div>
+      <!-- EXTRA EFFORT -->
+      {{#if actor.data.data.tweak.extraEffortName}}
+      <div class="flex-col flex gap-1">
+        <div class="flex flexrow">
+          <div class="flex gap-1 items-center">
+            <div>
+              <h3>{{ actor.data.data.tweak.extraEffortName }} {{localize 'swnr.effort.title'}}
+                {{actor.data.data.tweak.extraEffort.value}}/{{actor.data.data.tweak.extraEffort.max}}
+            </div>
+            <div class="bg-purple-300 border border-purple-900 w-full rounded-full h-4 overflow-hidden">
+              <div class="bg-purple-500 h-full rounded-full"
+                style="width: min(calc(100% * {{actor.data.data.tweak.extraEffort.value}}/{{actor.data.data.tweak.extraEffort.max}}));">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-row  gap-1"> <!--lg:flex-row-->
+          <div>
+            <label for="data.tweak.extraEffort.max">
+              {{localize 'swnr.effort.max'}}:
+            </label>
+            <input
+              class="w-10 text-center px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-blue-800 placeholder-opacity-75 rounded-md"
+              type="number" step="1" name="data.tweak.extraEffort.max" value="{{actor.data.data.tweak.extraEffort.max}}"
+              data-dtype="Number" />
+          </div>
+          <div>
+            <label for="data.tweak.extraEffort.bonus">
+              {{localize 'swnr.effort.bonus'}}:
+            </label>
+            <input
+              class="w-10 text-center px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-blue-800 placeholder-opacity-75 rounded-md"
+              type="number" step="1" name="data.tweak.extraEffort.bonus" value="{{actor.data.data.tweak.extraEffort.bonus}}"
+              data-dtype="Number" />
+          </div>
+          <div>
+            <label for="data.tweak.extraEffort.current">
+              {{localize 'swnr.effort.current'}}:
+            </label>
+            <input
+              class="w-10 text-center px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-blue-800 placeholder-opacity-75 rounded-md"
+              type="number" min="0" step="1" max="{{concat data.tweak.extraEffort.current data.tweak.extraEffort.value}}"
+              name="data.tweak.extraEffort.current" value="{{actor.data.data.tweak.extraEffort.current}}"
+              data-dtype="Number" />
+          </div>
+        </div>
+        <div class="flex flex-row  gap-1"> <!--lg:flex-row-->
+
+          <div>
+            <label for="data.tweak.extraEffort.scene">
+              {{localize 'swnr.effort.scene'}}:
+            </label>
+            <input
+              class="w-10 text-center px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-blue-800 placeholder-opacity-75 rounded-md"
+              type="number" min="0" step="1" max="{{concat data.tweak.extraEffort.scene data.tweak.extraEffort.value}}"
+              name="data.tweak.extraEffort.scene" value="{{actor.data.data.tweak.extraEffort.scene}}" data-dtype="Number" />
+          </div>
+          <div>
+            <label for="data.tweak.extraEffort.day">{{localize 'swnr.effort.day'}}:
+            </label>
+            <input
+              class="w-10 text-center px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-blue-800 placeholder-opacity-75 rounded-md"
+              type="number" min="0" step="1" max="{{concat data.tweak.extraEffort.day data.tweak.extraEffort.value}}"
+              name="data.tweak.extraEffort.day" value="{{actor.data.data.tweak.extraEffort.day}}" data-dtype="Number" />
+          </div>
+        </div>
+      </div>
+      {{/if}}
+    </div>
+    <!-- READIED WEAPON COL -->
+    <div class="flex-col w-1/3 mx-3">
+      <h4 class="text-lg underline">
+        {{localize 'swnr.item.locationReadied'}} {{localize 'swnr.sheet.tabs.weapons'}}
+      </h4>
+      <div class="space-y-2">
+        {{#each itemTypes.weapon as |item id|}}
+        {{#if (eq item.data.data.location "readied")}}
+        {{>
+        "systems/swnr/templates/actors/fragments/weapon.html" item=item
+        damageBonus=(getPCStatModForWeapon actor item true)
+        hitBonus=(concat actor.data.data.ab (getPCStatModForWeapon actor item false))
+        type=actor.type actor=actor}}
+        {{/if}}
+        {{/each}}
+      </div>
+    </div>
+    <!-- READIED ARMOR COL -->
+    <div class="flex-col w-1/3">
+      <h4 class="text-lg underline">
+        {{localize 'swnr.item.locationReadied'}} {{localize 'swnr.sheet.tabs.armor'}}
+      </h4>
+      {{#if actor.data.data.settings.useTrauma}}
+      ({{localize 'swnr.sheet.traumaTarget'}}: {{actor.data.data.modifiedTraumaTarget}})
+      {{/if}}
+      {{#if actor.data.data.settings.useCWNArmor}}
+      ({{localize 'swnr.armor.soak.label'}} Total:
+      {{actor.data.data.soakTotal.value}}/{{actor.data.data.soakTotal.max}} )
+      {{/if}}
+
+      <div class="flex flex-col">
+
+        {{#each itemTypes.armor as |item id|}}
+        {{#if (eq item.data.data.location "readied")}}
+
+        {{>
+        "systems/swnr/templates/actors/fragments/armor.html" item=item
+        type=actor.type}}
+        {{/if}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>

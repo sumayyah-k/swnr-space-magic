@@ -1,64 +1,117 @@
-<form class="{{cssClass}} -m-2 p-2 form-sheet">
+{{#swnr-space-magic-if-equals theme.layout 'new1'}}
+<nav class="pc-sheet-tabs tabs swnr-space-magic-actor-sheet-main-nav" data-group="primary">
+  <a class="item" data-tab="combat" data-tooltip="{{localize 'swnr.sheet.tabs.combat'}}">
+    <i class="fa fa-person-rifle"></i>
+  </a>
+  <a class="item" data-tab="inventory" data-tooltip="{{localize 'swnr.sheet.tabs.inventory'}}">
+    <i class="fa fa-suitcase"></i>
+  </a>
+  <a class="item" data-tab="skills" data-tooltip="{{localize 'swnr.sheet.tabs.skills'}}">
+    <i class="fa fa-kitchen-set"></i>
+  </a>
+  <a class="item" data-tab="powers" data-tooltip="{{localize 'swnr.sheet.tabs.powers'}}">
+    <i class="fa fa-bolt-lightning"></i>
+  </a>
+  {{#if showMagicTab}}
+  <a class="item" data-tab="magic" data-tooltip="Magic">
+    <i class="fa fa-hand-sparkles"></i>
+  </a>
+  {{/if}}
+  <a class="item" data-tab="stats" data-tooltip="{{localize 'swnr.sheet.tabs.stats'}}">
+    <i class="fa fa-person-hiking"></i>
+  </a>
+  <a class="item" data-tab="biography" data-tooltip="{{localize 'swnr.sheet.tabs.biography'}}">
+    <i class="fa fa-feather"></i>
+  </a>
+</nav>
+{{/swnr-space-magic-if-equals}}
+<form
+  class="
+    {{#swnr-space-magic-if-not-equal theme.layout 'default'}}
+      swnr-space-mage-theme-layout-{{theme.layout}}
+      {{#if theme.style }}
+        swnr-space-mage-theme-style-{{theme.style}}
+      {{else}}
+        swnr-space-mage-theme-style-deco
+      {{/if}}
+    {{else}}
+      {{cssClass}}  p-2 form-sheet cq overflow-y-scroll relative cq:sm cq:md cq:lg cq:xl
+    {{/swnr-space-magic-if-not-equal}}
+  "
+>
   {{#if actor.limited}}
     {{>
     "systems/swnr/templates/actors/fragments/limited-sheet.html"
     actor=actor
     }}
   {{else}}
-  {{>
-  "systems/swnr/templates/actors/fragments/char/header.html"
-  actor=actor
-  }}
+  {{#swnr-space-magic-if-equals theme.layout 'default'}}
+    {{>
+    "systems/swnr/templates/actors/fragments/char/header.html"
+    actor=actor
+    }}
+  {{/swnr-space-magic-if-equals}}
   <div class="flex gap-2">
-    <div class="flex flex-col flex-shrink flex-wrap">
-      <div class="form-group swnr-mage-temp-hp">
-        <label for="data.health.temp">Temp HP</label>
-        <input type="number" step="1" name="data.health.temp" value="{{actor.data.data.health.temp}}" data-dtype="Number" min="0" />
-      </div>
+    {{#swnr-space-magic-if-equals theme.layout 'new1'}}
+      {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/sidebar.hbs" actor=actor}}
+    {{else}}
+      <div class="flex flex-col flex-shrink flex-wrap">
+        <div class="form-group swnr-mage-temp-hp">
+          <label for="data.health.temp">Temp HP</label>
+          <input type="number" step="1" name="data.health.temp" value="{{actor.data.data.health.temp}}" data-dtype="Number" min="0" />
+        </div>
         {{>
         "systems/swnr/templates/actors/fragments/char/sidebar.html"
         actor=actor
         }}
-    </div>
+      </div>
+    {{/swnr-space-magic-if-equals}}
+
 
     <div class="w-full">
-      <nav
-        {{!-- class="pc-sheet-tabs tabs py-1 flex flex-wrap gap-2 border-t border-b border-bgGray-900 border1 mb-1" --}}
-        class="pc-sheet-tabs tabs py-1 flex flex-wrap gap-2 border-t border-b border-l border-r border-blueGray-900 border0 mb-1 bg-blueGray-800 text-gray-100"
-        data-group="primary"
-      >
+      {{#swnr-space-magic-if-equals theme.layout 'new1'}}
+        {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/header.hbs" actor=actor}}
+      {{else}}
+        <nav
+          {{!-- class="pc-sheet-tabs tabs py-1 flex flex-wrap gap-2 border-t border-b border-bgGray-900 border1 mb-1" --}}
+          class="pc-sheet-tabs tabs py-1 flex flex-wrap gap-2 border-t border-b border-l border-r border-blueGray-900 border0 mb-1 bg-blueGray-800 text-gray-100"
+          data-group="primary"
+        >
 
-        <a class="item" data-tab="combat">
-          {{localize 'swnr.sheet.tabs.combat'}}
-        </a>
-        <a class="item" data-tab="inventory">
-          {{localize 'swnr.sheet.tabs.inventory'}}
-        </a>
-        <a class="item" data-tab="skills">
-          {{localize 'swnr.sheet.tabs.skills'}}
-        </a>
-        <a class="item" data-tab="powers">
-          {{localize 'swnr.sheet.tabs.powers'}}
-        </a>
-        {{#if showMagicTab}}
-        <a class="item" data-tab="magic">
-          Magic
-        </a>
-        {{/if}}
-        <a class="item" data-tab="stats">
-          {{localize 'swnr.sheet.tabs.stats'}}
-        </a>
-        <a class="item" data-tab="biography">
-          {{localize 'swnr.sheet.tabs.biography'}}
-        </a>
-      </nav>
+          <a class="item" data-tab="combat">
+            {{localize 'swnr.sheet.tabs.combat'}}
+          </a>
+          <a class="item" data-tab="inventory">
+            {{localize 'swnr.sheet.tabs.inventory'}}
+          </a>
+          <a class="item" data-tab="skills">
+            {{localize 'swnr.sheet.tabs.skills'}}
+          </a>
+          <a class="item" data-tab="powers">
+            {{localize 'swnr.sheet.tabs.powers'}}
+          </a>
+          {{#if showMagicTab}}
+          <a class="item" data-tab="magic">
+            Magic
+          </a>
+          {{/if}}
+          <a class="item" data-tab="stats">
+            {{localize 'swnr.sheet.tabs.stats'}}
+          </a>
+          <a class="item" data-tab="biography">
+            {{localize 'swnr.sheet.tabs.biography'}}
+          </a>
+        </nav>
+      {{/swnr-space-magic-if-equals}}
       <section class="sheet-body">
         {{>
          "systems/swnr/templates/actors/fragments/char/tab-bio.html" actor=actor
         }}
-        {{>
-         "systems/swnr/templates/actors/fragments/char/tab-combat.html" actor=actor
-        }}
+        {{#swnr-space-magic-if-equals theme.layout 'new1'}}
+          {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-combat.hbs" actor=actor}}
+        {{else}}
+          {{> "systems/swnr/templates/actors/fragments/char/tab-combat.html" actor=actor }}
+        {{/swnr-space-magic-if-equals}}
         {{>
          "systems/swnr/templates/actors/fragments/char/tab-inv.html" actor=actor
         }}
@@ -73,10 +126,11 @@
         {{>
          "systems/swnr/templates/actors/fragments/char/tab-skills.html" actor=actor
         }}
-
-        {{>
-         "systems/swnr/templates/actors/fragments/char/tab-stats.html" actor=actor
-        }}
+        {{#swnr-space-magic-if-equals theme.layout 'new1'}}
+          {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-stats.hbs" actor=actor}}
+        {{else}}
+          {{> "systems/swnr/templates/actors/fragments/char/tab-stats.html" actor=actor }}
+        {{/swnr-space-magic-if-equals}}
       </section>
     </div>
   </div>
