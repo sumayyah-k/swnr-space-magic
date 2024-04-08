@@ -140,6 +140,7 @@ export class SpellcastConfig extends FormApplication {
       "primary-factor": "potency",
       dicePool: mageInfo.gnosis.system.rank + 1,
       diceRoteQuality: false,
+      "base-mana-cost": 0,
       manaCost: 0,
       "spell-reach": [],
       reach: 0,
@@ -370,6 +371,8 @@ export class SpellcastConfig extends FormApplication {
       );
       defaultValues.reach += defaultValues.activeSpellReachPenalty;
     }
+
+    defaultValues.manaCost += defaultValues['base-mana-cost'];
 
     this.spellDurations = Spell.spellDurations;
     if (highestArcanum) {
