@@ -122,6 +122,7 @@
               <input
                 type="number"
                 name="{{flag}}-withstand-value"
+                class="magic-casting-panel-content-field"
                 value="{{defaultValues.withstand-value}}"
               />
             </div>
@@ -190,10 +191,10 @@
             {{#if defaultValues.freePotency}}
               <div>
                 Free Potency: {{ defaultValues.freePotency }}
-                {{#if defaultValues.withstand-value}}
-                  Potency after Withstand: {{defaultValues.effectivePotency}}
-                {{/if}}
               </div>
+            {{/if}}
+            {{#if defaultValues.withstand-value}}
+              <div>Potency after Withstand: {{defaultValues.effectivePotency}}</div>
             {{/if}}
             {{#if defaultValues.potency-advanced}}
               <div>+2 to withstand dispellation</div>

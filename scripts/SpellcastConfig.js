@@ -495,6 +495,11 @@ export class SpellcastConfig extends FormApplication {
       uncastable = true;
       castErrors.push('Dice pool cannot be lower than -5.');
     }
+    if (defaultValues.potency <= defaultValues["withstand-value"]) {
+      uncastable = true;
+      castErrors.push("Potency not high enough to overcome withstanding.");
+    }
+
 
     return {
       token,

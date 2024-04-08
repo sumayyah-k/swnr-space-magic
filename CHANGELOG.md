@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Restyled improvised casting button
+- Spells with potency equal or less than withstanding are uncastable
 
 ## [1.5.3] - 2024-03-23
 ## [1.5.2] - 2024-03-23 [YANKED]
