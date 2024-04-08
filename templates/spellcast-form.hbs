@@ -193,7 +193,7 @@
                 Free Potency: {{ defaultValues.freePotency }}
               </div>
             {{/if}}
-            {{#if defaultValues.withstand-value}}
+            {{#if defaultValues.totalWithstanding}}
               <div>Potency after Withstand: {{defaultValues.effectivePotency}}</div>
             {{/if}}
             {{#if defaultValues.potency-advanced}}
@@ -290,17 +290,34 @@
               >
             </div>
             {{#swnr-space-magic-if-contains defaultValues.range sympatheticRanges }}
-            <div class="form-group">
-              <label>Know subject's Sympathetic Name?</label>
-              <input
-                type="checkbox"
-                name="{{flag}}-know-sympathetic-name"
-                class="magic-casting-panel-content-field"
-                {{#if defaultValues.know-sympathetic-name }}
-                  checked="checked"
-                {{/if}}
-              >
-            </div>
+              <div class="form-group">
+                <label>Know subject's Sympathetic Name?</label>
+                <input
+                  type="checkbox"
+                  name="{{flag}}-know-sympathetic-name"
+                  class="magic-casting-panel-content-field"
+                  {{#if defaultValues.know-sympathetic-name }}
+                    checked="checked"
+                  {{/if}}
+                >
+              </div>
+              <div class="form-group">
+                <label>Sympathetic Strength</label>
+                <select name="{{flag}}-sympathetic-strength" class="magic-casting-panel-content-field">
+                  {{#each remoteWithstanding}}
+                  <option
+                    value="{{this.id}}"
+                    {{#swnr-space-magic-if-equals this.id ../defaultValues.sympathetic-strength}}
+                      selected="selected"
+                    {{/swnr-space-magic-if-equals}}
+                  >{{this.name}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              <div class="form-help">
+                {{defaultValues.sympatheticStrengthData.desc}}
+              </div>
+
             {{/swnr-space-magic-if-contains}}
             {{#swnr-space-magic-if-equals defaultValues.range 'aimed'}}
               <div>

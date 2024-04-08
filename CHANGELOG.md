@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Check for knowing a spell's subject's sympathetic name
   - Reach & mana cost
   - Cannot cast spells at sympathetic or temporal range without sympathetic yantra
+  - Choosing strength automatically adjusts withstanding
 
 ### Changed
 

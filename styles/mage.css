@@ -2,6 +2,8 @@
   --swnr-mage-body-bg: #222;
   --primary-color: #eedb5d;
   --primary-color-text: #333;
+  --text: #fff;
+  --text-muted: #adadad;
 }
 @font-face {
   font-family: "PoiretOne";
@@ -432,6 +434,10 @@
   accent-color: var(--primary-color);
   border-radius: 0;
 }
+.form-help {
+  font-size:.85em;
+  color: var(--text-muted);
+}
 /**
   BUTTONS
 */
@@ -560,7 +566,7 @@ button.swnr-mage-improvised-spellcasting-btn:hover:after {
 .swnr-mage-chat-roll-wrap .swnr-mage-chat-roll-dice-formula,
 .swnr-mage-chat-roll-wrap .swnr-mage-chat-roll-total-successes {
   background: var(--swnr-mage-body-bg);
-  color: #fff;
+  color: var(--text);
   padding: 0 .75rem;
   line-height: 2rem;
   font-weight:bold;
@@ -721,7 +727,7 @@ button.swnr-mage-improvised-spellcasting-btn:hover:after {
 .swnr-mta-collapse-title span {
   font-size:.75em;
   background: var(--swnr-mage-body-bg);
-  color: #fff;
+  color: var(--text);
   border-radius: 3px;
   padding:0 .35em;
   font-weight: normal;
@@ -744,7 +750,7 @@ ul.swnr-mage-info-list {
 
 .yantras-wrap .yantra-wrap .yantra-desc {
   font-size:.85em;
-  color: #adadad;
+  color: var(--text-muted);
 }
 
 .window-content fieldset.item-reach {
@@ -1034,7 +1040,7 @@ button.swnr-mage-btn:hover {
   border: none;
   font-weight: bold;
   background: none;
-  color: #fff;
+  color: var(--text);
 }
 
 .meter.sectioned input:hover,

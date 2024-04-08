@@ -55,6 +55,17 @@ export default class Spell {
     {id: "temporal", name: "Temporal Sympathy", advanced: true},
   ];
 
+  static remoteWithstanding = [
+    {id: "connected", type: "sympathetic", name: "Connected", withstandConnection: 5, withstandRange: 0, desc: "The two subjects are metaphysically one e.g. a mage and her familiar or soul stone. The connection is unassailable without Unmaking magic and casting using the connection is not Withstood."},
+    {id: "strong", type: "sympathetic", name: "Strong", withstandConnection: 3, withstandRange: 1, desc: "The two subjects are closely metaphysically linked; a woman and her lifelong spouse, a mage and his dedicated magical tool or an item she has imbued, a Legacy mentor and her student, best friends, parents, children, bodily samples (blood, locks of hair,) murder weapons."},
+    {id: "medium", type: "sympathetic", name: "Medium", withstandConnection: 2, withstandRange: 2, desc: "The two subjects are linked; a mage and her own spells, items marked with a mage’s Signature nimbus, friends, siblings, lovers, items of emotional significance like medals, wedding rings, a soldier’s weapon, or a sportswoman’s bat."},
+    {id: "weak", type: "sympathetic", name: "Weak", withstandConnection: 1, withstandRange: 3, desc: "The two subjects have barely touched one another metaphysically; the subjects of a mage’s spells, or items she has used as Yantras. Casual acquaintances, coworkers, replaceable belongings."},
+    {id: "unchanged", type: "temporal", name: "Unchanged", withstandConnection: 5, withstandRange: 0, desc: "The subject has not changed with intervening time. A sealed room left untouched, a diamond in the same setting, a person who has not spoken to anyone or been anywhere since the target time. The connection is unassailable without Unmaking magic and casting using the sympathy is not Withstood."},
+    {id: "strong", type: "temporal", name: "Strong", withstandConnection: 3, withstandRange: 1, desc: "The subject has not significantly changed; a person days later who has not changed physically, or hours after an injury, a street after hours of foot traffic or a building after days of habitation, a gun that has been fired."},
+    {id: "medium", type: "temporal", name: "Medium", withstandConnection: 2, withstandRange: 2, desc: "The subject has significantly changed; a mage before joining a Legacy, a person before a prolonged illness, an item that has been broken or built, a street after several businesses have changed, a building under new ownership."},
+    {id: "weak", type: "temporal", name: "Weak", withstandConnection: 1, withstandRange: 3, desc: "The subject is vastly different; a mage before her Awakening, an item before being imbued, a different building on the same lot, a ruin when it was new."},
+  ];
+
   static scales = [
     {id: "1", name: "1 subject, size 5, Arm's reach", advanced: false, dicePenalty: 0},
     {id: "2", name: "2 subjects, size 6, Small Room", advanced: false, dicePenalty: 2},
