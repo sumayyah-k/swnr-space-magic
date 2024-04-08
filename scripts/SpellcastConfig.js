@@ -142,6 +142,7 @@ export class SpellcastConfig extends FormApplication {
       diceRoteQuality: false,
       "base-mana-cost": 0,
       manaCost: 0,
+      strainCost: 0,
       "spell-reach": [],
       reach: 0,
       reachMax: 0,
@@ -340,6 +341,13 @@ export class SpellcastConfig extends FormApplication {
         } else if (reachOptions[r].variant == "addon") {
           defaultValues.arcanum.push(reachOptions[r].prereq.key);
         }
+        if (reachOptions[r].manaCost && parseInt(reachOptions[r].manaCost, 10)) {
+          defaultValues.manaCost += parseInt(reachOptions[r].manaCost, 10);
+        }
+        if (reachOptions[r].strainCost && parseInt(reachOptions[r].strainCost, 10)) {
+          defaultValues.strainCost += parseInt(reachOptions[r].strainCost, 10);
+        }
+
       }
     }
 
@@ -560,6 +568,7 @@ export class SpellcastConfig extends FormApplication {
     // Willpower bonus
     if (defaultValues["spend-willpower"]) {
       defaultValues.dicePool += 3;
+      defaultValues.strainCost += 1;
     }
 
     if (defaultValues["additional-reach"]) {
@@ -820,9 +829,11 @@ export class SpellcastConfig extends FormApplication {
     var doReload = false;
     var updateData = {data:{}};
 
-    if (this.calculatedValues['spend-willpower']) {
+    if (this.calculatedValues.strainCost) {
       doUpdate = true;
-      updateData.data.systemStrain = { value: actor.data.data.systemStrain.value + 1 };
+      updateData.data.systemStrain = {
+        value: actor.data.data.systemStrain.value + this.calculatedValues.strainCost
+      };
     }
 
     if (this.calculatedValues.manaCost) {

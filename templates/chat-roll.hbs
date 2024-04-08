@@ -53,7 +53,12 @@
       </tbody>
       <tfoot>
         <tr><th>Reach</th><td>{{ calculatedValues.reach }}/{{ calculatedValues.reachMax }}</td></tr>
-        <tr><th>Mana Cost</th><td>{{ calculatedValues.manaCost }}</td></tr>
+        {{#if calculatedValues.manaCost}}
+          <tr><th>Mana Cost</th><td>{{ calculatedValues.manaCost }}</td></tr>
+        {{/if}}
+        {{#if calculatedValues.strainCost}}
+          <tr><th>Strain Cost</th><td>{{ calculatedValues.strainCost }}</td></tr>
+        {{/if}}
         {{#swnr-space-magic-if-not-equal paradoxRoll null}}
           <tr><th>Paradox Dice</th><td>{{ calculatedValues.paradoxDice }}</td></tr>
           <tr><th>Containing Paradox</th><td>

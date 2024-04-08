@@ -599,6 +599,7 @@
             </td>
           <td></td>
         </tr>
+        {{#if defaultValues.manaCost}}
         <tr>
           <th>Mana</th>
           <td class="swnr-space-magic-field-numbers-wrap">
@@ -606,6 +607,16 @@
           </td>
           <td></td>
         </tr>
+        {{/if}}
+        {{#if defaultValues.strainCost}}
+        <tr>
+          <th>Strain</th>
+          <td class="swnr-space-magic-field-numbers-wrap">
+            {{defaultValues.strainCost}}
+          </td>
+          <td></td>
+        </tr>
+        {{/if}}
         {{#swnr-space-magic-if-not-equal defaultValues.paradoxDice null}}
 
           <tr>

@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Choosing strength automatically adjusts withstanding
 - Add base mana cost field to spellcasting form
 - Add mana cost field to spell items
+- Add mana and strain cost to spell reach and addon options
 
 ### Changed
 

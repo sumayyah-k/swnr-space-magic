@@ -797,6 +797,33 @@ ul.swnr-mage-info-list {
   color: var(--primary-color-text);
 }
 
+.window-content fieldset.item-reach .item-reach-costs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.window-content fieldset.item-reach .item-reach-costs .item-reach-costs-label {
+  padding:0 1rem;
+}
+.window-content fieldset.item-reach .item-reach-costs .item-reach-costs-fields-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.window-content fieldset.item-reach .item-reach-costs .item-reach-costs-fields-wrap .item-reach-costs-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.window-content fieldset.item-reach .item-reach-costs .item-reach-costs-fields-wrap .item-reach-costs-field label {
+  font-size: .8rem;
+}
+
+.window-content fieldset.item-reach .item-reach-costs .item-reach-costs-fields-wrap .item-reach-costs-field input {}
+
 .mta-power-tab {
   border:1px solid var(--primary-color);
   padding:.5rem;

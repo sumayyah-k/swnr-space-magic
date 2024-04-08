@@ -210,22 +210,33 @@
                     {{/swnr-space-magic-if-equals}}
                   />
                 </div>
-                {{else}}
-                <div class="form-group">
-                  <label>Reach Cost</label>
-                  <input
-                    type="text"
-                    name="flags.swnr-space-magic.reach[{{index}}].reachCost"
-                    value="{{reach.reachCost}}"
-                    data-index="{{index}}"
-                    data-field="reachCost"
-                    class="swnr-space-magic-reach-field"
-                    {{#swnr-space-magic-if-equals ../item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
-                      disabled="disabled"
-                    {{/swnr-space-magic-if-equals}}
-                  />
-                </div>
                 {{/swnr-space-magic-if-equals}}
+
+                <div class="item-reach-costs">
+                  <div class="item-reach-costs-label">Costs</div>
+                  <div class="item-reach-costs-fields-wrap">
+                    {{#swnr-space-magic-if-equals reach.variant 'reach'}}
+                      <div class="item-reach-costs-field">
+                        <label>Reach</label>
+                        <input type="text" name="flags.swnr-space-magic.reach[{{index}}].reachCost" value="{{reach.reachCost}}"
+                          data-index="{{index}}" data-field="reachCost" class="swnr-space-magic-reach-field" {{#swnr-space-magic-if-equals
+                          ../item.flags.swnr-space-magic.power-type 'mageActiveSpell' }} disabled="disabled" {{/swnr-space-magic-if-equals}} />
+                      </div>
+                    {{/swnr-space-magic-if-equals}}
+                    <div class="item-reach-costs-field">
+                      <label>Mana</label>
+                      <input type="text" name="flags.swnr-space-magic.reach[{{index}}].manaCost" value="{{reach.manaCost}}"
+                        data-index="{{index}}" data-field="manaCost" class="swnr-space-magic-reach-field" {{#swnr-space-magic-if-equals
+                        ../item.flags.swnr-space-magic.power-type 'mageActiveSpell' }} disabled="disabled" {{/swnr-space-magic-if-equals}} />
+                    </div>
+                    <div class="item-reach-costs-field">
+                      <label>Strain</label>
+                      <input type="text" name="flags.swnr-space-magic.reach[{{index}}].strainCost" value="{{reach.strainCost}}"
+                        data-index="{{index}}" data-field="strainCost" class="swnr-space-magic-reach-field" {{#swnr-space-magic-if-equals
+                        ../item.flags.swnr-space-magic.power-type 'mageActiveSpell' }} disabled="disabled" {{/swnr-space-magic-if-equals}} />
+                    </div>
+                  </div>
+                </div>
               </fieldset>
               {{/each}}
               {{#swnr-space-magic-if-not-equal ../item.flags.swnr-space-magic.power-type 'mageActiveSpell'}}
