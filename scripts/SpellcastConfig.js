@@ -160,6 +160,7 @@ export class SpellcastConfig extends FormApplication {
       "casting-time-turns": 1, //advanced only
       range: "touch",
       "range-advanced": false,
+      "know-sympathetic-name": false,
       rangeAimedDistances: {
         short: mageInfo.gnosis.system.rank * 10,
         med: mageInfo.gnosis.system.rank * 20,
@@ -464,6 +465,22 @@ export class SpellcastConfig extends FormApplication {
       defaultValues.reach++;
     }
 
+    // Range considerations
+    if (defaultValues["range-advanced"]) {
+      if (defaultValues.range == "remote") {
+        defaultValues.reach++;
+      }
+      if (
+        (defaultValues.range == "sympathetic" ||
+          defaultValues.range == "temporal")
+      ) {
+        defaultValues.manaCost++;
+        if (!defaultValues["know-sympathetic-name"]) {
+          defaultValues.reach++;
+        }
+      }
+    }
+
     //Paradox from reach
     if (defaultValues.reach > defaultValues.reachMax) {
       if (defaultValues.paradoxDice === null) {
@@ -500,7 +517,25 @@ export class SpellcastConfig extends FormApplication {
       uncastable = true;
       castErrors.push("Potency not high enough to overcome withstanding.");
     }
-
+    if (
+      defaultValues["range-advanced"] &&
+      (defaultValues.range == "sympathetic" ||
+        defaultValues.range == "temporal") &&
+      [
+        "materialSympathy",
+        "representationalSympathy",
+        "symbolicSympathy",
+      ].filter(function (val) {
+        return defaultValues.yantras.indexOf(val) !== -1;
+      }).length == 0
+    ) {
+      uncastable = true;
+      castErrors.push(
+        (defaultValues.range == "sympathetic"
+          ? "Sympathetic range"
+          : "Temporal sympathy") + " requires a sympathy yantra."
+      );
+    }
 
     return {
       token,
@@ -530,6 +565,7 @@ export class SpellcastConfig extends FormApplication {
       //Validation
       uncastable,
       castErrors,
+      sympatheticRanges: ["sympathetic", "temporal"],
     };
   }
 

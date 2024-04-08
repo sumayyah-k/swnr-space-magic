@@ -289,6 +289,19 @@
                 {{/if}}
               >
             </div>
+            {{#swnr-space-magic-if-contains defaultValues.range sympatheticRanges }}
+            <div class="form-group">
+              <label>Know subject's Sympathetic Name?</label>
+              <input
+                type="checkbox"
+                name="{{flag}}-know-sympathetic-name"
+                class="magic-casting-panel-content-field"
+                {{#if defaultValues.know-sympathetic-name }}
+                  checked="checked"
+                {{/if}}
+              >
+            </div>
+            {{/swnr-space-magic-if-contains}}
             {{#swnr-space-magic-if-equals defaultValues.range 'aimed'}}
               <div>
                 Range: Short: {{defaultValues.rangeAimedDistances.short}}, Med: {{defaultValues.rangeAimedDistances.med}}, Long: {{defaultValues.rangeAimedDistances.long}}, Max: {{defaultValues.rangeAimedDistances.max}}

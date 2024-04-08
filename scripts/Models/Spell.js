@@ -50,7 +50,9 @@ export default class Spell {
     {id: "touch", name: "Self/Touch", advanced: false},
     {id: "aimed", name: "Aimed", advanced: false},
     {id: "sensory", name: "Sensory", advanced: true},
-    {id: "remote", name: "Remote Viewed", advanced: true},
+    {id: "remote", name: "Remote Viewed (Live Camera Feed, Scrying, Etc.)", advanced: true},
+    {id: "sympathetic", name: "Sympathetic Range", advanced: true},
+    {id: "temporal", name: "Temporal Sympathy", advanced: true},
   ];
 
   static scales = [

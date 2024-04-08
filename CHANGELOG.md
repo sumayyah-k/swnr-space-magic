@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added whole new theme for the actor sheet that can be chosen from the Theme button in the title bar
 - Added 8 again, 9 again, and rote roll toggles to spellcasting form
+- Sympathetic range support in spellcasting
+  - Check for knowing a spell's subject's sympathetic name
+  - Reach & mana cost
+  - Cannot cast spells at sympathetic or temporal range without sympathetic yantra
 
 ### Changed
 
