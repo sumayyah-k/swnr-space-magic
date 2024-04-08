@@ -276,6 +276,17 @@ export class SpellcastConfig extends FormApplication {
       if (
         this.spell.getFlag(
           MageMagicAddon.ID,
+          MageMagicAddon.FLAGS.SPELL_MANA_COST
+        )
+      ) {
+        defaultValues["base-mana-cost"] = this.spell.getFlag(
+          MageMagicAddon.ID,
+          MageMagicAddon.FLAGS.SPELL_MANA_COST
+        );
+      }
+      if (
+        this.spell.getFlag(
+          MageMagicAddon.ID,
           MageMagicAddon.FLAGS.MTA_SPELL_REACH
         )
       ) {
