@@ -129,6 +129,7 @@ export class SpellcastConfig extends FormApplication {
       name: "spell",
       arcanum: [],
       chosenArcanum: [],
+      "roll-style": "10-again",
       withstand: null,
       "withstand-value": 0,
       "casting-method": "improvised",
@@ -550,11 +551,29 @@ export class SpellcastConfig extends FormApplication {
     if (this.calculatedValues.dicePool < 1) {
       r = new Roll("1d10cs=8", {dicePool: 1});
       isChanceDie = true;
-    } else if (this.calculatedValues.diceRoteQuality) {
-      r = new Roll(this.calculatedValues.dicePool + "d10xo<8x10cs>=8", {dicePool: this.calculatedValues.dicePool});
+    } else if (
+      this.calculatedValues.diceRoteQuality ||
+      this.calculatedValues['roll-style'] == 'rote'
+    ) {
+      r = new Roll(this.calculatedValues.dicePool + "d10xo<8x10cs>=8", {
+        dicePool: this.calculatedValues.dicePool,
+      });
     } else {
+      var explode = 10;
+      switch (this.calculatedValues["roll-style"]) {
+        case "8-again":
+          explode = 8;
+          break;
+        case "9-again":
+          explode = 9;
+          break;
+        default:
+          break;
+      }
       //pg212
-      r = new Roll(this.calculatedValues.dicePool + "d10x10cs>=8", {dicePool: this.calculatedValues.dicePool});
+      r = new Roll(this.calculatedValues.dicePool + "d10x>=" + explode + "cs>=8", {
+        dicePool: this.calculatedValues.dicePool,
+      });
     }
 
     if (this.calculatedValues.paradoxDice !== null){

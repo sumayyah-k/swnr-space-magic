@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added whole new theme for the actor sheet that can be chosen from the Theme button in the title bar
+- Added 8 again, 9 again, and rote roll toggles to spellcasting form
 
 ### Changed
 

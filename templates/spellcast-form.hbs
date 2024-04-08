@@ -472,7 +472,7 @@
       <table>
         <tr>
           <th>Dice Pool</th>
-          <td>
+          <td class="swnr-space-magic-field-numbers-wrap">
             {{#swnr-space-magic-if-lt defaultValues.dicePool -5}}
               Uncastable
             {{else}}
@@ -486,25 +486,94 @@
               <span class="magic-casting-badge">rote</span>
             {{/if}}
           </td>
+          <td class="swnr-space-magic-field-toggles-wrap">
+            <label class="swnr-space-magic-field-toggle">
+              <input
+                type="radio"
+                class="magic-casting-panel-content-field"
+                name="roll-style"
+                value="8-again"
+                {{#swnr-space-magic-if-equals defaultValues.roll-style "8-again"}}
+                  checked="checked"
+                {{/swnr-space-magic-if-equals}}
+                {{#swnr-space-magic-if-lte defaultValues.dicePool 0}}
+                  disabled="disabled"
+                {{/swnr-space-magic-if-lte}}
+              />
+              8 Again
+            </label>
+            <label class="swnr-space-magic-field-toggle">
+              <input
+                type="radio"
+                class="magic-casting-panel-content-field"
+                name="roll-style"
+                value="9-again"
+                {{#swnr-space-magic-if-equals defaultValues.roll-style "9-again"}}
+                  checked="checked"
+                {{/swnr-space-magic-if-equals}}
+                {{#swnr-space-magic-if-lte defaultValues.dicePool 0}}
+                  disabled="disabled"
+                {{/swnr-space-magic-if-lte}}
+              />
+              9 Again
+            </label>
+            <label class="swnr-space-magic-field-toggle">
+              <input
+                type="radio"
+                class="magic-casting-panel-content-field"
+                name="roll-style"
+                value="10-again"
+                {{#swnr-space-magic-if-equals defaultValues.roll-style "10-again"}}
+                  checked="checked"
+                {{/swnr-space-magic-if-equals}}
+                {{#swnr-space-magic-if-lte defaultValues.dicePool 0}}
+                  disabled="disabled"
+                {{/swnr-space-magic-if-lte}}
+              />
+              10 Again
+            </label>
+            <label class="swnr-space-magic-field-toggle">
+              <input
+                type="radio"
+                class="magic-casting-panel-content-field"
+                name="roll-style"
+                value="rote"
+                {{#swnr-space-magic-if-equals defaultValues.roll-style "rote"}}
+                  checked="checked"
+                {{/swnr-space-magic-if-equals}}
+                {{#swnr-space-magic-if-lte defaultValues.dicePool 0}}
+                  disabled="disabled"
+                {{/swnr-space-magic-if-lte}}
+              />
+              Rote
+            </label>
+          </td>
         </tr>
         <tr>
           <th>Reach</th>
-          <td>{{defaultValues.reach}}/{{defaultValues.reachMax}}</td>
+          <td class="swnr-space-magic-field-numbers-wrap">
+            {{defaultValues.reach}}/{{defaultValues.reachMax}}
+            </td>
+          <td></td>
         </tr>
         <tr>
           <th>Mana</th>
-          <td>{{defaultValues.manaCost}}</td>
+          <td class="swnr-space-magic-field-numbers-wrap">
+            {{defaultValues.manaCost}}
+          </td>
+          <td></td>
         </tr>
         {{#swnr-space-magic-if-not-equal defaultValues.paradoxDice null}}
 
           <tr>
             <th>Paradox Dice</th>
-            <td>
+            <td class="swnr-space-magic-field-numbers-wrap">
               {{defaultValues.paradoxDice}}
               {{#swnr-space-magic-if-lte defaultValues.paradoxDice 0}}
                 (Chance Die)
               {{/swnr-space-magic-if-lte}}
             </td>
+            <td></td>
           </tr>
         {{/swnr-space-magic-if-not-equal}}
       </table>

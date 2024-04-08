@@ -432,7 +432,9 @@
   accent-color: var(--primary-color);
   border-radius: 0;
 }
-
+/**
+  BUTTONS
+*/
 button.swnr-mage-improvised-spellcasting-btn {
   position:relative;
   margin-bottom: .5rem;
@@ -475,7 +477,40 @@ button.swnr-mage-improvised-spellcasting-btn:hover:before,
 button.swnr-mage-improvised-spellcasting-btn:hover:after {
   box-shadow: 0 0 1rem var(--primary-color),inset 0 0 1rem var(--primary-color);
 }
+/**
+ RADIOS THAT LOOK LIKE BUTTONS
+*/
+.swnr-space-magic-field-toggle {
+  position:relative;
+  border:1px solid var(--primary-color);
+  color: var(--primary-color);
+  font-size:.7rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  padding:0 .5rem;
+  border-radius: 3px;
+  margin-left: .25rem;
+  cursor: pointer;
+}
 
+.swnr-space-magic-field-toggle:has(input:disabled) {
+  opacity: .5;
+  cursor:not-allowed;
+}
+
+.swnr-space-magic-field-toggle:has(input:checked) {
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
+  font-weight: 500;
+}
+
+.swnr-space-magic-field-toggle input {
+  position: absolute;
+  opacity: 0;
+}
+/**
+  SPELLCASTING STAT
+*/
 .magic-casting-panel-content-stat {
   text-align: center;
   font-size: 2rem;
@@ -566,6 +601,23 @@ button.swnr-mage-improvised-spellcasting-btn:hover:after {
   background-color: maroon;
 }
 
+/**
+  SPELLCASTING SUMMARY TABLE
+*/
+.swnr-space-magic-summary-table {
+  table-layout: fixed;
+}
+.swnr-space-magic-field-numbers-wrap {
+  text-align:right
+}
+.swnr-space-magic-field-toggles-wrap {
+  text-align: right;
+  white-space: nowrap;
+  width: 17rem;
+}
+/**
+  SPELLCASTING ERRORS
+*/
 .magic-casting-panel-errors {
   list-style-type: none;
   margin:0;
