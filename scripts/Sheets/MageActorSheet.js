@@ -8,6 +8,9 @@ import Arcanum from "../Models/Arcanum.js";
 import Gnosis from "../Models/Gnosis.js";
 
 export default class MageActorSheet extends CharacterActorSheet {
+
+  activeMageSightArcana = [];
+
   static get defaultOptions() {
     const sup = super.defaultOptions;
     console.log("swnr-mage", "defaultOpts", sup, this.options);
@@ -194,21 +197,11 @@ export default class MageActorSheet extends CharacterActorSheet {
 
       //Update with chosen form values
       if (this.formData) {
-        console.log("swnr-mage", "formData", this.formData);
-        defaultValues["focused-mage-sight-arcanum"] =
-          this.formData["focused-mage-sight-arcanum"];
-        defaultValues["mage-sight-arcana"] = this.formData[
-          "mage-sight-arcana[]"
-        ].filter((i) => i);
+        defaultValues["focused-mage-sight-arcanum"] = this.formData["focused-mage-sight-arcanum"];
+        defaultValues["mage-sight-arcana"] = this.activeMageSightArcana;
       }
 
       //Active mage sight mana cost adjustments
-      console.log(
-        "swnr-mage",
-        "default Values",
-        defaultValues["mage-sight-arcana"]
-      );
-
       for (var a of defaultValues["mage-sight-arcana"]) {
         var arcanum = allArcana.find((i) => i.name == a);
         console.log("swnr-mage", "arcanum", arcanum);
@@ -218,7 +211,6 @@ export default class MageActorSheet extends CharacterActorSheet {
       }
     }
 
-    console.log("swnr-mage", "default Values", defaultValues, actor);
     this.calculatedValues = defaultValues;
 
     var themeDefaults = {
@@ -428,7 +420,7 @@ export default class MageActorSheet extends CharacterActorSheet {
     console.log("swnr-mage", formData);
     var arcana;
     if (formData) {
-      arcana = formData["mage-sight-arcana[]"];
+      arcana = formData["mage-sight-arcana"];
     }
 
     var actorArcana = new Arcanum(actor);
@@ -770,14 +762,18 @@ export default class MageActorSheet extends CharacterActorSheet {
       }
 
       case "focused-mage-sight-revelation": {
-        console.log("swnr-mage", 441, this.formData);
+        const formData = new FormData(html[2]);
+        const formVals = Object.fromEntries(formData);
+        this.calculatedValues['focused-mage-sight-arcanum'] = formVals['focused-mage-sight-arcanum'];
 
         this._handleFocusedRevelation(event, actor, this.formData);
         break;
       }
 
       case "focused-mage-sight-scrutiny": {
-        console.log("swnr-mage", 447, this.formData);
+        const formData = new FormData(html[2]);
+        const formVals = Object.fromEntries(formData);
+        this.calculatedValues["focused-mage-sight-arcanum"] = formVals["focused-mage-sight-arcanum"];
 
         this._handleFocusedScrutiny(event, actor, this.formData);
         break;
@@ -817,6 +813,24 @@ export default class MageActorSheet extends CharacterActorSheet {
     });
 
     html.on("change", ".input-mage-sight-arcana", (event) => {
+      const rawFormData = $(html[2]).serializeArray();
+      this.formData = rawFormData.reduce((acc, i) => {
+        var key = i.name;
+        var value = i.value;
+        if (i.name.substring(i.name.length - 2) == "[]") {
+          key = key.substring(0, key.length - 2);
+          if (!Array.isArray(acc[key])) {
+            acc[key] = new Array();
+          }
+          acc[key].push(i.value);
+        } else {
+          acc[key] = value;
+        }
+        return acc;
+      }, {});
+
+      this.activeMageSightArcana = this.formData["mage-sight-arcana"];
+
       this.render();
     });
 
@@ -826,9 +840,6 @@ export default class MageActorSheet extends CharacterActorSheet {
         console.log("swnr-mage", "doing the rerender", sheet);
         sheet.render();
       }
-    });
-    html.on("change", ".input-mage-sight-arcana", (event) => {
-      this.render();
     });
 
     html

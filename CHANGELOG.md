@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add mana cost field to spell items
 - Add mana and strain cost to spell reach and addon options
 
+### Fixed
+
+- Mage sight options weren't working
+
 ### Changed
 
 - Restyled improvised casting button
