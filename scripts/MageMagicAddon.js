@@ -21,6 +21,7 @@ export class MageMagicAddon {
     SPELL_ACTIVE_INFO: "active-info",
     SPELL_RELINQUISHED: "relinquished",
     SPELL_MANA_COST: "mana-cost",
+    SPELL_DMG_DICE: "damage-dice",
     //Items
     ITEM_POWER_TYPE: "power-type",
     MTA_SPELL_IS_YANTRA: "is-yantra",

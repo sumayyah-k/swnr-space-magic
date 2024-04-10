@@ -75,6 +75,7 @@ export default class MageItemSheet extends ItemSheet {
         practices: Spell.rankedPractices(null, true),
         activeInfo,
         isMtAwSpell,
+        diceSizes: Spell.diceSizes,
       },
     };
   }

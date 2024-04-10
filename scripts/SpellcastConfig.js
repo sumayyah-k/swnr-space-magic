@@ -288,6 +288,17 @@ export class SpellcastConfig extends FormApplication {
       if (
         this.spell.getFlag(
           MageMagicAddon.ID,
+          MageMagicAddon.FLAGS.SPELL_DMG_DICE
+        )
+      ) {
+        defaultValues["damage-dice"] = this.spell.getFlag(
+          MageMagicAddon.ID,
+          MageMagicAddon.FLAGS.SPELL_DMG_DICE
+        );
+      }
+      if (
+        this.spell.getFlag(
+          MageMagicAddon.ID,
           MageMagicAddon.FLAGS.MTA_SPELL_REACH
         )
       ) {
@@ -719,15 +730,7 @@ export class SpellcastConfig extends FormApplication {
       remoteWithstanding: Spell.remoteWithstanding.filter(
         (s) => s.type == defaultValues.range
       ),
-      diceSizes: [
-        { id: "none", name: "None" },
-        { id: "d4", name: "d4" },
-        { id: "d6", name: "d6" },
-        { id: "d8", name: "d8 (Bashing)" },
-        { id: "d10", name: "d10 (Lethal)" },
-        { id: "d12", name: "d12 (Aggravated)" },
-        { id: "d20", name: "d20" },
-      ],
+      diceSizes: Spell.diceSizes,
     };
   }
 
