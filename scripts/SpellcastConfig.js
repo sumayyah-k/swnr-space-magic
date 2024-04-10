@@ -306,14 +306,15 @@ export class SpellcastConfig extends FormApplication {
           MageMagicAddon.ID,
           MageMagicAddon.FLAGS.MTA_SPELL_REACH
         );
+        var reachArcanaOpts = arcana.getAll(true);
         for (var r of spellReachOpts) {
           r.disabled = false;
           if (r.variant == "addon") {
-            var arcanum = availableArcana.find((a) => a.name == r.prereq.key);
-            if (!arcanum || arcanum.rank < parseInt(r.prereq.dots, 10)) {
+            var arcanum = reachArcanaOpts.find((a) => a.id == r.prereq.key);
+            r.arcanum = arcanum;
+            if (!arcanum || (arcanum.id != 'any' && arcanum.rank < parseInt(r.prereq.dots, 10))) {
               r.disabled = true;
             }
-            console.log("swnr-mage", "addon check", r.prereq, availableArcana);
           }
           reachOptions.push(r);
         }

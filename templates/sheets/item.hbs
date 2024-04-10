@@ -204,8 +204,8 @@
                     {{/swnr-space-magic-if-equals}}
                   >
                     {{#select reach.prereq.key}}
-                    {{#each ../arcana as |arcanum|}}
-                    <option value="{{arcanum}}">{{arcanum}}</option>
+                    {{#each ../reachArcanaOpts as |arcanum|}}
+                    <option value="{{arcanum.id}}">{{arcanum.name}}</option>
                     {{/each}}
                     {{/select}}
                   </select>

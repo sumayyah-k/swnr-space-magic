@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add mana and strain cost to spell reach and addon options
 - Added CoD style rolls to the Combat tab that also support the SWNR method
 - Add Damage/Healing roll to spellcast form and spells
+- Add "Any Arcanum" option to spell addons
 
 ### Fixed
 

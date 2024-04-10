@@ -386,13 +386,21 @@
                         />
                         <strong>
                           {{#swnr-space-magic-if-equals reach.variant 'addon'}}
-                            {{reach.prereq.key}} {{reach.prereq.dots}}
+                            +{{reach.arcanum.name}} {{reach.prereq.dots}}
                           {{else}}
                             +{{reach.reachCost}} Reach:
                           {{/swnr-space-magic-if-equals}}
                         </strong>
                       </div>
-                      <div class="yantra-desc">{{{ reach.desc }}}</div>
+                      <div class="yantra-desc">
+                        {{#if reach.manaCost}}
+                        <p><strong>Cost: {{reach.manaCost}} Mana</strong></p>
+                        {{/if}}
+                        {{#if reach.strainCost}}
+                        <p><strong>Cost: {{reach.strainCost}} Strain</strong></p>
+                        {{/if}}
+                        {{{ reach.desc }}}
+                      </div>
                     </label>
                   {{/each}}
                 </div>

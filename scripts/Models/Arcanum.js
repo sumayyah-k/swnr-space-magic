@@ -26,7 +26,7 @@ export default class Arcanum {
     }
   }
 
-  getAll() {
+  getAll(allArcanumOption) {
     var arcana = this.actor.items.contents.filter((i) =>
       this.names.indexOf(i.name) != -1
     );
@@ -43,6 +43,15 @@ export default class Arcanum {
       }, ...data};
     });
 
+    if (allArcanumOption == true) {
+      arcana = [
+        ...[{
+          id: 'any',
+          name: 'Any Arcanum',
+        }],
+        ...arcana
+      ]
+    }
     return arcana;
   }
 }

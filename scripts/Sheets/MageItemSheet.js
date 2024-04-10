@@ -21,7 +21,7 @@ export default class MageItemSheet extends ItemSheet {
 
   async getData(options) {
     const context = super.getData();
-    const arcanum = new Arcanum(null);
+    const arcanum = new Arcanum(this.actor);
 
     var activeInfo = this.object.getFlag(
       MageMagicAddon.ID,
@@ -72,6 +72,7 @@ export default class MageItemSheet extends ItemSheet {
           { value: "attainment", label: "Attainment" },
         ],
         arcana: arcanum.names,
+        reachArcanaOpts: arcanum.getAll(true),
         practices: Spell.rankedPractices(null, true),
         activeInfo,
         isMtAwSpell,
