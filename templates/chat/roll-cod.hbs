@@ -1,0 +1,39 @@
+<div class="dice-roll swnr-mage-chat-roll-wrap">
+  <div class="swnr-mage-chat-roll-content">
+  <div class="dice-result">
+    <h4 class="swnr-mage-chat-roll-section-title">Skill Check</h4>
+    <h5 class="swnr-mage-chat-roll-section-subtitle">{{rollSkills}}</h5>
+    <div class="dice-tooltip" style="display: none;">
+      <div class="dice-formula swnr-mage-chat-roll-dice-formula">{{r.formula}}</div>
+      <section class="tooltip-part">
+        <div class="dice">
+          <ol class="dice-rolls">
+            {{#each r.dice as |dice|}}
+            {{#each dice.results as |roll|}}
+            <li class="roll die d10
+                  {{#if roll.success}}success{{/if}}
+                  {{#if roll.exploded}}exploded{{/if}}
+                  ">{{roll.result}}</li>
+            {{/each}}
+            {{/each}}
+          </ol>
+        </div>
+      </section>
+    </div>
+    <h4 class="dice-total swnr-mage-chat-roll-total-successes swnr-mage-chat-roll-result-{{successType}}">
+      {{#swnr-space-magic-if-equals successType 'exceptional'}}
+      Exceptional Success
+      {{/swnr-space-magic-if-equals}}
+      {{#swnr-space-magic-if-equals successType 'success'}}
+      Successful
+      {{/swnr-space-magic-if-equals}}
+      {{#swnr-space-magic-if-equals successType 'failure'}}
+      Failure
+      {{/swnr-space-magic-if-equals}}
+      {{#swnr-space-magic-if-equals successType 'dramafail'}}
+      Dramatic Failure to Cast
+      {{/swnr-space-magic-if-equals}}
+      <small>Successes: {{r.result}}</small>
+    </h4>
+  </div>
+</div>

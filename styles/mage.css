@@ -650,7 +650,7 @@ button.swnr-mage-improvised-spellcasting-btn:hover:after {
   opacity:.5;
 }
 
-.swnr-mage-chat-roll-section-title {
+.swnr-mage-chat-roll-section-title, .swnr-mage-chat-roll-section-subtitle {
   text-align: center;
   font-size: 1.2rem;
   font-weight: bold;
@@ -660,6 +660,9 @@ button.swnr-mage-improvised-spellcasting-btn:hover:after {
   justify-content: center;
   margin: 0;
   height: 1.5rem;
+}
+.swnr-mage-chat-roll-section-subtitle {
+  font-size: 1.1rem;
 }
 
 .swnr-mage-chat-roll-wrap .dice-result {
@@ -1231,6 +1234,123 @@ button.swnr-mage-btn:hover {
   left:.5rem;
 }
 
+/**
+  ACTOR SHEET LAYOUT - NEW 1 - COMBAT TAB
+*/
+
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-stats {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  width:100%;
+  margin: .5rem 0;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-stats .swnr-space-magic-combat-tab-skill {
+  display: flex;
+  flex-direction: column;
+  border:1px solid var(--primary-color);
+  text-align:center;
+  width:5rem;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 1);
+  transition: all .4s linear;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-stats .swnr-space-magic-combat-tab-skill label {
+  background: var(--primary-color);
+  color: var(--primary-color-text);
+  position:relative;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-stats .swnr-space-magic-combat-tab-skill label input {
+  position: absolute;
+  opacity:0;
+  pointer-events: none;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-stats .swnr-space-magic-combat-tab-skill .swnr-space-magic-combat-tab-skill-ranks {
+  font-size:2rem;
+  line-height: 3rem;
+  background: transparent;
+  transition: all .4s linear;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-stats .swnr-space-magic-combat-tab-skill .swnr-space-magic-combat-tab-stat-mod {
+  text-align:center;
+  border-top: 1px solid var(--primary-color);
+}
+
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-stats .swnr-space-magic-combat-tab-skill:has(input:checked) {
+  box-shadow: 0 0 8px var(--primary-color)
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-stats .swnr-space-magic-combat-tab-skill:has(input:checked) .swnr-space-magic-combat-tab-skill-ranks {
+  background: var(--primary-color);
+  color: var(--primary-color-text);
+}
+
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-skill-check-controls {
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-skill-check-controls button {
+  margin: 0 1rem;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-skills {
+  display:flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  max-height:21rem;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-skills .swnr-space-magic-combat-tab-skill {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 10rem;
+  border:1px solid var(--primary-color);
+  font-size:.85rem;
+}
+
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-skills .swnr-space-magic-combat-tab-skill label {
+  position: relative;
+  display:flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  cursor: pointer;
+  width:100%;
+  height:1.75rem;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-skills .swnr-space-magic-combat-tab-skill label .swnr-space-magic-combat-tab-skill-ranks {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  padding:0 .25rem;
+  margin-right: .25rem;
+  width:2rem;
+  height: 100%;
+  text-align:center;
+  border-right: 1px solid var(--primary-color);
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-skills .swnr-space-magic-combat-tab-skill label span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-skills .swnr-space-magic-combat-tab-skill label input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-skills .swnr-space-magic-combat-tab-skill:has(input:checked) {
+  background: var(--primary-color);
+  color: var(--primary-color-text);
+  font-weight:600;
+}
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-skills .swnr-space-magic-combat-tab-skill .swnr-space-magic-combat-tab-skill-controls button {
+  font-size:.65rem;
+}
 /**
   ACTOR SHEET STYLE - DECO
 */

@@ -6,10 +6,12 @@ import SpellSlots from '../Models/SpellSlots.js';
 import Mana from "../Models/Mana.js";
 import Arcanum from "../Models/Arcanum.js";
 import Gnosis from "../Models/Gnosis.js";
+import { RollCod } from "../RollCod.js";
+import { RollSwnr } from "../RollSwnr.js";
 
 export default class MageActorSheet extends CharacterActorSheet {
-
   activeMageSightArcana = [];
+  combatRollSkills = [];
 
   static get defaultOptions() {
     const sup = super.defaultOptions;
@@ -197,7 +199,8 @@ export default class MageActorSheet extends CharacterActorSheet {
 
       //Update with chosen form values
       if (this.formData) {
-        defaultValues["focused-mage-sight-arcanum"] = this.formData["focused-mage-sight-arcanum"];
+        defaultValues["focused-mage-sight-arcanum"] =
+          this.formData["focused-mage-sight-arcanum"];
         defaultValues["mage-sight-arcana"] = this.activeMageSightArcana;
       }
 
@@ -244,6 +247,7 @@ export default class MageActorSheet extends CharacterActorSheet {
         mageInfo,
         defaultValues,
         theme: { ...themeDefaults, ...themePrefs },
+        combatRollSkills: this.combatRollSkills,
       },
     };
   }
@@ -607,6 +611,25 @@ export default class MageActorSheet extends CharacterActorSheet {
     ChatMessage.create(chatData);
   }
 
+
+  _handleCombatTabRoll(type) {
+    try {
+      if (type == 'cod') {
+        new RollCod(null, {
+          actorId: this.object.id,
+          combatRollSkills: this.combatRollSkills,
+        }).render(true);
+      }
+      if (type == "swnr") {
+        new RollSwnr(null, {
+          actorId: this.object.id,
+          combatRollSkills: this.combatRollSkills,
+        }).render(true);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
   /**
    * Toggle editing hit points. Stolen from D&D5e.
    * @param {PointerEvent} event  The triggering event.
@@ -617,7 +640,7 @@ export default class MageActorSheet extends CharacterActorSheet {
     const target = event.currentTarget.closest(".progress");
     const label = target.querySelector(":scope > .label");
     const input = target.querySelector(":scope > input");
-    console.log('swnr-mage', {target, label, input})
+    console.log("swnr-mage", { target, label, input });
     label.hidden = edit;
     input.hidden = !edit;
     if (edit) input.focus();
@@ -663,6 +686,14 @@ export default class MageActorSheet extends CharacterActorSheet {
         event.preventDefault();
         event.stopPropagation();
         const item = actor.getEmbeddedDocument("Item", spellId);
+        if (item instanceof Item) item.sheet?.render(true);
+        break;
+      }
+
+      case "combat-skill-edit": {
+        event.preventDefault();
+        event.stopPropagation();
+        const item = actor.getEmbeddedDocument("Item", skillId);
         if (item instanceof Item) item.sheet?.render(true);
         break;
       }
@@ -764,7 +795,8 @@ export default class MageActorSheet extends CharacterActorSheet {
       case "focused-mage-sight-revelation": {
         const formData = new FormData(html[2]);
         const formVals = Object.fromEntries(formData);
-        this.calculatedValues['focused-mage-sight-arcanum'] = formVals['focused-mage-sight-arcanum'];
+        this.calculatedValues["focused-mage-sight-arcanum"] =
+          formVals["focused-mage-sight-arcanum"];
 
         this._handleFocusedRevelation(event, actor, this.formData);
         break;
@@ -773,19 +805,14 @@ export default class MageActorSheet extends CharacterActorSheet {
       case "focused-mage-sight-scrutiny": {
         const formData = new FormData(html[2]);
         const formVals = Object.fromEntries(formData);
-        this.calculatedValues["focused-mage-sight-arcanum"] = formVals["focused-mage-sight-arcanum"];
+        this.calculatedValues["focused-mage-sight-arcanum"] =
+          formVals["focused-mage-sight-arcanum"];
 
         this._handleFocusedScrutiny(event, actor, this.formData);
         break;
       }
 
       case "mta-cast-spell": {
-        console.log(
-          "swnr-mage",
-          "open improvised spellcast menu",
-          actor.Id,
-          spellId
-        );
         try {
           new SpellcastConfig(null, {
             actorId: actor.id,
@@ -797,9 +824,36 @@ export default class MageActorSheet extends CharacterActorSheet {
         break;
       }
 
+      case "combat-swnr-roll": {
+        this._handleCombatTabRoll('swnr');
+        break;
+      }
+      case "combat-cod-roll": {
+        this._handleCombatTabRoll('cod');
+        break;
+      }
+
       default:
         MageMagicAddon.log(false, "Invalid action detected", action);
     }
+  }
+
+  _compileFormData(htmlForm) {
+    const rawFormData = $(htmlForm).serializeArray();
+    return rawFormData.reduce((acc, i) => {
+      var key = i.name;
+      var value = i.value;
+      if (i.name.substring(i.name.length - 2) == "[]") {
+        key = key.substring(0, key.length - 2);
+        if (!Array.isArray(acc[key])) {
+          acc[key] = new Array();
+        }
+        acc[key].push(i.value);
+      } else {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
   }
 
   activateListeners(html) {
@@ -813,23 +867,18 @@ export default class MageActorSheet extends CharacterActorSheet {
     });
 
     html.on("change", ".input-mage-sight-arcana", (event) => {
-      const rawFormData = $(html[2]).serializeArray();
-      this.formData = rawFormData.reduce((acc, i) => {
-        var key = i.name;
-        var value = i.value;
-        if (i.name.substring(i.name.length - 2) == "[]") {
-          key = key.substring(0, key.length - 2);
-          if (!Array.isArray(acc[key])) {
-            acc[key] = new Array();
-          }
-          acc[key].push(i.value);
-        } else {
-          acc[key] = value;
-        }
-        return acc;
-      }, {});
+      this.formData = this._compileFormData(html[2]);
 
       this.activeMageSightArcana = this.formData["mage-sight-arcana"];
+
+      this.render();
+    });
+
+    html.on("change", ".input-swnr-space-magic-combat-tab-skill", (event) => {
+      this.formData = this._compileFormData(html[2]);
+
+      this.combatRollSkills =
+        this.formData["swnr-space-magic-combat-tab-skills"];
 
       this.render();
     });
@@ -847,7 +896,7 @@ export default class MageActorSheet extends CharacterActorSheet {
       .on("click", (event) => this._toggleEditMeter(event, true));
 
     html.find(".swnr-mage-actor-header-name").on("input", (event) => {
-      event.target.parentNode.classList.add('dirty');
+      event.target.parentNode.classList.add("dirty");
     });
     html.find(".swnr-mage-actor-header-name-save-btn").on("click", (event) => {
       event.preventDefault();
@@ -857,11 +906,14 @@ export default class MageActorSheet extends CharacterActorSheet {
         "name change",
         this.object,
         event.target.parentNode,
-        event.target.parentNode.querySelector('[contenteditable]').innerText
+        event.target.parentNode.querySelector("[contenteditable]").innerText
       );
       if (event.target && event.target.innerText) {
         // this.object.name = event.target.innerText;
-        this.object.update({ name: event.target.parentNode.querySelector('[contenteditable]').innerText });
+        this.object.update({
+          name: event.target.parentNode.querySelector("[contenteditable]")
+            .innerText,
+        });
         event.target.parentNode.classList.remove("dirty");
       }
 

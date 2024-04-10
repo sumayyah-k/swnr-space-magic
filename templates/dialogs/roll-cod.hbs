@@ -1,0 +1,38 @@
+<form>
+  <h1>Roll something {{actor.name}}</h1>
+  <p>{{rollSkills}}</p>
+  <div class="swnr-space-magic-field-toggles-wrap">
+    <label class="swnr-space-magic-field-toggle">
+      <input type="radio" class="magic-casting-panel-content-field" name="roll-style" value="8-again"
+        {{#swnr-space-magic-if-equals rollType "8-again" }} checked="checked"
+        {{/swnr-space-magic-if-equals}} />
+      8 Again
+    </label>
+    <label class="swnr-space-magic-field-toggle">
+      <input type="radio" class="magic-casting-panel-content-field" name="roll-style" value="9-again"
+        {{#swnr-space-magic-if-equals rollType "9-again" }} checked="checked"
+        {{/swnr-space-magic-if-equals}} />
+      9 Again
+    </label>
+    <label class="swnr-space-magic-field-toggle">
+      <input type="radio" class="magic-casting-panel-content-field" name="roll-style" value="10-again"
+        {{#swnr-space-magic-if-equals rollType "10-again" }} checked="checked" {{/swnr-space-magic-if-equals}}
+      />
+      10 Again
+    </label>
+    <label class="swnr-space-magic-field-toggle">
+      <input type="radio" class="magic-casting-panel-content-field" name="roll-style" value="rote"
+        {{#swnr-space-magic-if-equals rollType "rote" }} checked="checked" {{/swnr-space-magic-if-equals}}
+      />
+      Rote
+    </label>
+  </div>
+  <div class="form-group">
+    <label>Dice Pool</label>
+    <input type="number" name="total-dice" value="{{totalDice}}" step="1" />
+  </div>
+  <button
+    type="submit"
+    class="swnr-mage-btn"
+  >Roll</button>
+</form>

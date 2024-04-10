@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add base mana cost field to spellcasting form
 - Add mana cost field to spell items
 - Add mana and strain cost to spell reach and addon options
+- Added CoD style rolls to the Combat tab that also support the SWNR method
 
 ### Fixed
 

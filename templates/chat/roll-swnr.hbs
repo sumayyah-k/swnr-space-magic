@@ -1,0 +1,32 @@
+<div class="dice-roll swnr-mage-chat-roll-wrap">
+  <div class="swnr-mage-chat-roll-content">
+    <div class="dice-result">
+      <h4 class="swnr-mage-chat-roll-section-title">Skill Check</h4>
+      <h5 class="swnr-mage-chat-roll-section-subtitle">{{rollSkills}}</h5>
+      <div class="dice-tooltip" style="display: none;">
+        <div class="dice-formula swnr-mage-chat-roll-dice-formula">{{r.formula}}</div>
+        <section class="tooltip-part">
+          <div class="dice">
+            {{#each r.dice as |dice|}}
+              <header class="part-header flexrow">
+                <span class="part-formula">{{ dice.formula }}</span>
+                <span class="part-total">{{ dice.total }}</span>
+              </header>
+              <ol class="dice-rolls">
+                {{#each dice.results as |roll|}}
+                  <li class="roll die d{{dice.faces}}
+                    {{#if roll.discarded}}discarded{{/if}}
+                    {{#swnr-space-magic-if-equals dice.faces roll.result}}max{{/swnr-space-magic-if-equals}}
+                    {{#if roll.exploded}}exploded{{/if}}
+                  ">{{roll.result}}</li>
+                {{/each}}
+              </ol>
+            {{/each}}
+          </div>
+        </section>
+      </div>
+      <h4 class="dice-total swnr-mage-chat-roll-total-successes">
+        {{r.total}}
+      </h4>
+    </div>
+  </div>

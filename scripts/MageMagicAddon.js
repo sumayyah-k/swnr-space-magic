@@ -9,7 +9,7 @@ export class MageMagicAddon {
     ACTIVE_MAGIC_TAB: "active-magic-tab",
     MTA_MANA: "swnr-space-magic-mta-mana",
     MTA_ARCANA_IMPORTANCE: "arcana-importance",
-    ACTOR_SHEET_THEME: 'sheet-theme',
+    ACTOR_SHEET_THEME: "sheet-theme",
     //Spells
     MTA_SPELL_ARCANUM: "arcanum",
     MTA_SPELL_PRACTICE: "practice",
@@ -34,6 +34,10 @@ export class MageMagicAddon {
     ITEMSHEET: `modules/${this.ID}/templates/sheets/item.hbs`,
     ACTORSHEET: `modules/${this.ID}/templates/sheets/actor.hbs`,
     YANTRASHEET: `modules/${this.ID}/templates/sheets/yantra.hbs`,
+    ROLLCOD: `modules/${this.ID}/templates/dialogs/roll-cod.hbs`,
+    ROLLCOD_CHAT: `modules/${this.ID}/templates/chat/roll-cod.hbs`,
+    ROLLSWNR: `modules/${this.ID}/templates/dialogs/roll-swnr.hbs`,
+    ROLLSWNR_CHAT: `modules/${this.ID}/templates/chat/roll-swnr.hbs`,
   };
 
   //   static initialize() {

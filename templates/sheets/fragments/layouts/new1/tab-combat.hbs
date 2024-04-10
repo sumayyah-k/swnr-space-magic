@@ -2,7 +2,7 @@
   <!-- SAVING THROWS -->
   <div class="saves col-span-4 flex-shrink-0 flex flex-row justify-between py-1 flex-wrap gap-2">
     <div data-save-type="physical" class="save sheet-button gap-2">
-      v{{actor.data.data.save.physical}} {{localize
+      dv{{actor.data.data.save.physical}} {{localize
       'swnr.sheet.saves.physical'}}
       <i class="fas fa-dice-d20"></i>
     </div>
@@ -43,39 +43,63 @@
       type=actor.type actor=actor}}
     </div>
   </div>
-
-  <div class="flex">
-    <!-- SKILLS COL -->
-    <div class="flex-col gap-2">
-      <div class="flex-col gap-3 min-w-full">
-        <h4 class="text-lg underline text-center">
-          {{localize 'swnr.sheet.tabs.skills'}}
-        </h4>
-        <div class="grid grid-cols-3 ">
-          <div>
-            {{#each itemTypes.skill as |item id|}}
-            {{#if (halfway @root.itemTypes.skill @index)}}
-
-          </div>
-          <div>
-            {{/if}}
-            <div data-item-id="{{item.id}}" class="skill p-0.5 pr-3 skillRoll
-              {{#if (mod2 @index) }}
-              bg-gray-600
-              {{/if}}
-              ">
-              <a class="inline-flex flex-wrap gap-2">
-                <i class="fas fa-dice-d20"></i>
-                {{zeroWidthBreaker item.name}}
-                {{numberFormat item.data.data.rank decimals=0 sign=true}}
-              </a>
-            </div>
-            {{/each}}
-          </div>
+  <div class="swnr-space-magic-combat-tab-skill-check-controls">
+    <button
+      type="button"
+      data-action="combat-swnr-roll"
+      class="swnr-mage-btn"
+    >SWNR Roll</button>
+    <button
+      type="button"
+      data-action="combat-cod-roll"
+      class="swnr-mage-btn"
+    >COD Roll</button>
+  </div>
+  <div class="swnr-space-magic-combat-tab-skill-check-wrap mb-3">
+    <!-- ATTRS -->
+    <div class="swnr-space-magic-combat-tab-stats">
+      {{#each actor.data.data.stats as |stat key|}}
+      <div class="swnr-space-magic-combat-tab-skill">
+        <label>
+          <input type="checkbox" name="swnr-space-magic-combat-tab-skills[]"
+            class="input-swnr-space-magic-combat-tab-skill" value="stat-{{ key }}" {{#swnr-space-magic-if-contains key
+            ../combatRollSkills}} checked="checked" {{/swnr-space-magic-if-contains}} />
+          {{ key }}
+        </label>
+        <div class="swnr-space-magic-combat-tab-skill-ranks">
+          {{numberFormat stat.total decimals=0 sign=false}}
+        </div>
+        <div class="swnr-space-magic-combat-tab-stat-mod">
+          {{numberFormat stat.mod decimals=0 sign=true}}
         </div>
       </div>
+      {{/each}}
+    </div>
+    <!-- SKILLS -->
+    <div class="swnr-space-magic-combat-tab-skills">
+      {{#each itemTypes.skill as |item id|}}
+      <div class="swnr-space-magic-combat-tab-skill">
+        <label>
+          <input type="checkbox" name="swnr-space-magic-combat-tab-skills[]"
+            class="input-swnr-space-magic-combat-tab-skill" value="item-{{ item.id }}" {{#swnr-space-magic-if-contains
+            item.id ../combatRollSkills}} checked="checked" {{/swnr-space-magic-if-contains}} />
+
+          <div class="swnr-space-magic-combat-tab-skill-ranks">
+            {{numberFormat item.data.data.rank decimals=0 sign=true}}
+          </div>
+
+          <span>{{ item.name }}</span>
+        </label>
+
+        <div class="swnr-space-magic-combat-tab-skill-controls">
+          <button type="button" data-action="combat-skill-edit" class="swnr-mage-btn swnr-space-magic-combat-tab-skill-edit"
+            data-skill="{{ item.id }}"><i class="fa fa-edit"></i></button>
+        </div>
+      </div>
+      {{/each}}
     </div>
   </div>
+
   <div class="flex min-w-full">
     <!-- EFFORT COL -->
     <div class="flex-col w-1/3">
