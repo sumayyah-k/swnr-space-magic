@@ -474,6 +474,18 @@
             </div>
             <div><small>From Fate magic, Foci, Artifacts, etc.</small></div>
           </fieldset>
+          <fieldset>
+            <div class="form-group">
+              <label>Damage/Healing per Potency</label>
+
+              <select name="{{flag}}-damage-dice" class="magic-casting-panel-content-field">
+                {{#each diceSizes}}
+                <option value="{{this.id}}" {{#swnr-space-magic-if-equals this.id ../defaultValues.damage-dice}} selected="selected"
+                  {{/swnr-space-magic-if-equals}}>{{this.name}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </fieldset>
         </div>
       </div>
 

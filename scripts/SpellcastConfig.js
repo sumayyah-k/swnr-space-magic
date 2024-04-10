@@ -719,6 +719,15 @@ export class SpellcastConfig extends FormApplication {
       remoteWithstanding: Spell.remoteWithstanding.filter(
         (s) => s.type == defaultValues.range
       ),
+      diceSizes: [
+        { id: "none", name: "None" },
+        { id: "d4", name: "d4" },
+        { id: "d6", name: "d6" },
+        { id: "d8", name: "d8 (Bashing)" },
+        { id: "d10", name: "d10 (Lethal)" },
+        { id: "d12", name: "d12 (Aggravated)" },
+        { id: "d20", name: "d20" },
+      ],
     };
   }
 
@@ -734,6 +743,7 @@ export class SpellcastConfig extends FormApplication {
     let paradoxRoll;
     let paradoxDmgRoll;
     let aimedRoll;
+    let damageRoll;
     let isChanceDie = false;
     let isParadoxChanceDie = false;
     let rolls = [];
@@ -824,6 +834,14 @@ export class SpellcastConfig extends FormApplication {
       rolls.push(aimedRoll);
     }
 
+    if (this.calculatedValues["damage-dice"] != 'none') {
+      damageRoll = new Roll(this.calculatedValues.potency + this.calculatedValues["damage-dice"], {});
+
+      await damageRoll.evaluate({ async: true });
+
+      rolls.push(damageRoll);
+    }
+
     // Deduct Stuff
     var doUpdate = false;
     var doReload = false;
@@ -877,6 +895,7 @@ export class SpellcastConfig extends FormApplication {
       paradoxRoll,
       paradoxDmgRoll,
       aimedRoll,
+      damageRoll,
       calculatedValues: this.calculatedValues,
       successType,
       paradoxSuccessType,
