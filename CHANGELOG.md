@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.0] - 2024-04-10
+
 ### Added
 
 - Added whole new theme for the actor sheet that can be chosen from the Theme button in the title bar
