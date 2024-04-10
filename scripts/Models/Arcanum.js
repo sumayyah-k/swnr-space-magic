@@ -27,31 +27,49 @@ export default class Arcanum {
   }
 
   getAll(allArcanumOption) {
-    var arcana = this.actor.items.contents.filter((i) =>
-      this.names.indexOf(i.name) != -1
-    );
+    if (this.actor) {
+      var arcana = this.actor.items.contents.filter((i) =>
+        this.names.indexOf(i.name) != -1
+      );
 
-    arcana = arcana.map((i) => {
-      var importance = i.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_ARCANA_IMPORTANCE);
-      var data = this.data.find(d => d.name == i.name);
+      arcana = arcana.map((i) => {
+        var importance = i.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.MTA_ARCANA_IMPORTANCE);
+        var data = this.data.find(d => d.name == i.name);
 
-      return {...{
-        id: i.id,
-        rank: i.system.rank,
-        actor: this.actor.id,
-        importance: importance,
-      }, ...data};
-    });
+        return {...{
+          id: i.id,
+          rank: i.system.rank,
+          actor: this.actor.id,
+          importance: importance,
+        }, ...data};
+      });
 
-    if (allArcanumOption == true) {
-      arcana = [
-        ...[{
-          id: 'any',
-          name: 'Any Arcanum',
-        }],
-        ...arcana
-      ]
+      if (allArcanumOption == true) {
+        arcana = [
+          ...[{
+            id: 'any',
+            name: 'Any Arcanum',
+          }],
+          ...arcana
+        ]
+      }
+      return arcana;
+    } else {
+      var data = this.data.map(d => {
+        return {...{id: d.name}, ...d};
+      });
+      if (allArcanumOption == true) {
+        data = [
+          ...[
+            {
+              id: "any",
+              name: "Any Arcanum",
+            },
+          ],
+          ...data,
+        ];
+      }
+      return data;
     }
-    return arcana;
   }
 }

@@ -22,6 +22,7 @@ export default class MageItemSheet extends ItemSheet {
   async getData(options) {
     const context = super.getData();
     const arcanum = new Arcanum(this.actor);
+    const reachArcanaOpts = arcanum.getAll(true);
 
     var activeInfo = this.object.getFlag(
       MageMagicAddon.ID,
@@ -32,6 +33,21 @@ export default class MageItemSheet extends ItemSheet {
       MageMagicAddon.ID,
       MageMagicAddon.FLAGS.MTA_SPELL_REACH
     );
+
+
+    if (reachInfo) {
+      reachInfo.map(r => {
+        if (
+          r.variant == "addon" &&
+          r.prereq.key != 'any' &&
+          arcanum.names.indexOf(r.prereq.key) != -1
+        ) {
+          var prereqArcanum = reachArcanaOpts.find(a => a.name == r.prereq.key);
+          r.prereq.key = prereqArcanum.id;
+        }
+        return r;
+      });
+    }
 
     if (activeInfo) {
       activeInfo = {
@@ -72,7 +88,7 @@ export default class MageItemSheet extends ItemSheet {
           { value: "attainment", label: "Attainment" },
         ],
         arcana: arcanum.names,
-        reachArcanaOpts: arcanum.getAll(true),
+        reachArcanaOpts,
         practices: Spell.rankedPractices(null, true),
         activeInfo,
         isMtAwSpell,

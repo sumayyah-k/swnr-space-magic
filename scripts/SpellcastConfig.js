@@ -310,7 +310,9 @@ export class SpellcastConfig extends FormApplication {
         for (var r of spellReachOpts) {
           r.disabled = false;
           if (r.variant == "addon") {
-            var arcanum = reachArcanaOpts.find((a) => a.id == r.prereq.key);
+            var arcanum = reachArcanaOpts.find(
+              (a) => a.id == r.prereq.key || a.name == r.prereq.key
+            );
             r.arcanum = arcanum;
             if (!arcanum || (arcanum.id != 'any' && arcanum.rank < parseInt(r.prereq.dots, 10))) {
               r.disabled = true;

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix spells not attached to an actor breaking because of the addon arcanum
+
 ## [1.6.0] - 2024-04-10
 
 ### Added
