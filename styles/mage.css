@@ -930,6 +930,9 @@ button.swnr-mage-btn:hover {
   --dnd5e-color-hd-1: #1b354b;
   --dnd5e-color-hd-2: #3b7ba5;
   --dnd5e-color-hd-3: #27506d;
+  --dnd5e-color-mana-1: #4e1453;
+  --dnd5e-color-mana-2: #b54bb2;
+  --dnd5e-color-mana-3: #ce2b72;
   --secondary-color: #336633;
   display: flex;
   flex-direction: column;
@@ -1060,6 +1063,21 @@ button.swnr-mage-btn:hover {
 }
 
 .meter.strain .temp-negative .label :is(.max, .bonus) {
+  color: color-mix(in oklab, currentcolor, red 25%);
+}
+
+
+.meter.mana .progress::before {
+  background: linear-gradient(to right, var(--dnd5e-color-mana-1) 0%, var(--dnd5e-color-mana-2) 100%);
+  border-right: 3px solid var(--dnd5e-color-mana-3);
+  border-radius: 4px 0 0 4px;
+}
+
+.meter.mana .temp-positive .label :is(.max, .bonus) {
+  color: color-mix(in oklab, currentcolor, blue 25%);
+}
+
+.meter.mana .temp-negative .label :is(.max, .bonus) {
   color: color-mix(in oklab, currentcolor, red 25%);
 }
 
