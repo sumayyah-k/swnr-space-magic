@@ -959,11 +959,15 @@ button.swnr-mage-btn:hover {
   border: 1px solid var(--primary-color);
 }
 
+.meter-group:has(.progress-controls-labelled:not([hidden])) {
+  padding-bottom: 1rem;
+}
+
 .meter.progress,
 .meter .progress {
   --bar-percentage: 0%;
   --border-width: 3px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .meter.progress::before,
@@ -1126,6 +1130,34 @@ button.swnr-mage-btn:hover {
   .meter.sectioned>.tmp>input::placeholder {
     color: #fff;
   }
+}
+
+.progress-controls {
+  position: relative;
+  z-index: 1;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width:100%;
+  height:100%;
+}
+.progress-controls[hidden] {
+  display:none;
+}
+.progress-controls .form-group {
+  flex:1;
+  position: relative;
+}
+.progress-controls .form-group label {
+  position: absolute;
+  font-size:.65rem;
+  width:100%;
+  top:100%;
+  text-align: center;
+}
+.progress-controls .form-group .form-control {
+  display:block;
 }
 
 /**

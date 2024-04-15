@@ -25,19 +25,42 @@ export function validateSkillsExist(token, ) {
 }
 
 export function isArcanist(actor) {
-  console.log('swnr-mage', 'utils-actor', actor);
-  return actor.system.class.toLowerCase().trim() == "arcanist";
+  return (
+    actor.items.contents.findIndex(
+      (i) =>
+        i.type == "class" &&
+        i.name.toLowerCase().trim() == "arcanist"
+    ) != -1
+  );
 }
 export function isMagister(actor) {
-  return ["magister", "pacter", "rectifier", "war mage"].indexOf(
-    actor.system.class.toLowerCase().trim()
-  ) != -1;
+  return (
+    actor.items.contents.findIndex(
+      (i) =>
+        i.type == "class" &&
+        ["magister", "pacter", "rectifier", "war mage"].indexOf(
+          i.name.toLowerCase().trim()
+        ) != -1
+    ) != -1
+  );
 }
 
 export function isMtAMage(actor) {
-  return actor.system.class.toLowerCase().trim() == "mage";
+  return (
+    actor.items.contents.findIndex(
+      (i) => i.type == "class" && i.name.toLowerCase().trim() == "mage"
+    ) != -1
+  );
 }
 
 export function isSwNMage(actor) {
   return isArcanist(actor) || isMagister(actor);
+}
+
+export function isPsychic(actor) {
+  return actor.items.contents.findIndex(
+      (i) =>
+        i.type == "class" &&
+        ["Psychic", "Partial Psychic"].indexOf(i.name) != -1
+    ) != -1;
 }

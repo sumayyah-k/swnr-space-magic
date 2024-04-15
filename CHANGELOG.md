@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Mana in the sidebar
+- Effort in sidebar
+- Compendiums: SWNR Classes, SWNR Spells, MTA Spells
 
 ## [1.6.1] - 2024-04-10
 

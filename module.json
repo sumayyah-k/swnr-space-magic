@@ -25,5 +25,43 @@
       "name": "English",
       "path": "lang/en.json"
     }
+  ],
+  "packs": [
+    {
+      "name": "swnr-space-magic-swnr-classes",
+      "label": "SWNR Classes",
+      "path": "packs/swnr-classes",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "swnr",
+      "flags": {}
+    },
+    {
+      "name": "mta-spells",
+      "label": "MTA Spells",
+      "path": "packs/mta-spells",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "swnr",
+      "flags": {}
+    },
+    {
+      "name": "swn-spells",
+      "label": "SWN Spells",
+      "path": "packs/swn-spells",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "swnr",
+      "flags": {}
+    }
   ]
 }

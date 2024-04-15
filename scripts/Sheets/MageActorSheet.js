@@ -1,7 +1,13 @@
 import { MageMagicAddon } from "../MageMagicAddon.js";
 import {CharacterActorSheet} from "../../../../systems/swnr/module/actors/character-sheet.js";
 import { SpellcastConfig } from "../SpellcastConfig.js";
-import { isMtAMage, isArcanist, isMagister, isSwNMage } from "../utils.js";
+import {
+  isMtAMage,
+  isArcanist,
+  isMagister,
+  isSwNMage,
+  isPsychic,
+} from "../utils.js";
 import SpellSlots from '../Models/SpellSlots.js';
 import Mana from "../Models/Mana.js";
 import Arcanum from "../Models/Arcanum.js";
@@ -67,6 +73,8 @@ export default class MageActorSheet extends CharacterActorSheet {
     actor = this.object;
     const swNMage = await isSwNMage(actor);
     const mtAMage = isMtAMage(actor);
+    const hasEffort = isPsychic(actor);
+    const classes = actor.items.contents.filter(i => i.type == 'class').map(i => i.name);
 
     console.log("swnr-mage", "actor", this.object, this);
     actorId = actor.id;
@@ -231,14 +239,17 @@ export default class MageActorSheet extends CharacterActorSheet {
     return {
       ...data,
       ...{
+        classes,
         magicSkills,
         numSpellSlots,
+        spellSlotsByLevel,
         spellSlotsByLevel,
         spells,
         spellsById,
         activeSpells,
         isArcanist: isArcanist(actor),
         isMagister: isMagister(actor),
+        hasEffort,
         isSwNMage: swNMage,
         mtAMage,
         showMagicTab: swNMage || mtAMage ? true : false,
@@ -639,7 +650,7 @@ export default class MageActorSheet extends CharacterActorSheet {
   _toggleEditMeter(event, edit) {
     const target = event.currentTarget.closest(".progress");
     const label = target.querySelector(":scope > .label");
-    const input = target.querySelector(":scope > input");
+    const input = target.querySelector(":scope > .progress-controls");
     console.log("swnr-mage", { target, label, input });
     label.hidden = edit;
     input.hidden = !edit;

@@ -93,7 +93,9 @@
             <span class="separator">&sol;</span>
             <span class="max">{{ actor.data.data.health.max }}</span>
           </div>
-          <input type="text" name="data.health.value" data-dtype="Number" placeholder="0" value="{{ actor.data.data.health.value }}" hidden>
+          <div class="progress-controls" hidden>
+            <input type="text" name="data.health.value" data-dtype="Number" placeholder="0" value="{{ actor.data.data.health.value }}">
+          </div>
         </div>
         <div class="tmp">
           <input type="number" step="1" name="data.health.temp" value="{{actor.data.data.health.temp}}" data-dtype="Number"
@@ -137,32 +139,112 @@
             <span class="separator">&sol;</span>
             <span class="max">{{ actor.data.data.systemStrain.max }}</span>
           </div>
-          <input type="number" step="1" name="data.systemStrain.value" data-dtype="Number" placeholder="0"
-            value="{{ actor.data.data.systemStrain.value }}" min="0" hidden>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="meter-group">
-      <div class="label roboto-condensed-upper">
-        <span>Mana</span>
-      </div>
-      <div class="meter sectioned mana">
-        <div class="progress mana" role="meter" aria-valuemin="0" aria-valuenow="{{ mageInfo.mana.current }}"
-          aria-valuemax="{{ mageInfo.mana.max }}"
-          style="--bar-percentage: min(calc(100% * {{mageInfo.mana.current}}/{{mageInfo.mana.max}}))">
-          <div class="label">
-            <span class="value">{{ mageInfo.mana.current }}</span>
-            <span class="separator">&sol;</span>
-            <span class="max">{{ mageInfo.mana.max }}</span>
+          <div class="progress-controls" hidden>
+            <input type="number" step="1" name="data.systemStrain.value" data-dtype="Number" placeholder="0"
+              value="{{ actor.data.data.systemStrain.value }}" min="0">
           </div>
-          <input type="number" step="1" name="flags.swnr-space-magic.swnr-space-magic-mta-mana" data-dtype="Number" placeholder="0"
-            value="{{  mageInfo.mana.current }}" min="0" hidden>
         </div>
       </div>
     </div>
 
+    {{#if mtAMage}}
+      <div class="meter-group">
+        <div class="label roboto-condensed-upper">
+          <span>Mana</span>
+        </div>
+        <div class="meter sectioned mana">
+          <div class="progress mana" role="meter" aria-valuemin="0" aria-valuenow="{{ mageInfo.mana.current }}"
+            aria-valuemax="{{ mageInfo.mana.max }}"
+            style="--bar-percentage: min(calc(100% * {{mageInfo.mana.current}}/{{mageInfo.mana.max}}))">
+            <div class="label">
+              <span class="value">{{ mageInfo.mana.current }}</span>
+              <span class="separator">&sol;</span>
+              <span class="max">{{ mageInfo.mana.max }}</span>
+            </div>
+            <div class="progress-controls" hidden>
+              <input type="number" step="1" name="flags.swnr-space-magic.swnr-space-magic-mta-mana" data-dtype="Number" placeholder="0"
+                value="{{  mageInfo.mana.current }}" min="0">
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
 
+    {{#if hasEffort}}
+      <div class="meter-group">
+        <div class="label roboto-condensed-upper">
+          <span>{{localize 'swnr.effort.title'}}</span>
+        </div>
+        <div class="meter sectioned mana">
+          <div class="progress mana" role="meter" aria-valuemin="0" aria-valuenow="{{ actor.data.data.effort.value }}"
+            aria-valuemax="{{ actor.data.data.effort.max }}"
+            style="--bar-percentage: min(calc(100% * {{actor.data.data.effort.value}}/{{actor.data.data.effort.max}}))">
+            <div class="label">
+              <span class="value">{{ actor.data.data.effort.value }}</span>
+              <span class="separator">&sol;</span>
+              <span class="max">{{ actor.data.data.effort.max }}</span>
+            </div>
+            <div class="progress-controls progress-controls-labelled" hidden>
+              <div class="form-group">
+                <label>Current</label>
+                <input type="number" step="1" name="data.effort.current" data-dtype="Number" placeholder="0" class="form-control"
+                  value="{{  actor.data.data.effort.current }}" min="0" max="{{concat data.effort.current data.effort.value}}">
+              </div>
+              <div class="form-group">
+                <label>Scene</label>
+                <input type="number" step="1" name="data.effort.scene" data-dtype="Number" placeholder="0" class="form-control"
+                  value="{{  actor.data.data.effort.scene }}" min="0" max="{{concat data.effort.scene data.effort.value}}">
+              </div>
+              <div class="form-group">
+                <label>Day</label>
+                <input type="number" step="1" name="data.effort.day" data-dtype="Number" placeholder="0" class="form-control"
+                  value="{{  actor.data.data.effort.day }}" min="0" max="{{concat data.effort.day data.effort.value}}">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
+
+    {{#if actor.data.data.tweak.extraEffortName}}
+      <div class="meter-group">
+        <div class="label roboto-condensed-upper">
+          <span>{{ actor.data.data.tweak.extraEffortName }} {{localize 'swnr.effort.title'}}</span>
+        </div>
+        <div class="meter sectioned mana">
+          <div class="progress mana" role="meter" aria-valuemin="0" aria-valuenow="{{ actor.data.data.tweak.extraEffort.value }}"
+            aria-valuemax="{{ actor.data.data.tweak.extraEffort.max }}"
+            style="--bar-percentage: min(calc(100% * {{actor.data.data.tweak.extraEffort.value}}/{{actor.data.data.tweak.extraEffort.max}}))">
+            <div class="label">
+              <span class="value">{{ actor.data.data.tweak.extraEffort.value }}</span>
+              <span class="separator">&sol;</span>
+              <span class="max">{{ actor.data.data.tweak.extraEffort.max }}</span>
+            </div>
+            <div class="progress-controls progress-controls-labelled" hidden>
+              <div class="form-group">
+                <label>Current</label>
+                <input type="number" step="1" name="data.tweak.extraEffort.current" data-dtype="Number" placeholder="0" class="form-control"
+                  value="{{  actor.data.data.tweak.extraEffort.current }}" min="0" max="{{concat data.tweak.extraEffort.current data.tweak.extraEffort.value}}">
+              </div>
+              <div class="form-group">
+                <label>Scene</label>
+                <input type="number" step="1" name="data.tweak.extraEffort.scene" data-dtype="Number" placeholder="0" class="form-control"
+                  value="{{  actor.data.data.tweak.extraEffort.scene }}" min="0" max="{{concat data.tweak.extraEffort.scene data.tweak.extraEffort.value}}">
+              </div>
+              <div class="form-group">
+                <label>Day</label>
+                <input type="number" step="1" name="data.tweak.extraEffort.day" data-dtype="Number" placeholder="0" class="form-control"
+                  value="{{  actor.data.data.tweak.extraEffort.day }}" min="0" max="{{concat data.tweak.extraEffort.day data.tweak.extraEffort.value}}">
+              </div>
+              <div class="form-group">
+                <label>Max</label>
+                <input type="number" step="1" name="data.tweak.extraEffort.max" data-dtype="Number" placeholder="0" class="form-control"
+                  value="{{  actor.data.data.tweak.extraEffort.max }}" min="0">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
   </div>
 </aside>
