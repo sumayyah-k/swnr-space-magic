@@ -75,7 +75,10 @@ export default class MageActorSheet extends CharacterActorSheet {
     const mtAMage = isMtAMage(actor);
     const hasEffort = isPsychic(actor);
     const classes = actor.items.contents.filter(i => i.type == 'class').map(i => i.name);
-
+    const spellFilterArcanum = await this.object.getFlag(
+      MageMagicAddon.ID,
+      MageMagicAddon.FLAGS.ACTOR_SPELL_FILTER_ARCANUM
+    );
     console.log("swnr-mage", "actor", this.object, this);
     actorId = actor.id;
     var arcana = new Arcanum(actor);
@@ -90,9 +93,13 @@ export default class MageActorSheet extends CharacterActorSheet {
           i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE] &&
           ["spell", "mageSpell"].indexOf(
             i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE]
-          ) != -1
+          ) != -1 &&
+          ((spellFilterArcanum &&
+          i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.MTA_SPELL_ARCANUM] ==
+            spellFilterArcanum) || (!spellFilterArcanum))
         );
       })
+      .sort((a, b) => a.name.localeCompare(b.name))
       .reduce((acc, i) => {
         if (!acc.hasOwnProperty(i.system.level)) {
           acc[i.system.level] = [];
@@ -259,6 +266,7 @@ export default class MageActorSheet extends CharacterActorSheet {
         defaultValues,
         theme: { ...themeDefaults, ...themePrefs },
         combatRollSkills: this.combatRollSkills,
+        spellFilterArcanum,
       },
     };
   }
@@ -941,6 +949,30 @@ export default class MageActorSheet extends CharacterActorSheet {
       } catch (e) {
         console.error(e);
       }
+    });
+
+    html.on("click", ".swnr-space-mage-toggle-spell-filter", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      var arcanum = event.target.dataset.arcanum;
+      var actorId = this.object.id;
+
+      var isSet = await this.object.getFlag(
+        MageMagicAddon.ID,
+        MageMagicAddon.FLAGS.ACTOR_SPELL_FILTER_ARCANUM,
+      );
+
+      if (isSet) {
+        arcanum = null;
+      }
+
+      await this.object.setFlag(
+        MageMagicAddon.ID,
+        MageMagicAddon.FLAGS.ACTOR_SPELL_FILTER_ARCANUM,
+        arcanum
+      );
+
+      this.render();
     });
 
     Hooks.on("updateItem", (item) => {

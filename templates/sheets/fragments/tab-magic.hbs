@@ -24,6 +24,7 @@
             <div class="magic-casting-panel-content-stat">{{mageInfo.gnosis.system.rank}}</div>
           </div>
         </div>
+        <!--
         <div class="magic-casting-panel">
           <div class="magic-casting-panel-title">System Strain</div>
           <div class="magic-casting-panel-content magic-casting-panel-content-controls-right">
@@ -44,6 +45,7 @@
             </div>
           </div>
         </div>
+        -->
         {{#swnr-space-magic-if-gt mageInfo.gnosis.system.rank -1}}
         {{#if magicSkills}}
         <button type="button" class="swnr-mage-btn swnr-mage-improvised-spellcasting-btn" data-actor="{{actor}}"><i class="fas fa-wand-sparkles"></i> Improvised Spellcasting</button>
@@ -67,7 +69,12 @@
                         {{/swnr-space-magic-if-equals}}
                       {{/if}}
                     </button>
-                    {{ skill.name }}: {{skill.rank}}/4
+                    <a
+                      href="#"
+                      class="swnr-space-mage-toggle-spell-filter
+                      {{#swnr-space-magic-if-equals skill.name ../spellFilterArcanum}}swnr-space-mage-toggle-spell-filter-active{{/swnr-space-magic-if-equals}}"
+                      data-arcanum="{{ skill.name }}"
+                    >{{ skill.name }}: {{skill.rank}}/4</a>
                   </li>
                 {{/swnr-space-magic-if-not-equal}}
               {{/each}}

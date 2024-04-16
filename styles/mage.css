@@ -694,6 +694,13 @@ button.swnr-mage-improvised-spellcasting-btn:hover:after {
   border-radius: 0;
 }
 
+.swnr-mage-arcana-list .swnr-space-mage-toggle-spell-filter {
+  color: inherit;
+}
+.swnr-mage-arcana-list .swnr-space-mage-toggle-spell-filter.swnr-space-mage-toggle-spell-filter-active {
+  color: var(--primary-color);
+}
+
 .magic-casting-badge {
   font-size: .75em;
   padding: 0 0.5em;

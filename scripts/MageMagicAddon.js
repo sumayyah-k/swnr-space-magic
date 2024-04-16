@@ -10,6 +10,7 @@ export class MageMagicAddon {
     MTA_MANA: "swnr-space-magic-mta-mana",
     MTA_ARCANA_IMPORTANCE: "arcana-importance",
     ACTOR_SHEET_THEME: "sheet-theme",
+    ACTOR_SPELL_FILTER_ARCANUM: 'spell-filter-arcanum',
     //Spells
     MTA_SPELL_ARCANUM: "arcanum",
     MTA_SPELL_PRACTICE: "practice",
