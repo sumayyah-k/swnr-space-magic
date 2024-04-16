@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Mana in the sidebar
 - Effort in sidebar
 - Compendiums: SWNR Classes, SWNR Spells, MTA Spells
+- Add badges to spell list to show rote if or praxis
 
 ## [1.6.1] - 2024-04-10
 

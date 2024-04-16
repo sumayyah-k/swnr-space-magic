@@ -845,6 +845,7 @@ span.badge {
   border-radius: 3px;
   background-color: var(--primary-color);
   color: var(--primary-color-text);
+  margin-left:.25rem;
 }
 
 button.swnr-mage-btn {
