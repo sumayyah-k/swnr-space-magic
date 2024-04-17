@@ -48,12 +48,12 @@
       type="button"
       data-action="combat-swnr-roll"
       class="swnr-mage-btn"
-    >SWNR Roll</button>
+    ><i class="fa fa-dice-d6"></i> SWNR Roll</button>
     <button
       type="button"
       data-action="combat-cod-roll"
       class="swnr-mage-btn"
-    >COD Roll</button>
+    ><i class="fa fa-dice-d10"></i>COD Roll</button>
   </div>
   <div class="swnr-space-magic-combat-tab-skill-check-wrap mb-3">
     <!-- ATTRS -->
@@ -77,24 +77,29 @@
     </div>
     <!-- SKILLS -->
     <div class="swnr-space-magic-combat-tab-skills">
-      {{#each itemTypes.skill as |item id|}}
-      <div class="swnr-space-magic-combat-tab-skill">
-        <label>
-          <input type="checkbox" name="swnr-space-magic-combat-tab-skills[]"
-            class="input-swnr-space-magic-combat-tab-skill" value="item-{{ item.id }}" {{#swnr-space-magic-if-contains
-            item.id ../combatRollSkills}} checked="checked" {{/swnr-space-magic-if-contains}} />
+      {{#each skillsSorted as |skills category|}}
+      <div class="swnr-space-magic-combat-tab-skill-col">
+        <h3>{{ category}}</h3>
+        {{#each skills as |item|}}
+          <div class="swnr-space-magic-combat-tab-skill">
+            <label>
+              <input type="checkbox" name="swnr-space-magic-combat-tab-skills[]"
+                class="input-swnr-space-magic-combat-tab-skill" value="item-{{ item.id }}" {{#swnr-space-magic-if-contains
+                item.id ../../combatRollSkills}} checked="checked" {{/swnr-space-magic-if-contains}} />
 
-          <div class="swnr-space-magic-combat-tab-skill-ranks">
-            {{numberFormat item.data.data.rank decimals=0 sign=true}}
+              <div class="swnr-space-magic-combat-tab-skill-ranks">
+                {{numberFormat item.data.data.rank decimals=0 sign=true}}
+              </div>
+
+              <span>{{ item.name }}</span>
+            </label>
+
+            <div class="swnr-space-magic-combat-tab-skill-controls">
+              <button type="button" data-action="combat-skill-edit" class="swnr-mage-btn swnr-space-magic-combat-tab-skill-edit"
+                data-skill="{{ item.id }}"><i class="fa fa-edit"></i></button>
+            </div>
           </div>
-
-          <span>{{ item.name }}</span>
-        </label>
-
-        <div class="swnr-space-magic-combat-tab-skill-controls">
-          <button type="button" data-action="combat-skill-edit" class="swnr-mage-btn swnr-space-magic-combat-tab-skill-edit"
-            data-skill="{{ item.id }}"><i class="fa fa-edit"></i></button>
-        </div>
+        {{/each}}
       </div>
       {{/each}}
     </div>

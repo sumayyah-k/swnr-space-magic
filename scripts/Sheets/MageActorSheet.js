@@ -267,6 +267,29 @@ export default class MageActorSheet extends CharacterActorSheet {
         theme: { ...themeDefaults, ...themePrefs },
         combatRollSkills: this.combatRollSkills,
         spellFilterArcanum,
+        skillsSorted: this.object.items.filter(i => i.type == 'skill').reduce((acc, i) => {
+          var cat = 'physical';
+          if (['Administer', 'Connect', 'Lead', 'Perform', 'Talk', 'Trade'].indexOf(i.name) != -1) {
+            cat = 'social';
+          } else if (["Program", "Know", "Notice", 'Heal', 'Fix'].indexOf(i.name) != -1) {
+            cat = "mental";
+          } else if (
+            arcana.names.indexOf(i.name) != -1 ||
+            ["Gnosis", "Sunblade", "Know Magic", "Use Magic"].indexOf(i.name) != -1
+          ) {
+            cat = "magic";
+          } else if (
+            ["Teleportation", "Biopsionics", "Metapsionics", "Precognition", 'Telekinesis', 'Telepathy'].indexOf(i.name) !=
+            -1
+          ) {
+            cat = "psionic";
+          }
+          if (!acc[cat]) {
+            acc[cat] = [];
+          }
+          acc[cat].push(i);
+          return acc;
+        }, {})
       },
     };
   }

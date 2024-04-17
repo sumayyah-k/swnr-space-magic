@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Compendiums: SWNR Classes, SWNR Spells, MTA Spells
 - Add badges to spell list to show rote if or praxis
 - Filter MTA spells by arcanum by clicking the name in the magic tab sidebar
+- Categorize skills on combat tab
 
 ## [1.6.1] - 2024-04-10
 
