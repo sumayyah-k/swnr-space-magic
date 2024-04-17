@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.0] - 2024-04-17
+
 ### Added
 
 - Mana in the sidebar
@@ -140,7 +142,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Casting spells from modal shows details in chat and updates spell slots
 - Prepare spells as arcanist
 
-[unreleased]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.3...HEAD
+[unreleased]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.7.0...HEAD
+[1.7.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.6.1...1.7.0
+[1.6.1]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.6.0...1.6.1
+[1.6.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.3...1.6.0
 [1.5.3]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.1...1.5.3
 [1.5.1]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.0...1.5.1
 [1.5.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.4.0...1.5.0
