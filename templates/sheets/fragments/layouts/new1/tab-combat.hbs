@@ -81,7 +81,7 @@
       <div class="swnr-space-magic-combat-tab-skill-col">
         <h3>{{ category}}</h3>
         {{#each skills as |item|}}
-          <div class="swnr-space-magic-combat-tab-skill">
+          <div class="swnr-space-magic-combat-tab-skill swnr-space-magic-actor-searchable" data-search-string="{{ item.name }}">
             <label>
               <input type="checkbox" name="swnr-space-magic-combat-tab-skills[]"
                 class="input-swnr-space-magic-combat-tab-skill" value="item-{{ item.id }}" {{#swnr-space-magic-if-contains

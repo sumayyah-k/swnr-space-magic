@@ -1487,6 +1487,18 @@ button.swnr-mage-btn:hover {
   background-position: top left;
 }
 
+.swnr-space-mage-theme-style-deco .form-group input[type=text],
+.swnr-space-mage-theme-style-deco .form-group input[type=search],
+.swnr-space-mage-theme-style-deco .form-group textarea,
+.swnr-space-mage-theme-style-deco .form-group select {
+  background: rgba(0, 0, 0, .25);
+  border: none;
+  border-bottom: 1px solid var(--primary-color);
+  border-radius: 0;
+  box-shadow: inset 0 0 1rem rgba(0, 0, 0);
+  color: #fff;
+}
+
 
 
 

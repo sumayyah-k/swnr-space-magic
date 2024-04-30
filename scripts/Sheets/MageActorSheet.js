@@ -974,6 +974,18 @@ export default class MageActorSheet extends CharacterActorSheet {
       }
     });
 
+    html.on("keyup", ".swnr-space-magic-actor-search", async (event) => {
+      var searchable = html.find(".swnr-space-magic-actor-searchable");
+      var search = event.target.value;
+      for (var s of searchable) {
+        if (search.length == 0 || s.dataset.searchString.toLowerCase().indexOf(search) != -1) {
+          s.style.opacity = 1;
+        } else {
+          s.style.opacity = .25;
+        }
+      }
+    });
+
     html.on("click", ".swnr-space-mage-toggle-spell-filter", async (event) => {
       event.preventDefault();
       event.stopPropagation();
