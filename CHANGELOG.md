@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Search skills (combat tab only) and spells
 - Add attainments section to magic tab
 - Add forces spells to compendium
+- Add Space: Everywhere Attainment support to spellcasting form
 
 ### Changed
 

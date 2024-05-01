@@ -363,6 +363,21 @@
                 {{/if}}
               >
             </div>
+            {{#if defaultValues.scale-advanced}}
+              {{#if defaultValues.show-space-everywhere}}
+                <div class="form-group">
+                  <label>Attainment: Space: Everywhere</label>
+                  <input
+                    type="checkbox"
+                    name="{{flag}}-scale-advanced-space-everywhere"
+                    class="magic-casting-panel-content-field"
+                    {{#if defaultValues.scale-advanced-space-everywhere }}
+                      checked="checked"
+                    {{/if}}
+                  >
+                </div>
+              {{/if}}
+            {{/if}}
           </fieldset>
           {{#if reachOptions}}
             <fieldset>

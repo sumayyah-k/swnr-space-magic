@@ -172,6 +172,10 @@ export class SpellcastConfig extends FormApplication {
       },
       scale: "1",
       "scale-advanced": false,
+      "show-space-everywhere": magicSkills.find(
+        (s) => s.name == "Space" && s.rank >= 3
+      ) ? true : false,
+      "scale-advanced-space-everywhere": false,
       yantradice: 0,
       yantras: [],
       maxYantras: false,
@@ -603,7 +607,11 @@ export class SpellcastConfig extends FormApplication {
       defaultValues.reach++;
     }
     if (defaultValues["scale-advanced"]) {
-      defaultValues.reach++;
+      if (defaultValues["scale-advanced-space-everywhere"]) {
+        defaultValues.manaCost++;
+      } else {
+        defaultValues.reach++;
+      }
     }
 
     // Range considerations

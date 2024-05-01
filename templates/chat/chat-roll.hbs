@@ -49,12 +49,23 @@
           <span title="Advanced">(Advanced)</span>
           {{/if}}
         </th><td>{{calculatedValues.rangeData.name }}</td></tr>
-        <tr><th>
-          Scale
-          {{#if calculatedValues.scale-advanced}}
-          <span title="Advanced">(Advanced)</span>
-          {{/if}}
-        </th><td>{{calculatedValues.scaleData.name }}</td></tr>
+        <tr>
+          <th>
+            Scale
+            {{#if calculatedValues.scale-advanced}}
+            <span title="Advanced">(Advanced)</span>
+            {{/if}}
+          </th>
+          <td>{{calculatedValues.scaleData.name }}</td>
+        </tr>
+        {{#if calculatedValues.scale-advanced-space-everywhere}}
+          <tr>
+            <th>
+              Used Space: Everywhere Attainment?
+            </th>
+            <td>Yes</td>
+          </tr>
+        {{/if}}
         <tr><th>
           Casting Time
           {{#if calculatedValues.casting-time-advanced}}
