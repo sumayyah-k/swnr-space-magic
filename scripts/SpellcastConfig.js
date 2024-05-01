@@ -160,6 +160,13 @@ export class SpellcastConfig extends FormApplication {
       "casting-time": 0,
       "casting-time-advanced": false,
       "casting-time-turns": 1, //advanced only
+
+      "show-time-in-a-bottle": magicSkills.find(
+        (s) => s.name == "Time" && s.rank >= 3
+      )
+        ? true
+        : false,
+      "casting-time-advanced-time-in-a-bottle": false,
       range: "touch",
       "range-advanced": false,
       "know-sympathetic-name": false,
@@ -174,7 +181,9 @@ export class SpellcastConfig extends FormApplication {
       "scale-advanced": false,
       "show-space-everywhere": magicSkills.find(
         (s) => s.name == "Space" && s.rank >= 3
-      ) ? true : false,
+      )
+        ? true
+        : false,
       "scale-advanced-space-everywhere": false,
       yantradice: 0,
       yantras: [],
@@ -601,7 +610,11 @@ export class SpellcastConfig extends FormApplication {
       defaultValues.reach++;
     }
     if (defaultValues["casting-time-advanced"]) {
-      defaultValues.reach++;
+      if (defaultValues["casting-time-advanced-time-in-a-bottle"]) {
+        defaultValues.manaCost++;
+      } else {
+        defaultValues.reach++;
+      }
     }
     if (defaultValues["range-advanced"]) {
       defaultValues.reach++;

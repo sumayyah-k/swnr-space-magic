@@ -61,7 +61,7 @@
         {{#if calculatedValues.scale-advanced-space-everywhere}}
           <tr>
             <th>
-              Used Space: Everywhere Attainment?
+              Space: Everywhere?
             </th>
             <td>Yes</td>
           </tr>
@@ -78,6 +78,14 @@
             {{calculatedValues.castTimeData.name }}
           {{/if}}
           </td></tr>
+        {{#if calculatedValues.casting-time-advanced-time-in-a-bottle}}
+        <tr>
+          <th>
+            Time in a Bottle?
+          </th>
+          <td>Yes</td>
+        </tr>
+        {{/if}}
         {{#if calculatedValues.spend-willpower}}
           <tr><th>Strain for +3?</th><td>{{#if calculatedValues.spend-willpower }}Yes{{else}}No{{/if}}</td></tr>
         {{/if}}

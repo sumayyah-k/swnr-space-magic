@@ -276,6 +276,15 @@
                 {{/if}}
               >
             </div>
+            {{#if defaultValues.casting-time-advanced}}
+              {{#if defaultValues.show-time-in-a-bottle}}
+              <div class="form-group">
+                <label>Attainment: Time in a Bottle</label>
+                <input type="checkbox" name="{{flag}}-casting-time-advanced-time-in-a-bottle" class="magic-casting-panel-content-field" {{#if
+                  defaultValues.casting-time-advanced-time-in-a-bottle }} checked="checked" {{/if}}>
+              </div>
+              {{/if}}
+            {{/if}}
           </fieldset>
           <fieldset>
             <div class="form-group">
