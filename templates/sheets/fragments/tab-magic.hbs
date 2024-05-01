@@ -102,6 +102,13 @@
               >
                 Mage Sight
               </a>
+              <a
+                type="button"
+                class="item mage-spell-level-tab"
+                data-tab="attainments"
+              >
+                Attainments
+              </a>
             {{/if}}
         </nav>
         </div>
@@ -192,6 +199,20 @@
               </section>
             </div>
             {{#if mtAMage}}
+              <div class="tab magic-casting-spell-level-panel attainments-panel" data-tab="attainments" data-group="spell-list-nav">
+                <section class="swnr-mage-sight-section">
+                  <h3>Attainments</h3>
+                  {{#each attainments as |spelllist level|}}
+                  <h4><span>Level {{level}}</span></h4>
+                  {{#each spelllist as |spell|}}
+                  {{>
+                  "modules/swnr-space-magic/templates/sheets/fragments/spell-list-item.hbs" spell=spell level=level
+                  isMagister=../../isMagister isArcanist=../../isArcanist mtAMage=../../mtAMage
+                  }}
+                  {{/each}}
+                  {{/each}}
+                </section>
+              </div>
               <div class="tab magic-casting-spell-level-panel mage-sight-panel" data-tab="mage-sight" data-group="spell-list-nav">
                 <section class="swnr-mage-sight-section">
                   <h3>Peripheral Mage Sight <small>(p. 90)</small></h3>

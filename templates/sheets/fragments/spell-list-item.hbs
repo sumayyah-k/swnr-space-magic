@@ -13,7 +13,7 @@
           <span class="badge badge-info">Relinquished</span>
         {{/if}}
     </div>
-    <div class="magic-casting-spell-def-title-controls">
+    <div class="magic-casting-spell-def-title-controls" data-item-id="{{spell.id}}">
       <button type="button" class="swnr-mage-btn magic-casting-prepare-btn" data-action="edit-spell" data-spell-id="{{spell.id}}"
         data-cast-level="{{level}}" title="Edit Spell">
         <i class="fa fa-edit"></i>
@@ -21,24 +21,30 @@
       <button type="button" class="swnr-mage-btn magic-casting-prepare-btn item-delete" title="Remove Spell">
         <i class="fa fa-trash"></i>
       </button>
-      {{#if isMagister}}
-      <button type="button" class="swnr-mage-btn magic-casting-cast-btn" data-action="castByLevel"
-        data-cast-level="{{spell.system.level}}" data-spell-id="{{spell.id}}" title="Cast Spell">
-        <i class="fa fa-wand-sparkles"></i>
-      </button>
-      {{/if}}
-      {{#if isArcanist}}
-      <button type="button" class="swnr-mage-btn magic-casting-prepare-btn" data-action="prepare" data-spell-id="{{spell.id}}"
-        data-cast-level="{{level}}" title="Prepare Spell">
-        <i class="fa fa-book"></i>
-      </button>
-      {{/if}}
-      {{#if mtAMage}}
-      <button type="button" class="swnr-mage-btn magic-casting-prepare-btn" data-action="mta-cast-spell" data-spell-id="{{spell.id}}"
-        data-cast-level="{{level}}" title="Cast Spell">
-        <i class="fa fa-wand-sparkles"></i>
-      </button>
-      {{/if}}
+      {{#swnr-space-magic-if-equals spell.flags.swnr-space-magic.power-type 'attainment'}}
+        <button type="button" class="swnr-mage-btn magic-casting-cast-btn item-click" title="Use Attainment">
+          <i class="fa fa-hand-sparkles"></i>
+        </button>
+      {{else}}
+        {{#if isMagister}}
+        <button type="button" class="swnr-mage-btn magic-casting-cast-btn" data-action="castByLevel"
+          data-cast-level="{{spell.system.level}}" data-spell-id="{{spell.id}}" title="Cast Spell">
+          <i class="fa fa-wand-sparkles"></i>
+        </button>
+        {{/if}}
+        {{#if isArcanist}}
+        <button type="button" class="swnr-mage-btn magic-casting-prepare-btn" data-action="prepare" data-spell-id="{{spell.id}}"
+          data-cast-level="{{level}}" title="Prepare Spell">
+          <i class="fa fa-book"></i>
+        </button>
+        {{/if}}
+        {{#if mtAMage}}
+        <button type="button" class="swnr-mage-btn magic-casting-prepare-btn" data-action="mta-cast-spell" data-spell-id="{{spell.id}}"
+          data-cast-level="{{level}}" title="Cast Spell">
+          <i class="fa fa-wand-sparkles"></i>
+        </button>
+        {{/if}}
+      {{/swnr-space-magic-if-equals }}
     </div>
   </div>
   <div class="magic-casting-spell-def-description swnr-body-text swnr-mta-collapse-content">

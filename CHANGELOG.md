@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Search skills (combat tab only) and spells
+- Add attainments section to magic tab
 
 ## [1.7.0] - 2024-04-17
 

@@ -64,6 +64,7 @@ export default class MageActorSheet extends CharacterActorSheet {
 
     var magicSkills = [];
     var spells = [];
+    var attainments = [];
     var activeSpells = [];
     var spellsById = {};
     var actorId = null;
@@ -97,6 +98,27 @@ export default class MageActorSheet extends CharacterActorSheet {
           ((spellFilterArcanum &&
           i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.MTA_SPELL_ARCANUM] ==
             spellFilterArcanum) || (!spellFilterArcanum))
+        );
+      })
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .reduce((acc, i) => {
+        if (!acc.hasOwnProperty(i.system.level)) {
+          acc[i.system.level] = [];
+        }
+        acc[i.system.level.toString()].push(i);
+        acc[i.system.level.toString()].sort((a, b) => b.sort - a.sort);
+        return acc;
+      }, {});
+
+    attainments = actor.items.contents
+      .filter((i) => {
+        return (
+          i.type == "power" &&
+          i.flags[MageMagicAddon.ID] &&
+          i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE] &&
+          ["attainment"].indexOf(
+            i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE]
+          ) != -1
         );
       })
       .sort((a, b) => a.name.localeCompare(b.name))
@@ -254,6 +276,7 @@ export default class MageActorSheet extends CharacterActorSheet {
         spells,
         spellsById,
         activeSpells,
+        attainments,
         isArcanist: isArcanist(actor),
         isMagister: isMagister(actor),
         hasEffort,
