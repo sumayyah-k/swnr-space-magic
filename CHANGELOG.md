@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add forces & time spells to compendium
 - Add Space: Everywhere Attainment support to spellcasting form
 - Add Time in a Bottle Attainment support to spellcasting form
+- Teamwork Casting
 
 ### Changed
 

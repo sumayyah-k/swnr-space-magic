@@ -1,9 +1,10 @@
-import { filterSkillsBySystem } from "./utils.js";
+import { filterSkillsBySystem, isMtAMage } from "./utils.js";
 import { MageMagicAddon } from "./MageMagicAddon.js";
 import { MageConfig } from "./MageConfig.js";
 import MageActorSheet from "./Sheets/MageActorSheet.js";
 import MageItemSheet from "./Sheets/MageItemSheet.js";
 import { SWNRPower } from "../../../../systems/swnr/module/items/power.js";
+import {SpellcastConfig} from "./SpellcastConfig.js";
 
 async function preloadTemplates() {
   const list = await fetch("modules/swnr-space-magic/scripts/templates.json");
@@ -32,24 +33,64 @@ Hooks.once("init", async () => {
     const activeInfo = JSON.parse(e.currentTarget.dataset.activeInfo);
 
     const actor = game.actors?.get(actorId);
-    const spell = actor.items?.get(spellId);
-    console.log("swnr-mage", "add active spell", actorId, spellId, actor, spell, activeInfo);
+    if (actor.permission == 3) {
+      const spell = actor.items?.get(spellId);
+      console.log("swnr-mage", "add active spell", actorId, spellId, actor, spell, activeInfo);
 
-    const spellData = {
-      name: spell.name,
-      img: spell.img,
-      type: 'power',
-      system: spell.system,
-      flags: spell.flags,
-    };
+      const spellData = {
+        name: spell.name,
+        img: spell.img,
+        type: 'power',
+        system: spell.system,
+        flags: spell.flags,
+      };
 
-    spellData.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE] = "mageActiveSpell";
-    spellData.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.SPELL_ACTIVE_INFO] = activeInfo;
+      spellData.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE] = "mageActiveSpell";
+      spellData.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.SPELL_ACTIVE_INFO] = activeInfo;
 
-    // //Add spell to active spells
-    // const activeSpellData = mergeObject(spellData, {type: "activeSpell"},{insertKeys: true,overwrite: true,inplace: false,enforceTypes: true});
-    await actor.createEmbeddedDocuments("Item", [spellData]);
-    ui.notifications.info("Spell added to active spells of " + actor.name);
+      // //Add spell to active spells
+      // const activeSpellData = mergeObject(spellData, {type: "activeSpell"},{insertKeys: true,overwrite: true,inplace: false,enforceTypes: true});
+      await actor.createEmbeddedDocuments("Item", [spellData]);
+      ui.notifications.info("Spell added to active spells of " + actor.name);
+    } else {
+      ui.notifications.error("You do not have permission");
+    }
+  });
+
+  $(document).on("click", ".swnr-space-magic-teamwork-cast", async function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var actor = null;
+    const controlledTokens = canvas?.tokens?.controlled ?? [];
+    if (controlledTokens.length == 1) {
+      actor = controlledTokens[0].actor;
+    }
+
+    if (actor) {
+      if (actor.permission == 3) {
+        if (isMtAMage(actor)) {
+          const spellId = e.currentTarget.dataset.spellId;
+          const factorInfo = JSON.parse(e.currentTarget.dataset.activeInfo);
+
+          try {
+            new SpellcastConfig(null, {
+              actorId: actor.id,
+              spellId,
+              factorInfo,
+            }).render(true);
+          } catch (e) {
+            console.error(e);
+          }
+        } else {
+          ui.notifications.error("Selected actor is not a mage.");
+        }
+      } else {
+        ui.notifications.error("You do not have permission");
+      }
+    } else {
+      ui.notifications.error("Actor token must be selected.");
+    }
   });
 });
 

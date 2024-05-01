@@ -25,6 +25,9 @@ export class SpellcastConfig extends FormApplication {
       this.spell = this.actor.items.get(data.spellId);
       console.log('swnr-mage', 'spell', this.spell);
     }
+    if (data.factorInfo) {
+      this.factorInfo = data.factorInfo;
+    }
 
     // this.valueChange = {
     //   dicePool: false,
@@ -125,6 +128,7 @@ export class SpellcastConfig extends FormApplication {
     var defaultValues = {
       spell: null,
       spellId: null,
+      isTeamwork: false,
       name: "spell",
       arcanum: [],
       chosenArcanum: [],
@@ -148,6 +152,7 @@ export class SpellcastConfig extends FormApplication {
       reachMax: 0,
       spellReachData: [],
       potency: 1,
+      "potency-advanced": false,
       freePotency: 1,
       effectivePotency: 1,
       paradoxDice: null,
@@ -334,6 +339,42 @@ export class SpellcastConfig extends FormApplication {
           reachOptions.push(r);
         }
       }
+    }
+
+    if (this.factorInfo) {
+      defaultValues.isTeamwork = true;
+      defaultValues.chosenArcanum = this.factorInfo.arcanum;
+      defaultValues.practice = this.factorInfo.practice;
+
+      defaultValues.potency = this.factorInfo.factors.potency;
+      if (this.factorInfo.factors["potency-advanced"]) {
+        defaultValues["potency-advanced"] = true;
+      }
+
+      defaultValues.duration = this.factorInfo.factors.duration;
+      defaultValues.durationData = Spell.spellDurations.find(d => d.id == this.factorInfo.factors.duration);
+      if (defaultValues.durationData && defaultValues.durationData.advanced) {
+        defaultValues["duration-advanced"] = true;
+      }
+
+      defaultValues["casting-time"] = this.factorInfo.factors["casting-time"];
+      if (this.factorInfo.factors["casting-time"] == 0) {
+        defaultValues["casting-time-advanced"] = true;
+      }
+
+      defaultValues.range = this.factorInfo.factors.range;
+      var rangeData = Spell.ranges.find(d => d.id == this.factorInfo.factors.range);
+      if (rangeData && rangeData.advanced) {
+        defaultValues["range-advanced"] = true;
+      }
+
+      defaultValues.scale = this.factorInfo.factors.scale;
+      var scaleData = Spell.scales.find(d => d.id == this.factorInfo.factors.scale);
+      if (scaleData && scaleData.advanced) {
+        defaultValues["scale-advanced"] = true;
+      }
+
+      defaultValues["spell-reach"] = this.factorInfo["spell-reach"];
     }
 
     if (this.formData) {

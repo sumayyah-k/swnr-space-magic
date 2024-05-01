@@ -9,128 +9,143 @@
       {{#if calculatedValues.grimoire}}
         from Grimoire
       {{/if}}
+      {{#if calculatedValues.isTeamwork}}
+        as part of a team
+      {{/if}}
     </h2>
-    <button
-      type="button"
-      class="swnr-space-magic-add-active-spell"
-      data-actor-id="{{actor.id}}"
-      data-spell-id="{{calculatedValues.spellId}}"
-      data-active-info="{{activeSpellInfo}}"
-    >Add to Active Spells</button>
-    <table class="swnr-mage-chat-roll-table">
-      <tbody>
-        <tr><th>Gnosis</th><td>{{gnosis.system.rank}}</td></tr>
-        <tr><th>Arcanum</th><td>{{calculatedValues.arcanum }}</td></tr>
-        <tr><th>Practice</th><td>{{calculatedValues.practiceData.name }}</td></tr>
-        {{#if calculatedValues.withstand}}
-        <tr><th>Withstand</th><td>{{calculatedValues.withstand }}</td></tr>
-        {{/if}}
-        <tr><th>
-          {{#swnr-space-magic-if-equals calculatedValues.primary-factor 'potency'}}
-            <span title="Primary Factor">*</span>
-          {{/swnr-space-magic-if-equals}}
-          Potency
-          {{#if calculatedValues.potency-advanced}}
-          <span title="Advanced">(Advanced)</span>
+    {{#if calculatedValues.isTeamwork}}
+    {{else}}
+      <div class="swnr-mage-chat-roll-actions">
+        <button
+          type="button"
+          class="swnr-space-magic-add-active-spell"
+          data-actor-id="{{actor.id}}"
+          data-spell-id="{{calculatedValues.spellId}}"
+          data-active-info="{{activeSpellInfo}}"
+        >Add to Active Spells</button>
+        <button
+          type="button"
+          class="swnr-space-magic-teamwork-cast"
+          data-actor-id="{{actor.id}}"
+          data-spell-id="{{calculatedValues.spellId}}"
+          data-active-info="{{activeSpellInfo}}"
+        >Teamwork Cast</button>
+      </div>
+      <table class="swnr-mage-chat-roll-table">
+        <tbody>
+          <tr><th>Gnosis</th><td>{{gnosis.system.rank}}</td></tr>
+          <tr><th>Arcanum</th><td>{{calculatedValues.arcanum }}</td></tr>
+          <tr><th>Practice</th><td>{{calculatedValues.practiceData.name }}</td></tr>
+          {{#if calculatedValues.withstand}}
+          <tr><th>Withstand</th><td>{{calculatedValues.withstand }}</td></tr>
           {{/if}}
-        </th><td>{{ calculatedValues.potency }}</td></tr>
-        <tr><th>
-          {{#swnr-space-magic-if-equals calculatedValues.primary-factor 'duration'}}
-            <span title="Primary Factor">*</span>
-          {{/swnr-space-magic-if-equals}}
-          Duration
-          {{#if calculatedValues.duration-advanced}}
-          <span title="Advanced">(Advanced)</span>
-          {{/if}}
-        </th><td>{{calculatedValues.durationData.name }}</td></tr>
-        <tr><th>
-          Range
-          {{#if calculatedValues.range-advanced}}
-          <span title="Advanced">(Advanced)</span>
-          {{/if}}
-        </th><td>{{calculatedValues.rangeData.name }}</td></tr>
-        <tr>
-          <th>
-            Scale
-            {{#if calculatedValues.scale-advanced}}
+          <tr><th>
+            {{#swnr-space-magic-if-equals calculatedValues.primary-factor 'potency'}}
+              <span title="Primary Factor">*</span>
+            {{/swnr-space-magic-if-equals}}
+            Potency
+            {{#if calculatedValues.potency-advanced}}
             <span title="Advanced">(Advanced)</span>
             {{/if}}
-          </th>
-          <td>{{calculatedValues.scaleData.name }}</td>
-        </tr>
-        {{#if calculatedValues.scale-advanced-space-everywhere}}
+          </th><td>{{ calculatedValues.potency }}</td></tr>
+          <tr><th>
+            {{#swnr-space-magic-if-equals calculatedValues.primary-factor 'duration'}}
+              <span title="Primary Factor">*</span>
+            {{/swnr-space-magic-if-equals}}
+            Duration
+            {{#if calculatedValues.duration-advanced}}
+            <span title="Advanced">(Advanced)</span>
+            {{/if}}
+          </th><td>{{calculatedValues.durationData.name }}</td></tr>
+          <tr><th>
+            Range
+            {{#if calculatedValues.range-advanced}}
+            <span title="Advanced">(Advanced)</span>
+            {{/if}}
+          </th><td>{{calculatedValues.rangeData.name }}</td></tr>
           <tr>
             <th>
-              Space: Everywhere?
+              Scale
+              {{#if calculatedValues.scale-advanced}}
+              <span title="Advanced">(Advanced)</span>
+              {{/if}}
+            </th>
+            <td>{{calculatedValues.scaleData.name }}</td>
+          </tr>
+          {{#if calculatedValues.scale-advanced-space-everywhere}}
+            <tr>
+              <th>
+                Space: Everywhere?
+              </th>
+              <td>Yes</td>
+            </tr>
+          {{/if}}
+          <tr><th>
+            Casting Time
+            {{#if calculatedValues.casting-time-advanced}}
+            <span title="Advanced">(Advanced)</span>
+            {{/if}}
+          </th><td>
+            {{#if calculatedValues.casting-time-advanced}}
+              {{calculatedValues.casting-time-turns }} turn(s)
+            {{else}}
+              {{calculatedValues.castTimeData.name }}
+            {{/if}}
+            </td></tr>
+          {{#if calculatedValues.casting-time-advanced-time-in-a-bottle}}
+          <tr>
+            <th>
+              Time in a Bottle?
             </th>
             <td>Yes</td>
           </tr>
-        {{/if}}
-        <tr><th>
-          Casting Time
-          {{#if calculatedValues.casting-time-advanced}}
-          <span title="Advanced">(Advanced)</span>
           {{/if}}
-        </th><td>
-          {{#if calculatedValues.casting-time-advanced}}
-            {{calculatedValues.casting-time-turns }} turn(s)
-          {{else}}
-            {{calculatedValues.castTimeData.name }}
+          {{#if calculatedValues.spend-willpower}}
+            <tr><th>Strain for +3?</th><td>{{#if calculatedValues.spend-willpower }}Yes{{else}}No{{/if}}</td></tr>
           {{/if}}
-          </td></tr>
-        {{#if calculatedValues.casting-time-advanced-time-in-a-bottle}}
-        <tr>
-          <th>
-            Time in a Bottle?
-          </th>
-          <td>Yes</td>
-        </tr>
-        {{/if}}
-        {{#if calculatedValues.spend-willpower}}
-          <tr><th>Strain for +3?</th><td>{{#if calculatedValues.spend-willpower }}Yes{{else}}No{{/if}}</td></tr>
-        {{/if}}
-        {{#if calculatedValues.yantraNames}}
-          <tr><th>Yantras</th><td>{{calculatedValues.yantraNames }}</td></tr>
-        {{/if}}
-        {{#if calculatedValues.additional-dice}}
-          <tr><th>Additional Dice</th><td>{{calculatedValues.additional-dice }}</td></tr>
-        {{/if}}
-        {{#if calculatedValues.yantradice}}
-          <tr><th>Extra Yantra Bonus</th><td>{{calculatedValues.yantradice }}</td></tr>
-        {{/if}}
-        {{#if calculatedValues.effectiveYantraBonus}}
-          <tr><th>Effective Yantra Bonus</th><td>{{calculatedValues.effectiveYantraBonus }}</td></tr>
-        {{/if}}
-        <tr><th>Used Dedicated Tool</th><td>{{#if calculatedValues.dedicated-tool }}Yes{{else}}No{{/if}}</td></tr>
-      </tbody>
-      <tfoot>
-        <tr><th>Reach</th><td>{{ calculatedValues.reach }}/{{ calculatedValues.reachMax }}</td></tr>
-        {{#if calculatedValues.manaCost}}
-        <tr>
-          <th>Mana Cost</th>
-          <td>{{ calculatedValues.manaCost }}</td>
-        </tr>
-        {{/if}}
-        {{#if calculatedValues.strainCost}}
-        <tr>
-          <th>Strain Cost</th>
-          <td>{{ calculatedValues.strainCost }}</td>
-        </tr>
-        {{/if}}
-        {{#swnr-space-magic-if-not-equal paradoxRoll null}}
-          <tr><th>Paradox Dice</th><td>{{ calculatedValues.paradoxDice }}</td></tr>
-          <tr><th>Containing Paradox</th><td>
-            {{#if calculatedValues.contain-paradox}}
-              Yes
-            {{else}}
-              No
-            {{/if}}
-          </td></tr>
-        {{/swnr-space-magic-if-not-equal}}
-      </tfoot>
-    </table>
-    {{#if calculatedValues.potency-advanced}}
-      <div>Note: +2 to withstand dispellation</div>
+          {{#if calculatedValues.yantraNames}}
+            <tr><th>Yantras</th><td>{{calculatedValues.yantraNames }}</td></tr>
+          {{/if}}
+          {{#if calculatedValues.additional-dice}}
+            <tr><th>Additional Dice</th><td>{{calculatedValues.additional-dice }}</td></tr>
+          {{/if}}
+          {{#if calculatedValues.yantradice}}
+            <tr><th>Extra Yantra Bonus</th><td>{{calculatedValues.yantradice }}</td></tr>
+          {{/if}}
+          {{#if calculatedValues.effectiveYantraBonus}}
+            <tr><th>Effective Yantra Bonus</th><td>{{calculatedValues.effectiveYantraBonus }}</td></tr>
+          {{/if}}
+          <tr><th>Used Dedicated Tool</th><td>{{#if calculatedValues.dedicated-tool }}Yes{{else}}No{{/if}}</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><th>Reach</th><td>{{ calculatedValues.reach }}/{{ calculatedValues.reachMax }}</td></tr>
+          {{#if calculatedValues.manaCost}}
+          <tr>
+            <th>Mana Cost</th>
+            <td>{{ calculatedValues.manaCost }}</td>
+          </tr>
+          {{/if}}
+          {{#if calculatedValues.strainCost}}
+          <tr>
+            <th>Strain Cost</th>
+            <td>{{ calculatedValues.strainCost }}</td>
+          </tr>
+          {{/if}}
+          {{#swnr-space-magic-if-not-equal paradoxRoll null}}
+            <tr><th>Paradox Dice</th><td>{{ calculatedValues.paradoxDice }}</td></tr>
+            <tr><th>Containing Paradox</th><td>
+              {{#if calculatedValues.contain-paradox}}
+                Yes
+              {{else}}
+                No
+              {{/if}}
+            </td></tr>
+          {{/swnr-space-magic-if-not-equal}}
+        </tfoot>
+      </table>
+      {{#if calculatedValues.potency-advanced}}
+        <div>Note: +2 to withstand dispellation</div>
+      {{/if}}
     {{/if}}
   </div>
   <div class="dice-result">
@@ -285,64 +300,68 @@
     </div>
   {{/if}}
 </div>
-<div>
-{{#swnr-space-magic-if-equals successType 'exceptional'}}
-  <p>The spell's effect takes place better than imagined. The character regains one spent point of Willpower, and the player may choose one of the following results;</p>
-  <ul>
-    <li>A bonus step in the primary spell factor.</li>
-    <li>A Reach in the primary spell factor.</li>
-    <li>A Condition which will give Arcane Beats when resolved, on either the mage or her subject.</li>
-    <li>All Mana spent on the spell is refunded, and the mage receives one more point of Mana.</li>
-    <li>The spell ignores any Withstand levels and takes effect at full Potency.</li>
-  </ul>
-{{/swnr-space-magic-if-equals}}
-{{#swnr-space-magic-if-equals successType 'success'}}
-  <p>The spell’s effect takes place as imagined.</p>
-{{/swnr-space-magic-if-equals}}
-{{#swnr-space-magic-if-equals successType 'failure'}}
-  <p>The magic does not work, the mage’s imagination is not made real.</p>
-{{/swnr-space-magic-if-equals}}
-{{#swnr-space-magic-if-equals successType 'dramafail'}}
-  <p>The magic does not work. The caster gains a Condition based on the intended outcome of the spell.</p>
-{{/swnr-space-magic-if-equals}}
-</div>
 
-{{#if calculatedValues.spell}}
-  <div class="swnr-mta-collapse-wrap">
-    <h3 class="swnr-mta-collapse-title">Spell Description
-      <span>Expand</span>
-    </h3>
-    <div class="swnr-mta-collapse-content">
-      {{{ calculatedValues.spell.system.description}}}
-      {{log calculatedValues.spellReachData}}
-      {{#if calculatedValues.spellReachData}}
-        {{#each calculatedValues.spellReachData}}
-          <p>
-            <strong>
-              {{#swnr-space-magic-if-equals this.variant 'addon'}}
-                +{{this.arcanum.name}} {{this.prereq.dots}}
-              {{else}}
-                +{{this.reachCost}} Reach
-              {{/swnr-space-magic-if-equals}}
-            </strong>
-            {{ this.desc}}
-          </p>
+{{#if calculatedValues.isTeamwork}}
+{{else}}
+  <div>
+    {{#swnr-space-magic-if-equals successType 'exceptional'}}
+    <p>The spell's effect takes place better than imagined. The character regains one spent point of Willpower, and the
+      player may choose one of the following results;</p>
+    <ul>
+      <li>A bonus step in the primary spell factor.</li>
+      <li>A Reach in the primary spell factor.</li>
+      <li>A Condition which will give Arcane Beats when resolved, on either the mage or her subject.</li>
+      <li>All Mana spent on the spell is refunded, and the mage receives one more point of Mana.</li>
+      <li>The spell ignores any Withstand levels and takes effect at full Potency.</li>
+    </ul>
+    {{/swnr-space-magic-if-equals}}
+    {{#swnr-space-magic-if-equals successType 'success'}}
+    <p>The spell’s effect takes place as imagined.</p>
+    {{/swnr-space-magic-if-equals}}
+    {{#swnr-space-magic-if-equals successType 'failure'}}
+    <p>The magic does not work, the mage’s imagination is not made real.</p>
+    {{/swnr-space-magic-if-equals}}
+    {{#swnr-space-magic-if-equals successType 'dramafail'}}
+    <p>The magic does not work. The caster gains a Condition based on the intended outcome of the spell.</p>
+    {{/swnr-space-magic-if-equals}}
+  </div>
+  {{#if calculatedValues.spell}}
+    <div class="swnr-mta-collapse-wrap">
+      <h3 class="swnr-mta-collapse-title">Spell Description
+        <span>Expand</span>
+      </h3>
+      <div class="swnr-mta-collapse-content">
+        {{{ calculatedValues.spell.system.description}}}
+        {{log calculatedValues.spellReachData}}
+        {{#if calculatedValues.spellReachData}}
+          {{#each calculatedValues.spellReachData}}
+            <p>
+              <strong>
+                {{#swnr-space-magic-if-equals this.variant 'addon'}}
+                  +{{this.arcanum.name}} {{this.prereq.dots}}
+                {{else}}
+                  +{{this.reachCost}} Reach
+                {{/swnr-space-magic-if-equals}}
+              </strong>
+              {{ this.desc}}
+            </p>
+          {{/each}}
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if calculatedValues.yantraData}}
+    <div class="swnr-mta-collapse-wrap">
+      <h3 class="swnr-mta-collapse-title">Yantras
+        <span>Expand</span>
+      </h3>
+      <div class="swnr-mta-collapse-content">
+        {{#each calculatedValues.yantraData}}
+          <h3>{{this.name}} (+{{this.bonus}})</h3>
+          <div>{{{ this.desc}}}</div>
         {{/each}}
-      {{/if}}
+      </div>
     </div>
-  </div>
-{{/if}}
-
-{{#if calculatedValues.yantraData}}
-  <div class="swnr-mta-collapse-wrap">
-    <h3 class="swnr-mta-collapse-title">Yantras
-      <span>Expand</span>
-    </h3>
-    <div class="swnr-mta-collapse-content">
-      {{#each calculatedValues.yantraData}}
-        <h3>{{this.name}} (+{{this.bonus}})</h3>
-        <div>{{{ this.desc}}}</div>
-      {{/each}}
-    </div>
-  </div>
+  {{/if}}
 {{/if}}
