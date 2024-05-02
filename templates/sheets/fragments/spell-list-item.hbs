@@ -2,16 +2,24 @@
   <div class="magic-casting-spell-def-title swnr-mta-collapse-title">
     <div class="magic-casting-spell-def-title-name">
         <div class="magic-casting-spell-def-img" style="background-image: url('{{spell.img}}')"></div>
-        {{ spell.name }}
-        {{#if spell.flags.swnr-space-magic.is-rote}}
-          <span class="badge badge-info">Rote</span>
-        {{/if}}
-        {{#if spell.flags.swnr-space-magic.is-praxis}}
-          <span class="badge badge-info">Praxis</span>
-        {{/if}}
-        {{#if spell.flags.swnr-space-magic.relinquished}}
-          <span class="badge badge-info">Relinquished</span>
-        {{/if}}
+        <div>
+          {{ spell.name }}
+          {{#if spell.flags.swnr-space-magic.is-rote}}
+            <span class="badge badge-info">Rote</span>
+          {{/if}}
+          {{#if spell.flags.swnr-space-magic.is-praxis}}
+            <span class="badge badge-info">Praxis</span>
+          {{/if}}
+          {{#if spell.flags.swnr-space-magic.relinquished}}
+            <span class="badge badge-info">Relinquished</span>
+          {{/if}}
+          {{#swnr-space-magic-if-equals spell.flags.swnr-space-magic.damage-dice 'none'}}
+          {{else}}
+            {{#if spell.flags.swnr-space-magic.damage-dice}}
+              <span class="badge badge-danger" data-tooltip="{{ spell.flags.swnr-space-magic.damage-dice}}"><i class="fa-solid fa-explosion"></i></span>
+            {{/if}}
+          {{/swnr-space-magic-if-equals}}
+        </div>
     </div>
     <div class="magic-casting-spell-def-title-controls" data-item-id="{{spell.id}}">
       <button type="button" class="swnr-mage-btn magic-casting-prepare-btn" data-action="edit-spell" data-spell-id="{{spell.id}}"

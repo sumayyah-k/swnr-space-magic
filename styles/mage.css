@@ -2,6 +2,10 @@
   --swnr-mage-body-bg: #222;
   --primary-color: #eedb5d;
   --primary-color-text: #333;
+  --info-color: #3269b7;
+  --info-color-text: #ffffff;
+  --danger-color: rgb(196, 33, 33);
+  --danger-color-text: #ffffff;
   --text: #fff;
   --text-muted: #adadad;
 }
@@ -416,6 +420,14 @@
   background-image: url(assets/images/dark-rock-wall-seamless-texture-free-105.png);
   background-position: top left;
   background-size: 30rem;
+}
+.magic-casting-panel-footer {
+  font-size: .75rem;
+  text-align: center;
+  color: var(--primary-color);
+  border-top: 1px solid var(--primary-color);
+  text-transform: uppercase;
+  padding: 0.25rem 0.5rem;
 }
 .magic-casting-panel-content-padding {
   padding:.5rem;
@@ -853,6 +865,16 @@ span.badge {
   background-color: var(--primary-color);
   color: var(--primary-color-text);
   margin-left:.25rem;
+}
+
+span.badge.badge-info {
+  background-color: var(--info-color);
+  color: var(--info-color-text);
+}
+
+span.badge.badge-danger {
+  background-color: var(--danger-color);
+  color: var(--danger-color-text);
 }
 
 button.swnr-mage-btn {
