@@ -125,6 +125,11 @@ export class SpellcastConfig extends FormApplication {
       max: mageInfo.gnosis.system.rank + 1,
     });
 
+    var sceneParadox = await actor.getFlag(
+      MageMagicAddon.ID,
+      MageMagicAddon.FLAGS.ACTOR_SCENE_PARADOX
+    );
+
     var defaultValues = {
       spell: null,
       spellId: null,
@@ -724,6 +729,10 @@ export class SpellcastConfig extends FormApplication {
       defaultValues.paradoxDice -= 2;
     }
 
+    if (defaultValues.paradoxDice !== null && sceneParadox) {
+      defaultValues.paradoxDice += sceneParadox;
+    }
+
     defaultValues["casting-time-mana-turns"] = Math.ceil(defaultValues.manaCost / mageInfo.gnosisData.mana.perTurn);
 
     if (defaultValues["casting-time-mana-turns"] > defaultValues["casting-time-turns"]) {
@@ -800,6 +809,7 @@ export class SpellcastConfig extends FormApplication {
         (s) => s.type == defaultValues.range
       ),
       diceSizes: Spell.diceSizes,
+      sceneParadox,
     };
   }
 
@@ -889,6 +899,16 @@ export class SpellcastConfig extends FormApplication {
         await paradoxDmgRoll.evaluate({async: true});
         rolls.push(paradoxDmgRoll);
       }
+
+      var sceneParadox = await actor.getFlag(
+        MageMagicAddon.ID,
+        MageMagicAddon.FLAGS.ACTOR_SCENE_PARADOX
+      );
+      actor.setFlag(
+        MageMagicAddon.ID,
+        MageMagicAddon.FLAGS.ACTOR_SCENE_PARADOX,
+        sceneParadox && sceneParadox > 0 ? sceneParadox + 1 : 1
+      );
     }
 
     if (this.calculatedValues.range == 'aimed') {

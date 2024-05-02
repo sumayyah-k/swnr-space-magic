@@ -75,10 +75,16 @@ export default class MageActorSheet extends CharacterActorSheet {
     const swNMage = await isSwNMage(actor);
     const mtAMage = isMtAMage(actor);
     const hasEffort = isPsychic(actor);
-    const classes = actor.items.contents.filter(i => i.type == 'class').map(i => i.name);
+    const classes = actor.items.contents
+      .filter((i) => i.type == "class")
+      .map((i) => i.name);
     const spellFilterArcanum = await this.object.getFlag(
       MageMagicAddon.ID,
       MageMagicAddon.FLAGS.ACTOR_SPELL_FILTER_ARCANUM
+    );
+    const sceneParadox = await this.object.getFlag(
+      MageMagicAddon.ID,
+      MageMagicAddon.FLAGS.ACTOR_SCENE_PARADOX
     );
     console.log("swnr-mage", "actor", this.object, this);
     actorId = actor.id;
@@ -96,8 +102,10 @@ export default class MageActorSheet extends CharacterActorSheet {
             i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE]
           ) != -1 &&
           ((spellFilterArcanum &&
-          i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.MTA_SPELL_ARCANUM] ==
-            spellFilterArcanum) || (!spellFilterArcanum))
+            i.flags[MageMagicAddon.ID][
+              MageMagicAddon.FLAGS.MTA_SPELL_ARCANUM
+            ] == spellFilterArcanum) ||
+            !spellFilterArcanum)
         );
       })
       .sort((a, b) => a.name.localeCompare(b.name))
@@ -290,29 +298,51 @@ export default class MageActorSheet extends CharacterActorSheet {
         theme: { ...themeDefaults, ...themePrefs },
         combatRollSkills: this.combatRollSkills,
         spellFilterArcanum,
-        skillsSorted: this.object.items.filter(i => i.type == 'skill').reduce((acc, i) => {
-          var cat = 'physical';
-          if (['Administer', 'Connect', 'Lead', 'Perform', 'Talk', 'Trade'].indexOf(i.name) != -1) {
-            cat = 'social';
-          } else if (["Program", "Know", "Notice", 'Heal', 'Fix'].indexOf(i.name) != -1) {
-            cat = "mental";
-          } else if (
-            arcana.names.indexOf(i.name) != -1 ||
-            ["Gnosis", "Sunblade", "Know Magic", "Use Magic"].indexOf(i.name) != -1
-          ) {
-            cat = "magic";
-          } else if (
-            ["Teleportation", "Biopsionics", "Metapsionics", "Precognition", 'Telekinesis', 'Telepathy'].indexOf(i.name) !=
-            -1
-          ) {
-            cat = "psionic";
-          }
-          if (!acc[cat]) {
-            acc[cat] = [];
-          }
-          acc[cat].push(i);
-          return acc;
-        }, {})
+        skillsSorted: this.object.items
+          .filter((i) => i.type == "skill")
+          .reduce((acc, i) => {
+            var cat = "physical";
+            if (
+              [
+                "Administer",
+                "Connect",
+                "Lead",
+                "Perform",
+                "Talk",
+                "Trade",
+              ].indexOf(i.name) != -1
+            ) {
+              cat = "social";
+            } else if (
+              ["Program", "Know", "Notice", "Heal", "Fix"].indexOf(i.name) != -1
+            ) {
+              cat = "mental";
+            } else if (
+              arcana.names.indexOf(i.name) != -1 ||
+              ["Gnosis", "Sunblade", "Know Magic", "Use Magic"].indexOf(
+                i.name
+              ) != -1
+            ) {
+              cat = "magic";
+            } else if (
+              [
+                "Teleportation",
+                "Biopsionics",
+                "Metapsionics",
+                "Precognition",
+                "Telekinesis",
+                "Telepathy",
+              ].indexOf(i.name) != -1
+            ) {
+              cat = "psionic";
+            }
+            if (!acc[cat]) {
+              acc[cat] = [];
+            }
+            acc[cat].push(i);
+            return acc;
+          }, {}),
+        sceneParadox,
       },
     };
   }
@@ -344,6 +374,11 @@ export default class MageActorSheet extends CharacterActorSheet {
     SpellSlots.useSpellSlot(actorId, level);
   }
 
+  async _onScene(event) {
+    super._onScene(event);
+    await this.actor.unsetFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ACTOR_SCENE_PARADOX);
+  }
+
   /**
    * Override of thefunction from base swnr to add magic specific stuff.
    *
@@ -351,7 +386,6 @@ export default class MageActorSheet extends CharacterActorSheet {
    */
   async _onRest(event) {
     event.preventDefault();
-    console.log("swnr-mage", "RESSSTTTT");
 
     const rest = async (isFrail) => {
       const data = this.actor.data.data;
@@ -676,10 +710,9 @@ export default class MageActorSheet extends CharacterActorSheet {
     ChatMessage.create(chatData);
   }
 
-
   _handleCombatTabRoll(type) {
     try {
-      if (type == 'cod') {
+      if (type == "cod") {
         new RollCod(null, {
           actorId: this.object.id,
           combatRollSkills: this.combatRollSkills,
@@ -819,6 +852,34 @@ export default class MageActorSheet extends CharacterActorSheet {
         break;
       }
 
+      case "add-scene-paradox": {
+        var sceneParadox = await actor.getFlag(
+          MageMagicAddon.ID,
+          MageMagicAddon.FLAGS.ACTOR_SCENE_PARADOX
+        );
+        actor.setFlag(
+          MageMagicAddon.ID,
+          MageMagicAddon.FLAGS.ACTOR_SCENE_PARADOX,
+          sceneParadox && sceneParadox > 0 ? sceneParadox + 1 : 1
+        );
+        this.render();
+        break;
+      }
+
+      case "subtract-scene-paradox": {
+        var sceneParadox = await actor.getFlag(
+          MageMagicAddon.ID,
+          MageMagicAddon.FLAGS.ACTOR_SCENE_PARADOX
+        );
+        actor.setFlag(
+          MageMagicAddon.ID,
+          MageMagicAddon.FLAGS.ACTOR_SCENE_PARADOX,
+          sceneParadox && sceneParadox > 0 ? sceneParadox - 1 : 0
+        );
+        this.render();
+        break;
+      }
+
       case "toggle-skill-importance": {
         if (skillId) {
           const skill = actor.items.get(skillId);
@@ -890,11 +951,11 @@ export default class MageActorSheet extends CharacterActorSheet {
       }
 
       case "combat-swnr-roll": {
-        this._handleCombatTabRoll('swnr');
+        this._handleCombatTabRoll("swnr");
         break;
       }
       case "combat-cod-roll": {
-        this._handleCombatTabRoll('cod');
+        this._handleCombatTabRoll("cod");
         break;
       }
 
@@ -1021,7 +1082,7 @@ export default class MageActorSheet extends CharacterActorSheet {
 
       var isSet = await this.object.getFlag(
         MageMagicAddon.ID,
-        MageMagicAddon.FLAGS.ACTOR_SPELL_FILTER_ARCANUM,
+        MageMagicAddon.FLAGS.ACTOR_SPELL_FILTER_ARCANUM
       );
 
       if (isSet) {

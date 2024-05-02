@@ -11,6 +11,7 @@ export class MageMagicAddon {
     MTA_ARCANA_IMPORTANCE: "arcana-importance",
     ACTOR_SHEET_THEME: "sheet-theme",
     ACTOR_SPELL_FILTER_ARCANUM: 'spell-filter-arcanum',
+    ACTOR_SCENE_PARADOX: 'scene-paradox',
     //Spells
     MTA_SPELL_ARCANUM: "arcanum",
     MTA_SPELL_PRACTICE: "practice",
