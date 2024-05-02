@@ -165,7 +165,7 @@ export class SpellcastConfig extends FormApplication {
       "casting-time": 0,
       "casting-time-advanced": false,
       "casting-time-turns": 1, //advanced only
-
+      "casting-time-mana-turns": 1, //advanced only
       "show-time-in-a-bottle": magicSkills.find(
         (s) => s.name == "Time" && s.rank >= 3
       )
@@ -724,7 +724,11 @@ export class SpellcastConfig extends FormApplication {
       defaultValues.paradoxDice -= 2;
     }
 
-    console.log("swnr-mage", 144, magicSkills, defaultValues);
+    defaultValues["casting-time-mana-turns"] = Math.ceil(defaultValues.manaCost / mageInfo.gnosisData.mana.perTurn);
+
+    if (defaultValues["casting-time-mana-turns"] > defaultValues["casting-time-turns"]) {
+      defaultValues["casting-time-turns"] = defaultValues["casting-time-mana-turns"];
+    }
 
     this.calculatedValues = defaultValues;
 
