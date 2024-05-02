@@ -1001,10 +1001,14 @@ export default class MageActorSheet extends CharacterActorSheet {
       var searchable = html.find(".swnr-space-magic-actor-searchable");
       var search = event.target.value;
       for (var s of searchable) {
-        if (search.length == 0 || s.dataset.searchString.toLowerCase().indexOf(search) != -1) {
+        if (
+          search.length == 0 ||
+          s.dataset.searchString.toLowerCase().indexOf(search.toLowerCase()) !=
+            -1
+        ) {
           s.style.opacity = 1;
         } else {
-          s.style.opacity = .25;
+          s.style.opacity = 0.25;
         }
       }
     });

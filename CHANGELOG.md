@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Number of turns was not taking mana per turn from gnosis into account
+- Fix search not working with capitals
 
 ## [1.8.0] - 2024-05-01
 
