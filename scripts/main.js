@@ -123,6 +123,17 @@ Hooks.once("ready", () => {
   Handlebars.registerHelper(MageMagicAddon.ID + "-if-lte", function (arg1, arg2, options) {
     return arg1 <= arg2 ? options.fn(this) : options.inverse(this);
   });
+  Handlebars.registerHelper(MageMagicAddon.ID + "-dots", function (arg1, arg2, options) {
+    var ret = '';
+    for (var i = 0; i <= arg2; i++) {
+      if (i <= arg1) {
+        ret += '<i class="fa-solid fa-circle"></i>';
+      } else {
+        ret += '<i class="fa-regular fa-circle"></i>';
+      }
+    }
+    return ret;
+  });
 });
 
 Hooks.once("devModeReady", ({ registerPackageDebugFlag }) => {

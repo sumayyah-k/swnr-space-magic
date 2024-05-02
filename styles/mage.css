@@ -684,9 +684,25 @@ button.swnr-mage-improvised-spellcasting-btn:hover:after {
 .swnr-mage-arcana-list li {
   display:flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   margin-bottom:.25rem;
+}
+
+.swnr-mage-arcana-list li .swnr-mage-arcana-list-label {
+  display:flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.swnr-mage-arcana-list-ranks {
+  font-size:.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+.swnr-mage-arcana-list-ranks i {
+  margin-left:.125rem;
 }
 
 .swnr-mage-arcana-list li button {

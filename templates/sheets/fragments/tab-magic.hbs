@@ -59,22 +59,29 @@
               {{#each magicSkills as |skill|}}
                 {{#swnr-space-magic-if-not-equal skill.name 'Gnosis'}}
                   <li>
-                    {{log skill}}
-                    <button type="button" data-action="toggle-skill-importance" data-skill="{{skill.id}}">
-                      {{#if skill.importance}}
-                        {{#swnr-space-magic-if-equals skill.importance 'ruling'}}
-                          R
-                        {{else}}
-                          I
-                        {{/swnr-space-magic-if-equals}}
-                      {{/if}}
-                    </button>
-                    <a
-                      href="#"
-                      class="swnr-space-mage-toggle-spell-filter
-                      {{#swnr-space-magic-if-equals skill.name ../spellFilterArcanum}}swnr-space-mage-toggle-spell-filter-active{{/swnr-space-magic-if-equals}}"
-                      data-arcanum="{{ skill.name }}"
-                    >{{ skill.name }}: {{skill.rank}}/4</a>
+                    <div class="swnr-mage-arcana-list-label">
+                      <button type="button" data-action="toggle-skill-importance" data-skill="{{skill.id}}">
+                        {{#if skill.importance}}
+                          {{#swnr-space-magic-if-equals skill.importance 'ruling'}}
+                            R
+                          {{else}}
+                            I
+                          {{/swnr-space-magic-if-equals}}
+                        {{/if}}
+                      </button>
+                      <a
+                        href="#"
+                        class="swnr-space-mage-toggle-spell-filter
+                        {{#swnr-space-magic-if-equals skill.name ../spellFilterArcanum}}swnr-space-mage-toggle-spell-filter-active{{/swnr-space-magic-if-equals}}"
+                        data-arcanum="{{ skill.name }}"
+                      >
+                        {{ skill.name }}
+                      </a>
+                    </div>
+                    <div class="swnr-mage-arcana-list-ranks" data-tooltip="Rank: {{skill.rank}}/4">
+                      {{#swnr-space-magic-dots skill.rank 4}}
+                      {{/swnr-space-magic-dots}}
+                    </div>
                   </li>
                 {{/swnr-space-magic-if-not-equal}}
               {{/each}}
