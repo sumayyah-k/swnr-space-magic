@@ -885,7 +885,7 @@ export class SpellcastConfig extends FormApplication {
       }
 
       if (this.calculatedValues['contain-paradox'] && paradoxRoll.result > 0) {
-        paradoxDmgRoll = new Roll(paradoxRoll.result + 'd6', {numDice: paradoxRoll.result});
+        paradoxDmgRoll = new Roll(paradoxRoll.result + 'd4', {numDice: paradoxRoll.result});
         await paradoxDmgRoll.evaluate({async: true});
         rolls.push(paradoxDmgRoll);
       }

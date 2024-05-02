@@ -104,11 +104,11 @@ export default class Spell {
 
   static diceSizes = [
     { id: "none", name: "None" },
-    { id: "d4", name: "d4" },
-    { id: "d6", name: "d6" },
-    { id: "d8", name: "d8 (Bashing)" },
-    { id: "d10", name: "d10 (Lethal)" },
-    { id: "d12", name: "d12 (Aggravated)" },
+    { id: "d4", name: "d4 (Bashing)" },
+    { id: "d6", name: "d6 (Lethal)" },
+    { id: "d8", name: "d8 (Aggravated)" },
+    { id: "d10", name: "d10" },
+    { id: "d12", name: "d12" },
     { id: "d20", name: "d20" },
   ];
 
