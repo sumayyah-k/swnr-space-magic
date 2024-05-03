@@ -86,7 +86,17 @@ export default class MageActorSheet extends CharacterActorSheet {
       MageMagicAddon.ID,
       MageMagicAddon.FLAGS.ACTOR_SCENE_PARADOX
     );
-    console.log("swnr-mage", "actor", this.object, this);
+    var unrelinquishedActiveSpells = this.object.items.contents.filter(
+      (i) =>
+        i.type == "power" &&
+        i.flags[MageMagicAddon.ID] &&
+        i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE] &&
+        ["mageActiveSpell"].indexOf(
+          i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE]
+        ) != -1 &&
+        !i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.SPELL_RELINQUISHED]
+    ).length;
+
     actorId = actor.id;
     var arcana = new Arcanum(actor);
     magicSkills = arcana.getAll();
@@ -298,6 +308,8 @@ export default class MageActorSheet extends CharacterActorSheet {
         theme: { ...themeDefaults, ...themePrefs },
         combatRollSkills: this.combatRollSkills,
         spellFilterArcanum,
+        unrelinquishedActiveSpells,
+        maxActiveSpells: mageInfo.gnosis.system.rank + 1,
         skillsSorted: this.object.items
           .filter((i) => i.type == "skill")
           .reduce((acc, i) => {

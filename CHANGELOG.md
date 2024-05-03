@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - All damage lowered by 2 dice levels. Bashing is d4, aggravated is d6, lethal is d8
 - Switch ranks to dots on magic tab arcana list
+- Show number of active spells on magic tab
 
 ### Fixed
 
