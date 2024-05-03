@@ -96,6 +96,17 @@ export default class MageActorSheet extends CharacterActorSheet {
         ) != -1 &&
         !i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.SPELL_RELINQUISHED]
     ).length;
+    const morality = await this.object.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ACTOR_MORALITY);
+    var showMorality = false;
+    var moralityLabel = "Morality";
+    if (!morality) {
+      await this.object.setFlag(
+        MageMagicAddon.ID,
+        MageMagicAddon.FLAGS.ACTOR_MORALITY,
+        7
+      );
+      morality = 7;
+    }
 
     actorId = actor.id;
     var arcana = new Arcanum(actor);
@@ -204,6 +215,8 @@ export default class MageActorSheet extends CharacterActorSheet {
     const strain = actor.system.systemStrain;
     var mageInfo = {};
     if (mtAMage) {
+      showMorality = true;
+      moralityLabel = "Wisdom";
       activeSpells = actor.items.contents.filter((i) => {
         console.log("swnr-mage", "spell check", i.name, i.flags);
         return (
@@ -310,6 +323,9 @@ export default class MageActorSheet extends CharacterActorSheet {
         spellFilterArcanum,
         unrelinquishedActiveSpells,
         maxActiveSpells: mageInfo.gnosis.system.rank + 1,
+        morality,
+        showMorality,
+        moralityLabel,
         skillsSorted: this.object.items
           .filter((i) => i.type == "skill")
           .reduce((acc, i) => {

@@ -1,4 +1,5 @@
 import { MageMagicAddon } from "./MageMagicAddon.js";
+import { isMtAMage } from "./utils.js";
 
 export class RollCod extends FormApplication {
   constructor(opts, data) {
@@ -40,7 +41,17 @@ export class RollCod extends FormApplication {
     var totalDice = 0;
     var rollSkills = [];
     for (var item of this.combatRollSkills) {
-      if (item.substring(0, 5) == "item-") {
+      if (item == 'morality') {
+        var morality = this.actor.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ACTOR_MORALITY);
+        if (morality) {
+          if (isMtAMage(this.actor)) {
+            rollSkills.push("Wisdom");
+          } else {
+            rollSkills.push("Morality");
+          }
+          totalDice += parseInt(morality, 0);
+        }
+      } else if (item.substring(0, 5) == "item-") {
         var skill = this.actor.items.find(i => i.id == item.substring(5));
         if (skill) {
           rollSkills.push(skill.name);

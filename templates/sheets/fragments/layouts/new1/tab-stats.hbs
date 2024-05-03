@@ -87,6 +87,26 @@
           </td>
         </tr>
         {{/each}}
+        {{#if showMorality}}
+          <tr>
+            <td>
+              <label for="flags.swnr-space-magic.morality" class="resource-label px-1">
+                {{ moralityLabel }}
+              </label>
+            </td>
+            <td class="text-center hidden lg:table-cell">
+              <input type="number"
+                class="w-8 px-1.5 py-3 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-blue-800 placeholder-opacity-75 rounded-md"
+                min="3" max="10" step="1" name="flags.swnr-space-magic.morality" value="{{morality}}" data-dtype="Number" />
+            </td>
+            <td class="text-center hidden lg:table-cell">
+            </td>
+            <td class="text-center hidden lg:table-cell">
+            </td>
+            <td class="text-center">
+            </td>
+          </tr>
+        {{/if}}
       </table>
     </div>
     <!-- other stats & foci-->

@@ -12,6 +12,7 @@ export class MageMagicAddon {
     ACTOR_SHEET_THEME: "sheet-theme",
     ACTOR_SPELL_FILTER_ARCANUM: 'spell-filter-arcanum',
     ACTOR_SCENE_PARADOX: 'scene-paradox',
+    ACTOR_MORALITY: 'morality',
     //Spells
     MTA_SPELL_ARCANUM: "arcanum",
     MTA_SPELL_PRACTICE: "practice",

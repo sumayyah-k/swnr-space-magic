@@ -74,6 +74,19 @@
         </div>
       </div>
       {{/each}}
+      {{#if showMorality}}
+        <div class="swnr-space-magic-combat-tab-skill">
+          <label>
+            <input type="checkbox" name="swnr-space-magic-combat-tab-skills[]" class="input-swnr-space-magic-combat-tab-skill"
+              value="morality" {{#swnr-space-magic-if-contains 'morality' combatRollSkills}} checked="checked"
+              {{/swnr-space-magic-if-contains}} />
+            {{ moralityLabel }}
+          </label>
+          <div class="swnr-space-magic-combat-tab-skill-ranks">
+            {{numberFormat morality decimals=0 sign=false}}
+          </div>
+        </div>
+      {{/if}}
     </div>
     <!-- SKILLS -->
     <div class="swnr-space-magic-combat-tab-skills">
