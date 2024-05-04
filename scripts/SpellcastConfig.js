@@ -8,6 +8,7 @@ import Mana from "./Models/Mana.js";
 import Gnosis from "./Models/Gnosis.js";
 import Arcanum from "./Models/Arcanum.js";
 import Spell from "./Models/Spell.js";
+import Morality from "./Models/Morality.js";
 
 export class SpellcastConfig extends FormApplication {
 
@@ -823,6 +824,7 @@ export class SpellcastConfig extends FormApplication {
 
     let r;
     let paradoxRoll;
+    let wisdomRoll;
     let paradoxDmgRoll;
     let aimedRoll;
     let damageRoll;
@@ -857,7 +859,7 @@ export class SpellcastConfig extends FormApplication {
       });
     }
 
-    if (this.calculatedValues.paradoxDice !== null){
+    if (this.calculatedValues.paradoxDice !== null) {
       if(this.calculatedValues.paradoxDice > 0) {
         paradoxRoll = new Roll(this.calculatedValues.paradoxDice + "d10x10cs>=8", {dicePool: this.calculatedValues.paradoxDice});
       } else {
@@ -873,6 +875,12 @@ export class SpellcastConfig extends FormApplication {
       await paradoxRoll.evaluate({async: true});
 
       rolls.push(paradoxRoll);
+
+      var wisdom = await Morality.getValue(actor);
+      wisdomRoll = new Roll(wisdom + 'd10x=10cs>=8', {});
+      await wisdomRoll.evaluate({ async: true });
+
+      rolls.push(wisdomRoll);
     }
 
     var successType = 'failure';
@@ -885,17 +893,23 @@ export class SpellcastConfig extends FormApplication {
     }
 
     if (paradoxRoll) {
+      var paradoxDmgPool = paradoxRoll.result;
+
+      if (wisdomRoll) {
+        paradoxDmgPool -= wisdomRoll.result;
+      }
+
       var paradoxSuccessType = 'success';
       if (isParadoxChanceDie && paradoxRoll.dice[0].results[0].result == 1) {
         paradoxSuccessType = 'exceptional';
-      } else if (paradoxRoll.result >= 5 || (this.calculatedValues['casting-method'] == 'praxis' && paradoxRoll.result >= 3)) {
+      } else if (paradoxDmgPool >= 5 || (this.calculatedValues['casting-method'] == 'praxis' && paradoxDmgPool >= 3)) {
         paradoxSuccessType = 'dramafail';
-      } else if (paradoxRoll.result > 0 && ((this.calculatedValues['casting-method'] != 'praxis' && paradoxRoll.result < 5) || (this.calculatedValues['casting-method'] == 'praxis' && paradoxRoll.result < 3))) {
+      } else if (paradoxDmgPool > 0 && ((this.calculatedValues['casting-method'] != 'praxis' && paradoxDmgPool < 5) || (this.calculatedValues['casting-method'] == 'praxis' && paradoxDmgPool < 3))) {
         paradoxSuccessType = 'failure';
       }
 
-      if (this.calculatedValues['contain-paradox'] && paradoxRoll.result > 0) {
-        paradoxDmgRoll = new Roll(paradoxRoll.result + 'd4', {numDice: paradoxRoll.result});
+      if (this.calculatedValues['contain-paradox'] && paradoxDmgPool > 0) {
+        paradoxDmgRoll = new Roll(paradoxDmgPool + 'd4', {numDice: paradoxDmgPool});
         await paradoxDmgRoll.evaluate({async: true});
         rolls.push(paradoxDmgRoll);
       }
@@ -985,6 +999,7 @@ export class SpellcastConfig extends FormApplication {
       formVals,
       r,
       paradoxRoll,
+      wisdomRoll,
       paradoxDmgRoll,
       aimedRoll,
       damageRoll,
