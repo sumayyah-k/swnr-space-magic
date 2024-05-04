@@ -1384,6 +1384,10 @@ button.swnr-mage-btn:hover {
   background: var(--primary-color);
   color: var(--primary-color-text);
 }
+.swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-stats .swnr-space-magic-combat-tab-skill .swnr-space-magic-combat-tab-action-btn.swnr-mage-btn {
+  font-size:.8rem;
+  padding: 0;
+}
 
 .swnr-space-mage-theme-layout-new1 .swnr-space-magic-combat-tab-skill-check-controls {
   display:flex;

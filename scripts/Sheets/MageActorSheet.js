@@ -12,8 +12,10 @@ import SpellSlots from '../Models/SpellSlots.js';
 import Mana from "../Models/Mana.js";
 import Arcanum from "../Models/Arcanum.js";
 import Gnosis from "../Models/Gnosis.js";
+import Morality from "../Models/Morality.js";
 import { RollCod } from "../RollCod.js";
 import { RollSwnr } from "../RollSwnr.js";
+import { ChallengeMorality } from "../ChallengeMorality.js";
 
 export default class MageActorSheet extends CharacterActorSheet {
   activeMageSightArcana = [];
@@ -58,7 +60,7 @@ export default class MageActorSheet extends CharacterActorSheet {
   get template() {
     return MageMagicAddon.TEMPLATES.ACTORSHEET;
   }
-
+  //
   async getData(options) {
     var data = await super.getData(options);
 
@@ -96,17 +98,10 @@ export default class MageActorSheet extends CharacterActorSheet {
         ) != -1 &&
         !i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.SPELL_RELINQUISHED]
     ).length;
-    const morality = await this.object.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ACTOR_MORALITY);
+    const morality = await Morality.getValue(this.object);
     var showMorality = false;
-    var moralityLabel = "Morality";
-    if (!morality) {
-      await this.object.setFlag(
-        MageMagicAddon.ID,
-        MageMagicAddon.FLAGS.ACTOR_MORALITY,
-        7
-      );
-      morality = 7;
-    }
+    const moralityLabel = Morality.getLabel(this.object);
+    const moralityBtnLabel = Morality.getChallengeBtnLabel(this.object);
 
     actorId = actor.id;
     var arcana = new Arcanum(actor);
@@ -216,7 +211,6 @@ export default class MageActorSheet extends CharacterActorSheet {
     var mageInfo = {};
     if (mtAMage) {
       showMorality = true;
-      moralityLabel = "Wisdom";
       activeSpells = actor.items.contents.filter((i) => {
         console.log("swnr-mage", "spell check", i.name, i.flags);
         return (
@@ -326,6 +320,7 @@ export default class MageActorSheet extends CharacterActorSheet {
         morality,
         showMorality,
         moralityLabel,
+        moralityBtnLabel,
         skillsSorted: this.object.items
           .filter((i) => i.type == "skill")
           .reduce((acc, i) => {
@@ -404,7 +399,10 @@ export default class MageActorSheet extends CharacterActorSheet {
 
   async _onScene(event) {
     super._onScene(event);
-    await this.actor.unsetFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ACTOR_SCENE_PARADOX);
+    await this.actor.unsetFlag(
+      MageMagicAddon.ID,
+      MageMagicAddon.FLAGS.ACTOR_SCENE_PARADOX
+    );
   }
 
   /**
@@ -756,6 +754,13 @@ export default class MageActorSheet extends CharacterActorSheet {
       console.error(e);
     }
   }
+
+  _handleChallengeMorality() {
+    new ChallengeMorality(null, {
+      actorId: this.object.id,
+    }).render(true);
+  }
+
   /**
    * Toggle editing hit points. Stolen from D&D5e.
    * @param {PointerEvent} event  The triggering event.
@@ -984,6 +989,10 @@ export default class MageActorSheet extends CharacterActorSheet {
       }
       case "combat-cod-roll": {
         this._handleCombatTabRoll("cod");
+        break;
+      }
+      case "challenge-morality": {
+        this._handleChallengeMorality();
         break;
       }
 

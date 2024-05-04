@@ -1,0 +1,25 @@
+<form>
+  <h1>Wisdom check for {{actor.name}}</h1>
+  <div class="swnr-space-magic-field-toggles-wrap">
+    <label class="swnr-space-magic-field-toggle">
+      <input type="radio" class="magic-casting-panel-content-field" name="roll-style" value="enlightened"
+        {{#swnr-space-magic-if-equals rollType "enlightened" }} checked="checked" {{/swnr-space-magic-if-equals}} />
+      Enlightened
+    </label>
+    <label class="swnr-space-magic-field-toggle">
+      <input type="radio" class="magic-casting-panel-content-field" name="roll-style" value="understanding"
+        {{#swnr-space-magic-if-equals rollType "understanding" }} checked="checked" {{/swnr-space-magic-if-equals}} />
+      Understanding
+    </label>
+    <label class="swnr-space-magic-field-toggle">
+      <input type="radio" class="magic-casting-panel-content-field" name="roll-style" value="falling"
+        {{#swnr-space-magic-if-equals rollType "falling" }} checked="checked" {{/swnr-space-magic-if-equals}} />
+      Falling
+    </label>
+  </div>
+  <div class="form-group">
+    <label>Modifier</label>
+    <input type="number" name="modifier" value="{{modifier}}" step="1" />
+  </div>
+  <button type="submit" class="swnr-mage-btn">Roll</button>
+</form>

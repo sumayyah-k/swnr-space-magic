@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add badge to spells in list showing damaging spells
 - scene paradox that accumulates when spells with paradox are cast and clears with the end scene button
 - Add Wisdom Stat
+- Add button to roll for acts of hubris
 
 ### Changed
 
