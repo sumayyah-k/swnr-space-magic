@@ -2,8 +2,6 @@ import { isMtAMage } from "../utils.js";
 import { MageMagicAddon } from "../MageMagicAddon.js";
 
 export default class {
-  startingMorality = 7;
-
   resultData = {
     mage: {
       desc: {
@@ -28,6 +26,8 @@ export default class {
    * @returns {Integer|Null}
    */
   static async getValue(actor) {
+    const startingMorality = 7;
+
     const val = await actor.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ACTOR_MORALITY);
 
     if (!val) {
