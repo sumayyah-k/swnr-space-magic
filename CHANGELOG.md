@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Can change the value of strain recovery per rest via the stats tab
+
 ### Fixed
 
 - Fix error when accessing actor sheet while not a mage

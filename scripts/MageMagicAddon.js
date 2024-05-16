@@ -13,6 +13,7 @@ export class MageMagicAddon {
     ACTOR_SPELL_FILTER_ARCANUM: "spell-filter-arcanum",
     ACTOR_SCENE_PARADOX: "scene-paradox",
     ACTOR_MORALITY: "morality",
+    ACTOR_STRAIN_RECOVERY: "strain-recovery",
     //Spells
     MTA_SPELL_ARCANUM: "arcanum",
     MTA_SPELL_PRACTICE: "practice",

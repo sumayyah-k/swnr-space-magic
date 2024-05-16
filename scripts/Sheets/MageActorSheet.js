@@ -415,7 +415,8 @@ export default class MageActorSheet extends CharacterActorSheet {
 
     const rest = async (isFrail) => {
       const data = this.actor.data.data;
-      const newStrain = Math.max(data.systemStrain.value - 1, 0);
+      const strainRecovery = await this.actor.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ACTOR_STRAIN_RECOVERY);
+      const newStrain = Math.max(data.systemStrain.value - (strainRecovery || 1), 0);
       const newHP = isFrail ? data.health.value : data.health.max;
       await this.actor.update({
         data: {
