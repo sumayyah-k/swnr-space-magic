@@ -316,7 +316,7 @@ export default class MageActorSheet extends CharacterActorSheet {
         combatRollSkills: this.combatRollSkills,
         spellFilterArcanum,
         unrelinquishedActiveSpells,
-        maxActiveSpells: mageInfo.gnosis.system.rank + 1,
+        maxActiveSpells: mageInfo && mageInfo.gnosis ? mageInfo.gnosis.system.rank + 1 : 0,
         morality,
         showMorality,
         moralityLabel,

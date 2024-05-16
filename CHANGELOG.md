@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fix error when accessing actor sheet while not a mage
+
+## [1.9.1] - 2024-05-08
+
+### Fixed
+
 - Syntax error with starting morality
 
 ## [1.9.0] - 2024-05-08
