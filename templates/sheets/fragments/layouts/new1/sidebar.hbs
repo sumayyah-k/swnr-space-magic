@@ -79,6 +79,20 @@
       </div>
     </div>-->
 
+    {{#if hasAltForms}}
+      <div class="form-group form-group-stacked mb-3 mx-2">
+        <label>Form</label>
+        <select name="flags.swnr-space-magic.active-form">
+          {{#select actor.flags.swnr-space-magic.active-form }}
+          <option value="">No Form</option>
+          {{#each formFoci}}
+          <option value="{{this.id}}">{{this.name}}</option>
+          {{/each}}
+          {{/select}}
+        </select>
+      </div>
+    {{/if}}
+
     <div class="meter-group">
       <div class="label roboto-condensed-upper">
         <span>{{localize 'swnr.sheet.hp'}}</span>

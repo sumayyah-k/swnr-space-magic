@@ -84,7 +84,7 @@ export class MageConfig extends FormApplication {
         }, {});
     }
 
-    const spellSlots = await SpellSlots.getForActor(actorId);
+    const spellSlots = await SpellSlots.getForActor(actor);
 
     var numSpellSlots = Object.values(spellSlots).reduce((acc, i) => {
       var chClass = i.class.toLowerCase().trim();
@@ -185,9 +185,9 @@ export class MageConfig extends FormApplication {
       spellSlotsByLevel,
       spells,
       spellsById,
-      isArcanist: isArcanist(actor),
-      isMagister: isMagister(actor),
-      isSwNMage: isSwNMage(actor),
+      isArcanist: await isArcanist(actor),
+      isMagister: await isMagister(actor),
+      isSwNMage: await isSwNMage(actor),
       mtAMage,
       activeMagicTab: activeMagicTab || 1,
       flag: MageMagicAddon.FLAGS.ID + "-" + MageMagicAddon.FLAGS.SPELLSLOTS,
@@ -476,7 +476,7 @@ export class MageConfig extends FormApplication {
     const skillId = clickedElement.data()?.skill;
 
     const actor = game.actors?.get(this.options.actorId);
-    const swNMage = isSwNMage(actor);
+    const swNMage = await isSwNMage(actor);
     const mtAMage = isMtAMage(actor);
 
     switch (action) {

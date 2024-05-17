@@ -87,6 +87,12 @@ export default class MageItemSheet extends ItemSheet {
           { value: "mageActiveSpell", label: "MtAw Active Spell" },
           { value: "attainment", label: "Attainment" },
         ],
+        focusTypeOptions: [{ value: "altForm", label: "Alternate Form" }],
+        focusCasterTypeOptions: [
+          { value: "arcanist", label: "Arcanist" },
+          { value: "magister", label: "Magister" },
+          { value: "mage", label: "Mage (CoD)" },
+        ],
         arcana: arcanum.names,
         reachArcanaOpts,
         practices: Spell.rankedPractices(null, true),

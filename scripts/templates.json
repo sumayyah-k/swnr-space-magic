@@ -4,5 +4,6 @@
   "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/header.hbs",
   "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/sidebar.hbs",
   "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-combat.hbs",
-  "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-stats.hbs"
+  "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-stats.hbs",
+  "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-powers.hbs"
 ]

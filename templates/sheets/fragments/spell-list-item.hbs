@@ -29,6 +29,7 @@
       <button type="button" class="swnr-mage-btn magic-casting-prepare-btn item-delete" title="Remove Spell">
         <i class="fa fa-trash"></i>
       </button>
+      {{log 'dfsdf' isMagister spell.system.level numSpellSlots}}
       {{#swnr-space-magic-if-equals spell.flags.swnr-space-magic.power-type 'attainment'}}
         <button type="button" class="swnr-mage-btn magic-casting-cast-btn item-click" title="Use Attainment">
           <i class="fa fa-hand-sparkles"></i>
@@ -36,7 +37,12 @@
       {{else}}
         {{#if isMagister}}
         <button type="button" class="swnr-mage-btn magic-casting-cast-btn" data-action="castByLevel"
-          data-cast-level="{{spell.system.level}}" data-spell-id="{{spell.id}}" title="Cast Spell">
+          data-cast-level="{{spell.system.level}}" data-spell-id="{{spell.id}}" title="Cast Spell"
+          {{#swnr-space-magic-has-spellslot numSpellSlots spell.system.level}}
+          {{else}}
+            disabled="disabled"
+          {{/swnr-space-magic-has-spellslot}}
+        >
           <i class="fa fa-wand-sparkles"></i>
         </button>
         {{/if}}

@@ -521,5 +521,63 @@
       {{/if}}
     </div>
     {{/swnr-space-magic-if-equals}}
+    {{#swnr-space-magic-if-equals item.type 'focus'}}
+      <div class="form-group">
+        <label>
+          Focus Type
+        </label>
+        <select name="flags.swnr-space-magic.focus-type">
+          {{#select item.flags.swnr-space-magic.focus-type}}
+            <option value=""></option>
+            {{#each focusTypeOptions}}
+              <option value="{{this.value}}" >{{this.label}}</option>
+            {{/each}}
+          {{/select}}
+        </select>
+        </label>
+      </div>
+      {{#swnr-space-magic-if-equals item.flags.swnr-space-magic.focus-type 'altForm'}}
+        <div class="form-group">
+          <label>
+            Caster Type
+          </label>
+          <select name="flags.swnr-space-magic.form-caster-type">
+            {{#select item.flags.swnr-space-magic.form-caster-type}}
+            <option value="">None</option>
+            {{#each focusCasterTypeOptions}}
+            <option value="{{this.value}}">{{this.label}}</option>
+            {{/each}}
+            {{/select}}
+          </select>
+          </label>
+        </div>
+      {{else}}
+        {{localize 'swnr.foci.level'}}:
+        <select class="px-1 border border-gray-800 bg-gray-400 bg-opacity-75 rounded-md"
+          name="data.level">
+          {{#select data.data.level}}
+          <option value=""></option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          {{/select}}
+        </select>
+
+        <div class="pt-1 mt-1 border border-black rounded-md bg-gray-400 bg-opacity-75 mb-2">
+
+          <h3 class="text-base p-1">{{localize 'swnr.foci.level1'}}</h3>
+          <div class="p-1 border-t border-black">
+            {{editor content=data.data.level1 target="data.level1" button=true owner=owner
+            editable=editable }}
+          </div>
+        </div>
+        <div class="border border-black rounded-md bg-gray-400 bg-opacity-75">
+          <h3 class="text-base p-1">{{localize 'swnr.foci.level2'}}</h3>
+          <div class="p-1 border-t border-black">
+            {{editor content=data.data.level2 target="data.level2" button=true owner=owner
+            editable=editable }}
+          </div>
+        </div>
+    {{/swnr-space-magic-if-equals}}
+  {{/swnr-space-magic-if-equals}}
   </main>
 </form>

@@ -60,6 +60,19 @@
           <label for="data.health.temp">Temp HP</label>
           <input type="number" step="1" name="data.health.temp" value="{{actor.data.data.health.temp}}" data-dtype="Number" min="0" />
         </div>
+        {{#if hasAltForms}}
+        <div class="form-group swnr-mage-temp-hp">
+          <label>Form</label>
+          <select name="flags.swnr-space-magic.active-form">
+            {{#select actor.flags.swnr-space-magic.active-form }}
+              <option value="">No Form</option>
+              {{#each formFoci}}
+                <option value="{{this.id}}">{{this.name}}</option>
+              {{/each}}
+            {{/select}}
+          </select>
+        </div>
+        {{/if}}
         {{>
         "systems/swnr/templates/actors/fragments/char/sidebar.html"
         actor=actor
@@ -120,9 +133,16 @@
          "modules/swnr-space-magic/templates/sheets/fragments/tab-magic.hbs" actor=actor
         }}
         {{/if}}
-        {{>
-         "systems/swnr/templates/actors/fragments/char/tab-power.html" actor=actor
-        }}
+        {{#swnr-space-magic-if-equals theme.layout 'new1'}}
+          {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-powers.hbs" actor=actor}}
+        {{else}}
+          {{#if activeForm }}
+            {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-powers.hbs" actor=actor}}
+          {{else}}
+            {{> "systems/swnr/templates/actors/fragments/char/tab-power.html" actor=actor }}
+          {{/if}}
+        {{/swnr-space-magic-if-equals}}
+
         {{>
          "systems/swnr/templates/actors/fragments/char/tab-skills.html" actor=actor
         }}

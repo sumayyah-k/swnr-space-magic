@@ -14,6 +14,7 @@ export class MageMagicAddon {
     ACTOR_SCENE_PARADOX: "scene-paradox",
     ACTOR_MORALITY: "morality",
     ACTOR_STRAIN_RECOVERY: "strain-recovery",
+    ACTOR_ACTIVE_FORM: "active-form",
     //Spells
     MTA_SPELL_ARCANUM: "arcanum",
     MTA_SPELL_PRACTICE: "practice",
@@ -28,6 +29,8 @@ export class MageMagicAddon {
     SPELL_DMG_DICE: "damage-dice",
     //Items
     ITEM_POWER_TYPE: "power-type",
+    ITEM_FOCUS_TYPE: "focus-type",
+    ITEM_FOCUS_CASTER_TYPE: "form-caster-type",
     MTA_SPELL_IS_YANTRA: "is-yantra",
     MTA_SPELL_YANTRA_BONUS: "yantra-bonus",
   };

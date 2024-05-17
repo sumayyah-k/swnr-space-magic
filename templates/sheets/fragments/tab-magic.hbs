@@ -201,7 +201,13 @@
                   <section class="swnr-mage-sight-section">
                     <h3>Active Spells ({{unrelinquishedActiveSpells}}/{{maxActiveSpells}})</h3>
                     {{#each activeSpells as |spell|}}
-                      {{> "modules/swnr-space-magic/templates/sheets/fragments/spell-list-item.hbs" spell=spell isMagister=isMagister isArcanist=isArcanist mtAMage=mtAMage }}
+                      {{> "modules/swnr-space-magic/templates/sheets/fragments/spell-list-item.hbs"
+                        spell=spell
+                        isMagister=../isMagister
+                        isArcanist=../isArcanist
+                        mtAMage=../mtAMage
+                        numSpellSlots=../numSpellSlots
+                      }}
                     {{/each}}
                   </section>
                 {{/if}}
@@ -212,7 +218,13 @@
                   <h4><span>Level {{level}}</span></h4>
                   {{#each spelllist as |spell|}}
                     {{>
-                      "modules/swnr-space-magic/templates/sheets/fragments/spell-list-item.hbs" spell=spell level=level isMagister=../../isMagister isArcanist=../../isArcanist mtAMage=../../mtAMage
+                      "modules/swnr-space-magic/templates/sheets/fragments/spell-list-item.hbs"
+                      spell=spell
+                      level=level
+                      isMagister=../../isMagister
+                      isArcanist=../../isArcanist
+                      mtAMage=../../mtAMage
+                      numSpellSlots=../../numSpellSlots
                     }}
                   {{/each}}
                 {{/each}}
@@ -223,13 +235,14 @@
                 <section class="swnr-mage-sight-section">
                   <h3>Attainments</h3>
                   {{#each attainments as |spelllist level|}}
-                  <h4><span>Level {{level}}</span></h4>
-                  {{#each spelllist as |spell|}}
-                  {{>
-                  "modules/swnr-space-magic/templates/sheets/fragments/spell-list-item.hbs" spell=spell level=level
-                  isMagister=../../isMagister isArcanist=../../isArcanist mtAMage=../../mtAMage
-                  }}
-                  {{/each}}
+                    <h4><span>Level {{level}}</span></h4>
+                    {{#each spelllist as |spell|}}
+                      {{>
+                      "modules/swnr-space-magic/templates/sheets/fragments/spell-list-item.hbs" spell=spell level=level
+                      isMagister=../../isMagister isArcanist=../../isArcanist mtAMage=../../mtAMage
+                      numSpellSlots=../../numSpellSlots
+                      }}
+                    {{/each}}
                   {{/each}}
                 </section>
               </div>

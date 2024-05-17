@@ -1,4 +1,5 @@
 import { MageMagicAddon } from "../MageMagicAddon.js";
+import { isArcanist, isMagister } from "../utils.js";
 /**
  * Single Spell Slot Type Definition
  *
@@ -17,19 +18,33 @@ export default class SpellSlots {
    * @param {String} actorId The id of the actor who's slots to return
    * @returns {Object} An object containing all of the slots keyed by id
    */
-  static async getForActor(actorId) {
-    if (actorId) {
-      var existing = await game.actors
-        .get(actorId)
+  static async getForActor(actor) {
+    if (typeof actor == 'string') {
+      actor = await game.actors.get(actor);
+    }
+    if (actor) {
+      var existing = await actor
         ?.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.SPELLSLOTS);
 
       if (!existing) {
         return this.fillSpellSlots(actorId);
       }
 
-      return existing;
+      var chClass = await this.getActorCasterClass(actor);
+      return Object.values(existing).filter((s) => s.class == chClass);
     }
     return {};
+  }
+
+  static async getActorCasterClass(actor) {
+    var chClass;// = actor?.system.class;
+    if (await isArcanist(actor)) {
+      chClass = 'arcanist';
+    }
+    if (await isMagister(actor)) {
+      chClass = "magister";
+    }
+    return chClass;
   }
 
   /**
@@ -73,14 +88,14 @@ export default class SpellSlots {
    */
   static async fillSpellSlots(actor, existing) {
     if (actor) {
-      var chClass = actor?.system.class;
+      var chClass = await this.getActorCasterClass(actor);
       var level = actor?.system.level;
       var maxSpellSlots = this.getMaxSpellSlots(chClass, level.value);
-      console.log('swnr-mage', 'fill max', maxSpellSlots);
+      // console.log('swnr-mage', 'fill max', maxSpellSlots);
       if (!existing) {
         existing = await actor.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.SPELLSLOTS);
       }
-      console.log('swnr-mage', 'fill existing', existing);
+      // console.log('swnr-mage', 'fill existing', existing);
 
       if (!existing) {
         for (var lvl in maxSpellSlots) {
@@ -199,7 +214,8 @@ export default class SpellSlots {
    */
   static async updateSlot(actorId, slotId, updateData) {
     if (slotId) {
-      const allSlots = await this.getForActor(actorId);
+      const actor = game.actors.get(actorId);
+      const allSlots = await this.getForActor(actor);
       const relevantSlot = allSlots[slotId];
 
       // construct the update to send
@@ -208,8 +224,7 @@ export default class SpellSlots {
       };
 
       // update the database with the updated ToDo list
-      return game.actors
-          .get(relevantSlot.actorId)
+      return actor
           ?.setFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.SPELLSLOTS, update);
     }
   }

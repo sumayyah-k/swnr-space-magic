@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Can change the value of strain recovery per rest via the stats tab
+- Alternate Character Forms
+  - Add a focus and switch the type to "Alternate Form"
+    - note: focus sheet will need to be `swnr-space-magic.MageItemSheet` to see this option
+  - On a power that should only show up for that form, put the form name in for the source
+  - A dropdown will show up on the right side bar to change the character form which will filter out powers for other forms.
+    - note: on the "Default" theme, choosing "No Form" will continue to use the power tab from the system instead of overriding it, which happens if an active form is chosen or the character is using the "New" theme
+- Add search to powers and cyberware
 
 ### Fixed
 
@@ -191,7 +198,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Casting spells from modal shows details in chat and updates spell slots
 - Prepare spells as arcanist
 
-[unreleased]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.8.0...HEAD
+[unreleased]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.9.1...HEAD
+[1.9.1]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.9.0...1.9.1
+[1.9.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.8.0...1.9.0
 [1.8.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.7.0...1.8.0
 [1.7.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.6.1...1.7.0
 [1.6.1]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.6.0...1.6.1

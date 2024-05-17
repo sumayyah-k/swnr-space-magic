@@ -23,7 +23,7 @@ export default class MageActorSheet extends CharacterActorSheet {
 
   static get defaultOptions() {
     const sup = super.defaultOptions;
-    console.log("swnr-mage", "defaultOpts", sup, this.options);
+    // console.log("swnr-mage", "defaultOpts", sup, this.options);
 
     return foundry.utils.mergeObject(sup, {
       classes: ["swnr-space-magic-actor-sheet", "sheet", "actor", "character"],
@@ -50,11 +50,11 @@ export default class MageActorSheet extends CharacterActorSheet {
     html
       .find(".window-content")
       .removeClass(["cq", "overflow-y-scroll", "relative"]);
-    console.log(
-      "swnr-mage",
-      "window-content classes",
-      html.find(".window-content")
-    );
+    // console.log(
+    //   "swnr-mage",
+    //   "window-content classes",
+    //   html.find(".window-content")
+    // );
   }
 
   get template() {
@@ -103,13 +103,40 @@ export default class MageActorSheet extends CharacterActorSheet {
     const moralityLabel = Morality.getLabel(this.object);
     const moralityBtnLabel = Morality.getChallengeBtnLabel(this.object);
 
+    /** FORMS */
+    const formFoci = this.object.items.contents.filter(
+      (i) =>
+        i.type == "focus" &&
+        i.flags[MageMagicAddon.ID] &&
+        i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_FOCUS_TYPE] &&
+        i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_FOCUS_TYPE] == 'altForm'
+    );
+    const activeForm = await this.object.getFlag(
+      MageMagicAddon.ID,
+      MageMagicAddon.FLAGS.ACTOR_ACTIVE_FORM
+    );
+    const activeFormData = activeForm ? formFoci.find(i => i.id == activeForm) : null;
+
+    let powers = this.object.items.contents.filter(
+      (i) =>
+        i.type == "power"
+    );
+    if (activeForm) {
+      powers = powers.filter(i => {
+        return (
+          formFoci.map(i => i.name).indexOf(i.system.source) == -1 ||
+          i.system.source == activeFormData.name
+        );
+      });
+    }
+
     actorId = actor.id;
     var arcana = new Arcanum(actor);
     magicSkills = arcana.getAll();
 
-    spells = actor.items.contents
+    spells = powers
       .filter((i) => {
-        console.log("swnr-mage", "spell check", i.name, i.flags);
+        // console.log("swnr-mage", "spell check", i.name, i.flags);
         return (
           i.type == "power" &&
           i.flags[MageMagicAddon.ID] &&
@@ -134,7 +161,7 @@ export default class MageActorSheet extends CharacterActorSheet {
         return acc;
       }, {});
 
-    attainments = actor.items.contents
+    attainments = powers
       .filter((i) => {
         return (
           i.type == "power" &&
@@ -155,7 +182,7 @@ export default class MageActorSheet extends CharacterActorSheet {
         return acc;
       }, {});
 
-    spellsById = actor.items.contents
+    spellsById = powers
       .filter((i) => i.type == "power")
       .reduce((acc, i) => {
         acc[i.id] = i;
@@ -163,10 +190,22 @@ export default class MageActorSheet extends CharacterActorSheet {
       }, {});
 
     if (swNMage) {
-      const spellSlots = await SpellSlots.getForActor(actorId);
+      // Filter out powers that show up in the magic tab
+      powers = powers.filter(
+        (i) =>
+          !i.flags[MageMagicAddon.ID] ||
+          !i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE] ||
+          (i.flags[MageMagicAddon.ID] &&
+            i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE] &&
+            ["spell"].indexOf(
+              i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE]
+            ) == -1)
+      );
+
+      const spellSlots = await SpellSlots.getForActor(this.object);
+      var chClass = await SpellSlots.getActorCasterClass(this.object);
 
       numSpellSlots = Object.values(spellSlots).reduce((acc, i) => {
-        var chClass = i.class.toLowerCase().trim();
         var level = parseInt(i.level, 10);
 
         if (!acc[chClass]) {
@@ -210,6 +249,20 @@ export default class MageActorSheet extends CharacterActorSheet {
     const strain = actor.system.systemStrain;
     var mageInfo = {};
     if (mtAMage) {
+      // Filter out powers that show up in the magic tab
+      powers = powers.filter(
+        (i) =>
+          !i.flags[MageMagicAddon.ID] ||
+          !i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE] ||
+            (i.flags[MageMagicAddon.ID] &&
+              i.flags[MageMagicAddon.ID][
+                MageMagicAddon.FLAGS.ITEM_POWER_TYPE
+              ] &&
+              ["mageSpell", "mageActiveSpell", "attainment"].indexOf(
+                i.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.ITEM_POWER_TYPE]
+              ) == -1
+            )
+      );
       showMorality = true;
       activeSpells = actor.items.contents.filter((i) => {
         console.log("swnr-mage", "spell check", i.name, i.flags);
@@ -302,8 +355,8 @@ export default class MageActorSheet extends CharacterActorSheet {
         spellsById,
         activeSpells,
         attainments,
-        isArcanist: isArcanist(actor),
-        isMagister: isMagister(actor),
+        isArcanist: await isArcanist(actor),
+        isMagister: await isMagister(actor),
         hasEffort,
         isSwNMage: swNMage,
         mtAMage,
@@ -316,7 +369,8 @@ export default class MageActorSheet extends CharacterActorSheet {
         combatRollSkills: this.combatRollSkills,
         spellFilterArcanum,
         unrelinquishedActiveSpells,
-        maxActiveSpells: mageInfo && mageInfo.gnosis ? mageInfo.gnosis.system.rank + 1 : 0,
+        maxActiveSpells:
+          mageInfo && mageInfo.gnosis ? mageInfo.gnosis.system.rank + 1 : 0,
         morality,
         showMorality,
         moralityLabel,
@@ -366,6 +420,10 @@ export default class MageActorSheet extends CharacterActorSheet {
             return acc;
           }, {}),
         sceneParadox,
+        formFoci,
+        hasAltForms: formFoci.length > 0,
+        activeForm,
+        powers
       },
     };
   }
@@ -432,7 +490,7 @@ export default class MageActorSheet extends CharacterActorSheet {
         },
       });
 
-      const swNMage = isSwNMage(this.actor);
+      const swNMage = await isSwNMage(this.actor);
       const mtAMage = isMtAMage(this.actor);
       console.log("swnr-mage", "how rest?", { swNMage, mtAMage });
       if (swNMage) {
@@ -787,7 +845,7 @@ export default class MageActorSheet extends CharacterActorSheet {
     const skillId = clickedElement.data()?.skill;
 
     const actor = this.object;
-    const swNMage = isSwNMage(actor);
+    const swNMage = await isSwNMage(actor);
     const mtAMage = isMtAMage(actor);
 
     switch (action) {

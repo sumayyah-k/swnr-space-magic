@@ -906,6 +906,11 @@ button.swnr-mage-btn:hover {
   box-shadow: inset 0 0 0.5rem var(--primary-color);
 }
 
+button.swnr-mage-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .swnr-mage-sight-section {
   border:1px solid var(--primary-color);
   padding:.5rem;
@@ -1541,7 +1546,15 @@ button.swnr-mage-btn:hover {
   color: #fff;
 }
 
-
+.window-app .swnr-space-mage-theme-style-deco .item-titles {
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
+  font-family: 'PoiretOne';
+  text-shadow: none;
+}
+.window-app .swnr-space-mage-theme-style-deco .item-titles > div {
+  line-height:2;
+}
 
 
 
