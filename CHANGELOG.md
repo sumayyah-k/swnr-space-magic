@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.10.1] - 2024-05-17
+
 ### Fixed
 
 - Fix error when creating spells slots of actors who had none before.
@@ -204,7 +206,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Casting spells from modal shows details in chat and updates spell slots
 - Prepare spells as arcanist
 
-[unreleased]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.10.0...HEAD
+[unreleased]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.10.1...HEAD
+[1.10.1]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.10.0...1.10.1
 [1.10.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.9.1...1.10.0
 [1.9.1]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.9.0...1.9.1
 [1.9.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.8.0...1.9.0
@@ -212,7 +215,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.7.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.6.1...1.7.0
 [1.6.1]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.6.0...1.6.1
 [1.6.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.3...1.6.0
-[1.5.3]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.1...1.5.3
+[1.5.3]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.2...1.5.3
+[1.5.2]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.1...1.5.2
 [1.5.1]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.5.0...1.5.1
 [1.5.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/sumayyah-k/swnr-space-magic/compare/1.3.0...1.4.0
