@@ -27,7 +27,7 @@ export default class SpellSlots {
         ?.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.SPELLSLOTS);
 
       if (!existing) {
-        return this.fillSpellSlots(actorId);
+        return this.fillSpellSlots(actor);
       }
 
       var chClass = await this.getActorCasterClass(actor);

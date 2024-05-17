@@ -452,7 +452,7 @@ export default class MageActorSheet extends CharacterActorSheet {
     const level = clickedElement.data().level;
     const actorId = clickedElement.data().actor;
 
-    SpellSlots.useSpellSlot(actorId, level);
+    SpellSlots.castByLevel(actorId, level);
   }
 
   async _onScene(event) {
