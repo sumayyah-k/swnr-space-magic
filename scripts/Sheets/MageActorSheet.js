@@ -1055,6 +1055,57 @@ export default class MageActorSheet extends CharacterActorSheet {
         break;
       }
 
+      case "add-gnosis": {
+        var current = actor.items.contents.find(i => i.name == 'Gnosis');
+        if (current == undefined) {
+          const skillData = {
+            name: "Gnosis",
+            img: "icons/svg/item-bag.svg",
+            type: "skill",
+            system: {
+              defaultStat: "ask",
+              description: "",
+              dice: "2d6",
+              pool: "ask",
+              rank: -1,
+              source: "Space Magic",
+            }
+          };
+
+          await actor.createEmbeddedDocuments("Item", [skillData]);
+        }
+        break;
+      }
+
+      case "add-arcana": {
+        var arcana = new Arcanum;
+        var newSkills = [];
+        for (var arcanum of arcana.names) {
+          var current = actor.items.contents.find(i => i.name == arcanum);
+          if (current == undefined) {
+            newSkills.push({
+              name: arcanum,
+              img: "icons/svg/item-bag.svg",
+              type: "skill",
+              system: {
+                defaultStat: "ask",
+                description: "",
+                dice: "2d6",
+                pool: "ask",
+                rank: -1,
+                source: "Space Magic",
+              }
+            });
+          }
+
+
+        }
+        if (newSkills.length > 0) {
+          await actor.createEmbeddedDocuments("Item", newSkills);
+        }
+        break;
+      }
+
       default:
         MageMagicAddon.log(false, "Invalid action detected", action);
     }

@@ -415,7 +415,7 @@
   text-transform: uppercase;
 }
 .magic-casting-panel-content {
-  padding: .5rem 0;
+  padding: .5rem;
   background-color: var(--swnr-mage-body-bg);
   background-image: url(assets/images/dark-rock-wall-seamless-texture-free-105.png);
   background-position: top left;

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add buttons to add CoD mage skills to the actor magic tab
+- Add source field to CoD spell forms
+
 ### Fixed
 
 - Checking if an actor is a mage now also checks their current form

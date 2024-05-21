@@ -21,7 +21,11 @@
         <div class="magic-casting-panel">
           <div class="magic-casting-panel-title">Gnosis</div>
           <div class="magic-casting-panel-content">
+            {{#if mageInfo.gnosis}}
             <div class="magic-casting-panel-content-stat">{{mageInfo.gnosis.system.rank}}</div>
+            {{else}}
+            <button class="swnr-mage-btn" data-action="add-gnosis">Add Gnosis</button>
+            {{/if}}
           </div>
         </div>
         <div class="magic-casting-panel">
@@ -66,35 +70,39 @@
         <div class="magic-casting-panel">
           <div class="magic-casting-panel-content magic-casting-panel-content-padding">
             <ul class="swnr-mage-arcana-list">
-              {{#each magicSkills as |skill|}}
-                {{#swnr-space-magic-if-not-equal skill.name 'Gnosis'}}
-                  <li>
-                    <div class="swnr-mage-arcana-list-label">
-                      <button type="button" data-action="toggle-skill-importance" data-skill="{{skill.id}}">
-                        {{#if skill.importance}}
-                          {{#swnr-space-magic-if-equals skill.importance 'ruling'}}
-                            R
-                          {{else}}
-                            I
-                          {{/swnr-space-magic-if-equals}}
-                        {{/if}}
-                      </button>
-                      <a
-                        href="#"
-                        class="swnr-space-mage-toggle-spell-filter
-                        {{#swnr-space-magic-if-equals skill.name ../spellFilterArcanum}}swnr-space-mage-toggle-spell-filter-active{{/swnr-space-magic-if-equals}}"
-                        data-arcanum="{{ skill.name }}"
-                      >
-                        {{ skill.name }}
-                      </a>
-                    </div>
-                    <div class="swnr-mage-arcana-list-ranks" data-tooltip="Rank: {{skill.rank}}/4">
-                      {{#swnr-space-magic-dots skill.rank 4}}
-                      {{/swnr-space-magic-dots}}
-                    </div>
-                  </li>
-                {{/swnr-space-magic-if-not-equal}}
-              {{/each}}
+              {{#if magicSkills}}
+                {{#each magicSkills as |skill|}}
+                  {{#swnr-space-magic-if-not-equal skill.name 'Gnosis'}}
+                    <li>
+                      <div class="swnr-mage-arcana-list-label">
+                        <button type="button" data-action="toggle-skill-importance" data-skill="{{skill.id}}">
+                          {{#if skill.importance}}
+                            {{#swnr-space-magic-if-equals skill.importance 'ruling'}}
+                              R
+                            {{else}}
+                              I
+                            {{/swnr-space-magic-if-equals}}
+                          {{/if}}
+                        </button>
+                        <a
+                          href="#"
+                          class="swnr-space-mage-toggle-spell-filter
+                          {{#swnr-space-magic-if-equals skill.name ../spellFilterArcanum}}swnr-space-mage-toggle-spell-filter-active{{/swnr-space-magic-if-equals}}"
+                          data-arcanum="{{ skill.name }}"
+                        >
+                          {{ skill.name }}
+                        </a>
+                      </div>
+                      <div class="swnr-mage-arcana-list-ranks" data-tooltip="Rank: {{skill.rank}}/4">
+                        {{#swnr-space-magic-dots skill.rank 4}}
+                        {{/swnr-space-magic-dots}}
+                      </div>
+                    </li>
+                  {{/swnr-space-magic-if-not-equal}}
+                {{/each}}
+              {{else}}
+                <button class="swnr-mage-btn" data-action="add-arcana">Add Arcana</button>
+              {{/if}}
             </ul>
           </div>
           <footer class="magic-casting-panel-footer">

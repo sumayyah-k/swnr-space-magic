@@ -57,7 +57,6 @@
                 <label for="">{{localize 'swnr.sheet.level'}}: </label>
                 <input
                   type="number"
-                  class="px-1.5 py-3.5 border border-gray-800 bg-gray-400 bg-opacity-75 placeholder-opacity-75 rounded-md"
                   name="data.level"
                   value="{{data.data.level}}"
                   step="1"
@@ -159,6 +158,11 @@
                     {{/each}}
                   {{/select}}
                 </select>
+              </div>
+              <div class="form-group">
+                <label for="data.source">{{localize 'swnr.sheet.source'}}: </label>
+                <input type="text"
+                  name="data.source" value="{{data.data.source}}" />
               </div>
             </div>
             <div class="tab mta-power-tab" data-tab="addons" data-group="power-nav">
