@@ -69,7 +69,7 @@ Hooks.once("init", async () => {
 
     if (actor) {
       if (actor.permission == 3) {
-        if (isMtAMage(actor)) {
+        if (await isMtAMage(actor)) {
           const spellId = e.currentTarget.dataset.spellId;
           const factorInfo = JSON.parse(e.currentTarget.dataset.activeInfo);
 

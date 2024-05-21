@@ -47,7 +47,8 @@ export class RollSwnr extends FormApplication {
           MageMagicAddon.FLAGS.ACTOR_MORALITY
         );
         if (morality) {
-          if (isMtAMage(this.actor)) {
+          var isMage = await isMtAMage(this.actor);
+          if (isMage) {
             rollSkills.push("Wisdom");
           } else {
             rollSkills.push("Morality");

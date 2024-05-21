@@ -169,7 +169,12 @@
         <div class="meter sectioned mana">
           <div class="progress mana" role="meter" aria-valuemin="0" aria-valuenow="{{ mageInfo.mana.current }}"
             aria-valuemax="{{ mageInfo.mana.max }}"
-            style="--bar-percentage: min(calc(100% * {{mageInfo.mana.current}}/{{mageInfo.mana.max}}))">
+            {{#if mageInfo.mana.max}}
+              style="--bar-percentage: min(calc(100% * {{mageInfo.mana.current}}/{{mageInfo.mana.max}}))"
+            {{else}}
+              style="--bar-percentage: 0%"
+            {{/if}}
+            >
             <div class="label">
               <span class="value">{{ mageInfo.mana.current }}</span>
               <span class="separator">&sol;</span>

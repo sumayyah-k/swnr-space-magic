@@ -75,7 +75,7 @@ export default class MageActorSheet extends CharacterActorSheet {
     var spellSlotsByLevel = null;
     actor = this.object;
     const swNMage = await isSwNMage(actor);
-    const mtAMage = isMtAMage(actor);
+    const mtAMage = await isMtAMage(actor);
     const hasEffort = isPsychic(actor);
     const classes = actor.items.contents
       .filter((i) => i.type == "class")
@@ -491,7 +491,7 @@ export default class MageActorSheet extends CharacterActorSheet {
       });
 
       const swNMage = await isSwNMage(this.actor);
-      const mtAMage = isMtAMage(this.actor);
+      const mtAMage = await isMtAMage(this.actor);
       console.log("swnr-mage", "how rest?", { swNMage, mtAMage });
       if (swNMage) {
         await SpellSlots.fillSpellSlots(this.actor);
@@ -846,7 +846,7 @@ export default class MageActorSheet extends CharacterActorSheet {
 
     const actor = this.object;
     const swNMage = await isSwNMage(actor);
-    const mtAMage = isMtAMage(actor);
+    const mtAMage = await isMtAMage(actor);
 
     switch (action) {
       case "castBySlot": {

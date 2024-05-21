@@ -71,7 +71,17 @@ export async function isMagister(actor) {
   );
 }
 
-export function isMtAMage(actor) {
+export async function isMtAMage(actor) {
+  const activeForm = await actor.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ACTOR_ACTIVE_FORM);
+  if (activeForm) {
+    const activeFormData = actor.items.contents.find(i => i.id == activeForm);
+    if (activeFormData) {
+      const activeFormCasterType = await activeFormData.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ITEM_FOCUS_CASTER_TYPE);
+      if (activeFormCasterType && activeFormCasterType == 'mage') {
+        return true;
+      }
+    }
+  }
   return (
     actor.items.contents.findIndex(
       (i) => i.type == "class" && i.name.toLowerCase().trim() == "mage"

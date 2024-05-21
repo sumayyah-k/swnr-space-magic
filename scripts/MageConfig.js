@@ -129,7 +129,7 @@ export class MageConfig extends FormApplication {
       .get(actorId)
       ?.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ACTIVE_MAGIC_TAB);
 
-    const mtAMage = isMtAMage(actor);
+    const mtAMage = await isMtAMage(actor);
     var defaultValues = {};
 
     const strain = actor.system.systemStrain;
@@ -477,7 +477,7 @@ export class MageConfig extends FormApplication {
 
     const actor = game.actors?.get(this.options.actorId);
     const swNMage = await isSwNMage(actor);
-    const mtAMage = isMtAMage(actor);
+    const mtAMage = await isMtAMage(actor);
 
     switch (action) {
       case "rest": {

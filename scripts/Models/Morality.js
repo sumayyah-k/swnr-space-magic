@@ -48,8 +48,8 @@ export default class {
    * @param {Object} actor the actor who will see the label
    * @returns {String}
    */
-  static getLabel(actor) {
-    if (isMtAMage(actor)) {
+  static async getLabel(actor) {
+    if (await isMtAMage(actor)) {
       return 'Wisdom';
     }
     return "Integrity";
@@ -61,8 +61,8 @@ export default class {
    * @param {Object} actor the actor who will see the label
    * @returns {String}
    */
-  static getChallengeBtnLabel(actor) {
-    if (isMtAMage(actor)) {
+  static async getChallengeBtnLabel(actor) {
+    if (await isMtAMage(actor)) {
       return {short: 'Hubris', long: "Act of Hubris"};
     }
     return {short: "Break", long: "Breaking Point"};
@@ -74,8 +74,8 @@ export default class {
    * @param {Object} actor the actor who is doing the challenge
    * @returns {Array}
    */
-  static getChallengeBaseDicePool(actor) {
-    if (isMtAMage(actor)) {
+  static async getChallengeBaseDicePool(actor) {
+    if (await isMtAMage(actor)) {
       return [];
     }
     //Resolve/Composure

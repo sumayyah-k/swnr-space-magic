@@ -44,7 +44,8 @@ export class RollCod extends FormApplication {
       if (item == 'morality') {
         var morality = this.actor.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.ACTOR_MORALITY);
         if (morality) {
-          if (isMtAMage(this.actor)) {
+          var isMage = await isMtAMage(this.actor);
+          if (isMage) {
             rollSkills.push("Wisdom");
           } else {
             rollSkills.push("Morality");
