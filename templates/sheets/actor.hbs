@@ -120,36 +120,29 @@
         {{>
          "systems/swnr/templates/actors/fragments/char/tab-bio.html" actor=actor
         }}
-        {{#swnr-space-magic-if-equals theme.layout 'new1'}}
-          {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-combat.hbs" actor=actor}}
-        {{else}}
-          {{> "systems/swnr/templates/actors/fragments/char/tab-combat.html" actor=actor }}
-        {{/swnr-space-magic-if-equals}}
-        {{>
-         "systems/swnr/templates/actors/fragments/char/tab-inv.html" actor=actor
-        }}
         {{#if showMagicTab}}
         {{>
          "modules/swnr-space-magic/templates/sheets/fragments/tab-magic.hbs" actor=actor
         }}
         {{/if}}
+        {{>
+         "systems/swnr/templates/actors/fragments/char/tab-skills.html" actor=actor
+        }}
+
         {{#swnr-space-magic-if-equals theme.layout 'new1'}}
+          {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-combat.hbs" actor=actor}}
           {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-powers.hbs" actor=actor}}
+          {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-stats.hbs" actor=actor}}
+          {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-inv.hbs" actor=actor}}
         {{else}}
+          {{> "systems/swnr/templates/actors/fragments/char/tab-stats.html" actor=actor }}
+          {{>"systems/swnr/templates/actors/fragments/char/tab-inv.html" actor=actor }}
+          {{> "systems/swnr/templates/actors/fragments/char/tab-combat.html" actor=actor }}
           {{#if activeForm }}
             {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-powers.hbs" actor=actor}}
           {{else}}
             {{> "systems/swnr/templates/actors/fragments/char/tab-power.html" actor=actor }}
           {{/if}}
-        {{/swnr-space-magic-if-equals}}
-
-        {{>
-         "systems/swnr/templates/actors/fragments/char/tab-skills.html" actor=actor
-        }}
-        {{#swnr-space-magic-if-equals theme.layout 'new1'}}
-          {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/tab-stats.hbs" actor=actor}}
-        {{else}}
-          {{> "systems/swnr/templates/actors/fragments/char/tab-stats.html" actor=actor }}
         {{/swnr-space-magic-if-equals}}
       </section>
     </div>

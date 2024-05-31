@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add buttons to add CoD mage skills to the actor magic tab
 - Add source field to CoD spell forms
+- Make search work on the inventory tab as well
 
 ### Fixed
 
