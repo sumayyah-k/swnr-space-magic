@@ -61,7 +61,7 @@ export default class MageItemSheet extends ItemSheet {
           ),
           rangeData: Spell.ranges.find((p) => p.id == activeInfo.factors.range),
           scaleData: Spell.scales.find((p) => p.id == activeInfo.factors.scale),
-          reachData: reachInfo.filter((r, i) => activeInfo['spell-reach'].indexOf(i) != -1),
+          reachData: reachInfo ? reachInfo.filter((r, i) => activeInfo["spell-reach"].indexOf(i) != -1) : {},
         },
       };
     }
