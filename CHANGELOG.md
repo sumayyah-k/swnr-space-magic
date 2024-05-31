@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Checking if an actor is a mage now also checks their current form
 - Mana bar no longer goes off screen if gnosis skill doesn't exist
 - Fix error when editing active spells without reach
+- Fix async morality functions returning promises instead of response.
 
 ## [1.10.1] - 2024-05-17
 

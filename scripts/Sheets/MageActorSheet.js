@@ -100,8 +100,8 @@ export default class MageActorSheet extends CharacterActorSheet {
     ).length;
     const morality = await Morality.getValue(this.object);
     var showMorality = false;
-    const moralityLabel = Morality.getLabel(this.object);
-    const moralityBtnLabel = Morality.getChallengeBtnLabel(this.object);
+    const moralityLabel = await Morality.getLabel(this.object);
+    const moralityBtnLabel = await Morality.getChallengeBtnLabel(this.object);
 
     /** FORMS */
     const formFoci = this.object.items.contents.filter(
