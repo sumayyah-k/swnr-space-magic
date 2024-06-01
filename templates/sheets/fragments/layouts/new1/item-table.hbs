@@ -2,18 +2,20 @@
   <!-- table-->
   <li class="item-titles flexrow">
     <!--<div class="item-caret"><!--<i class="fas fa-caret-down"></i></div>-->
-    <div class="item-name ml-5">{{ name }} </div>
+    <div class="item-name ml-5">
+      {{ name }}
+    </div>
     <div class="text-center"> {{ localize 'swnr.item.enc' }} </div>
     {{#if (eq itemType "item")}}
       <div class="text-center"> {{ localize 'swnr.item.qty' }} </div>
     {{/if}}
     <div class=""> {{ localize 'swnr.item.location' }} </div>
     <div class="item-controls flex-shrink text-right">
-      <a class="item-control item-search text-gray-100 hover:text-green-400 transition-colors"
+      <a class="item-control item-search hover:text-green-400 transition-colors"
         title="{{localize 'swnr.sheet.search-item'}}" data-item-type="{{ itemType }}" data-item-name="{{ name }}">
           <i class="fas fa-search"></i>
       </a>
-      <a class="item-control item-create text-gray-100 hover:text-green-400 transition-colors"
+      <a class="item-control item-create hover:text-green-400 transition-colors"
         title="{{localize 'swnr.sheet.add-item'}}" data-item-type="{{ itemType }}" data-item-name="{{ name }}">
         <i class="fas fa-plus"></i>
       </a>
@@ -25,12 +27,19 @@
       <div class="item flexrow py-3.0" data-item-id="{{item.id}}">
         <div class="item-image item-click item-rollable" style="background-image: url({{item.img}})"><a></a></div>
         <div class="item-name item-click item-rollable flexrow pr-2.0">
-          <a>{{item.name}}</a>
-            {{#if (eq item.type "armor")}}
-              {{#if (ne item.data.data.soak.max 0)}}
-              ({{item.data.data.soak.value}}/{{item.data.data.soak.max}})
-              {{/if}}
+          <a>
+            {{item.name}}
+            {{#if item.flags.swnr-space-magic.is-mod}}
+              <span class="badge badge-info">Mod{{#if item.flags.swnr-space-magic.mod-location}}:
+                {{item.flags.swnr-space-magic.mod-location}}{{/if}}
+              </span>
             {{/if}}
+          </a>
+          {{#if (eq item.type "armor")}}
+            {{#if (ne item.data.data.soak.max 0)}}
+            ({{item.data.data.soak.value}}/{{item.data.data.soak.max}})
+            {{/if}}
+          {{/if}}
         </div>
         <div class="text-center">{{ item.data.data.encumbrance }} </div>
         {{#if (eq ../itemType "item")}}
@@ -44,6 +53,9 @@
               {{localize 'swnr.item.locationReadied'}}
             </option>
             <option value="stowed">{{localize 'swnr.item.locationStowed'}}</option>
+            {{#if ../showMods}}
+            <option value="mod">Installed Mod</option>
+            {{/if}}
             <option value="other">{{localize 'swnr.item.locationOther'}}</option>
             {{/select}}
           </select>

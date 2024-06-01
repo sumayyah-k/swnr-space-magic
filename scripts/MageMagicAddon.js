@@ -33,6 +33,9 @@ export class MageMagicAddon {
     ITEM_FOCUS_CASTER_TYPE: "form-caster-type",
     MTA_SPELL_IS_YANTRA: "is-yantra",
     MTA_SPELL_YANTRA_BONUS: "yantra-bonus",
+    ITEM_IS_MOD: "is-mod",
+    ITEM_MAX_MODS: "max-mods",
+    ITEM_MOD_LOC: "mod-location",
   };
 
   static TEMPLATES = {

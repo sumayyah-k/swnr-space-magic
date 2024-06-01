@@ -98,7 +98,7 @@
         <span>{{localize 'swnr.sheet.hp'}}</span>
       </div>
       <div class="meter sectioned hit-points">
-        <div class="progress hit-points" role="meter" aria-valuemin="0"
+        <div class="progress editable hit-points" role="meter" aria-valuemin="0"
           aria-valuenow="{{ actor.data.data.health.value }}" aria-valuemax="{{ actor.data.data.health.max }}"
           style="--bar-percentage: min(calc(100% * {{actor.data.data.health.value}}/{{actor.data.data.health.max}}))"
         >
@@ -145,7 +145,7 @@
         <span>{{localize 'swnr.sheet.ss'}}</span>
       </div>
       <div class="meter sectioned strain">
-        <div class="progress strain" role="meter" aria-valuemin="0" aria-valuenow="{{ actor.data.data.systemStrain.value }}"
+        <div class="progress editable strain" role="meter" aria-valuemin="0" aria-valuenow="{{ actor.data.data.systemStrain.value }}"
           aria-valuemax="{{ actor.data.data.systemStrain.max }}"
           style="--bar-percentage: min(calc(100% * {{actor.data.data.systemStrain.value}}/{{actor.data.data.systemStrain.max}}))">
           <div class="label">
@@ -167,7 +167,7 @@
           <span>Mana</span>
         </div>
         <div class="meter sectioned mana">
-          <div class="progress mana" role="meter" aria-valuemin="0" aria-valuenow="{{ mageInfo.mana.current }}"
+          <div class="progress mana editable" role="meter" aria-valuemin="0" aria-valuenow="{{ mageInfo.mana.current }}"
             aria-valuemax="{{ mageInfo.mana.max }}"
             {{#if mageInfo.mana.max}}
               style="--bar-percentage: min(calc(100% * {{mageInfo.mana.current}}/{{mageInfo.mana.max}}))"
@@ -195,7 +195,7 @@
           <span>{{localize 'swnr.effort.title'}}</span>
         </div>
         <div class="meter sectioned mana">
-          <div class="progress mana" role="meter" aria-valuemin="0" aria-valuenow="{{ actor.data.data.effort.value }}"
+          <div class="progress editable mana" role="meter" aria-valuemin="0" aria-valuenow="{{ actor.data.data.effort.value }}"
             aria-valuemax="{{ actor.data.data.effort.max }}"
             style="--bar-percentage: min(calc(100% * {{actor.data.data.effort.value}}/{{actor.data.data.effort.max}}))">
             <div class="label">
@@ -231,7 +231,7 @@
           <span>{{ actor.data.data.tweak.extraEffortName }} {{localize 'swnr.effort.title'}}</span>
         </div>
         <div class="meter sectioned mana">
-          <div class="progress mana" role="meter" aria-valuemin="0" aria-valuenow="{{ actor.data.data.tweak.extraEffort.value }}"
+          <div class="progress editable mana" role="meter" aria-valuemin="0" aria-valuenow="{{ actor.data.data.tweak.extraEffort.value }}"
             aria-valuemax="{{ actor.data.data.tweak.extraEffort.max }}"
             style="--bar-percentage: min(calc(100% * {{actor.data.data.tweak.extraEffort.value}}/{{actor.data.data.tweak.extraEffort.max}}))">
             <div class="label">

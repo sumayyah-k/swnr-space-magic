@@ -130,6 +130,14 @@ export default class MageActorSheet extends CharacterActorSheet {
       });
     }
 
+    // INVENTORY TAB
+    const fixSkill = this.object.items.contents.find((i) => i.type == 'skill' && i.name == 'Fix');
+    const showMods = fixSkill && fixSkill.system.rank >= 1;
+    const numReadied = this.object.items.contents.filter((i) => ["item", "armor", "weapon"].indexOf(i.type) != -1 && i.system.location == "readied").length;
+    const numStowed = this.object.items.contents.filter((i) => ["item", "armor", "weapon"].indexOf(i.type) != -1 && i.system.location == "stowed").length;
+    const numMods = this.object.items.contents.filter((i) => i.type == "item" && i.system.location == "mod").length;
+
+
     actorId = actor.id;
     var arcana = new Arcanum(actor);
     magicSkills = arcana.getAll();
@@ -347,6 +355,10 @@ export default class MageActorSheet extends CharacterActorSheet {
       ...data,
       ...{
         classes,
+        showMods,
+        numReadied,
+        numStowed,
+        numMods,
         magicSkills,
         numSpellSlots,
         spellSlotsByLevel,
@@ -1165,7 +1177,7 @@ export default class MageActorSheet extends CharacterActorSheet {
     });
 
     html
-      .find(".meter > .progress")
+      .find(".meter > .progress.editable")
       .on("click", (event) => this._toggleEditMeter(event, true));
 
     html.find(".swnr-mage-actor-header-name").on("input", (event) => {

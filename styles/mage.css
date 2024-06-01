@@ -877,10 +877,12 @@ ul.mta-active-power-reach-list {
 
 span.badge {
   font-size:.65em;
+  padding: 0 .25em;
   border-radius: 3px;
   background-color: var(--primary-color);
   color: var(--primary-color-text);
   margin-left:.25rem;
+  white-space: nowrap;
 }
 
 span.badge.badge-info {
@@ -1160,6 +1162,9 @@ button.swnr-mage-btn:disabled {
   position: relative;
   display: flex;
   align-items: center;
+}
+
+.meter.sectioned>.progress.editable {
   cursor: pointer;
 }
 

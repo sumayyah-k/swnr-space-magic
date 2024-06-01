@@ -53,41 +53,75 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-2 gap-1 p-1">
-    <div class="text-center text-base">
-      {{localize 'swnr.item.locationReadied'}}:
-      {{actor.data.data.encumbrance.ready.value}}/{{actor.data.data.encumbrance.ready.max}}
+  <div class="flex justify-between items-end">
+    <!-- READIED -->
+    <div class="meter-group flex-1">
+      <div class="label roboto-condensed-upper">
+        <span>{{localize 'swnr.item.locationReadied'}}</span>
+      </div>
+      <div class="meter sectioned hit-points">
+        <div class="progress hit-points" role="meter" aria-valuemin="0"
+          aria-valuenow="{{ numReadied }}"
+          aria-valuemax="{{ actor.data.data.encumbrance.ready.max }}" {{#if actor.data.data.encumbrance.ready.max}}
+          style="--bar-percentage: min(calc(100% * {{numReadied}}/{{actor.data.data.encumbrance.ready.max}}))"
+          {{else}} style="--bar-percentage: 0%" {{/if}}>
+          <div class="label">
+            <span class="value">{{ numReadied }}</span>
+            <span class="separator">&sol;</span>
+            <span class="max">{{ actor.data.data.encumbrance.ready.max }}</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div
-      class="w-full border border-green-600 bg-green-200 rounded-full row-start-2"
-    >
-      <div
-        class="h-2 bg-green-400 rounded-full"
-        style="width: min(100%, calc(100% * {{actor.data.data.encumbrance.ready.value}}/{{actor.data.data.encumbrance.ready.max}}));"
-      ></div>
+    <!-- STOWED -->
+    <div class="meter-group flex-1">
+      <div class="label roboto-condensed-upper">
+        <span>{{localize 'swnr.item.locationStowed'}}</span>
+      </div>
+      <div class="meter sectioned strain">
+        <div class="progress strain" role="meter" aria-valuemin="0" aria-valuenow="{{ numStowed }}"
+          aria-valuemax="{{ actor.data.data.encumbrance.stowed.max }}" {{#if
+          actor.data.data.encumbrance.stowed.max}}
+          style="--bar-percentage: min(calc(100% * {{numStowed}}/{{actor.data.data.encumbrance.stowed.max}}))" {{else}}
+          style="--bar-percentage: 0%" {{/if}}>
+          <div class="label">
+            <span class="value">{{ numStowed }}</span>
+            <span class="separator">&sol;</span>
+            <span class="max">{{ actor.data.data.encumbrance.stowed.max }}</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="text-center text-base">
-      {{localize 'swnr.item.locationStowed'}}:
-      {{actor.data.data.encumbrance.stowed.value}}/{{actor.data.data.encumbrance.stowed.max}}
-    </div>
-    <div
-      class="w-full border border-yellow-600 bg-yellow-200 rounded-full"
-    >
-      <div
-        class="h-2 bg-yellow-400 rounded-full"
-        style="width: min(100%, calc(100% * {{actor.data.data.encumbrance.stowed.value}}/{{actor.data.data.encumbrance.stowed.max}}));"
-      ></div>
-    </div>
+    <!-- MODS -->
+    {{#if showMods}}
+      <div class="meter-group flex-1">
+        <div class="label roboto-condensed-upper">
+          <span>Mods</span>
+        </div>
+        <div class="meter sectioned mana">
+          <div class="progress mana" role="meter" aria-valuemin="0" aria-valuenow="{{ numMods }}"
+            aria-valuemax="{{ actor.data.flags.swnr-space-magic.max-mods }}" {{#if actor.data.flags.swnr-space-magic.max-mods}}
+            style="--bar-percentage: min(calc(100% * {{numMods}}/{{actor.data.flags.swnr-space-magic.max-mods}}))" {{else}}
+            style="--bar-percentage: 0%" {{/if}}>
+            <div class="label">
+              <span class="value">{{ numMods }}</span>
+              <span class="separator">&sol;</span>
+              <span class="max">{{ actor.data.flags.swnr-space-magic.max-mods }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
   </div>
   <div>
     {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/item-table.hbs"
-    itemList=itemTypes.weapon itemType="weapon" name="Weapon"
+    itemList=itemTypes.weapon itemType="weapon" name="Weapon" showMods="0"
     }}
     {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/item-table.hbs"
-    itemList=itemTypes.armor itemType="armor" name="Armor"
+    itemList=itemTypes.armor itemType="armor" name="Armor" showMods="0"
     }}
     {{> "modules/swnr-space-magic/templates/sheets/fragments/layouts/new1/item-table.hbs"
-    itemList=itemTypes.item itemType="item" name="Item"
+    itemList=itemTypes.item itemType="item" name="Item" showMods="showMods"
     }}
   </div>
   {{!-- <div class="flex flex-wrap gap-2">
