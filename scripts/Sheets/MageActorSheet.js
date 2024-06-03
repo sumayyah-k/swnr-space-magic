@@ -71,7 +71,7 @@ export default class MageActorSheet extends CharacterActorSheet {
     var spellsById = {};
     var actorId = null;
     var actor = {};
-    var numSpellSlots = null;
+    var numSpellSlots = {};
     var spellSlotsByLevel = null;
     actor = this.object;
     const swNMage = await isSwNMage(actor);
@@ -212,28 +212,24 @@ export default class MageActorSheet extends CharacterActorSheet {
 
       const spellSlots = await SpellSlots.getForActor(this.object);
       var chClass = await SpellSlots.getActorCasterClass(this.object);
+      const maxSpellSlots = SpellSlots.getMaxSpellSlots(actor);
 
-      numSpellSlots = Object.values(spellSlots).reduce((acc, i) => {
-        var level = parseInt(i.level, 10);
-
-        if (!acc[chClass]) {
-          acc[chClass] = {};
+      for(var chClass in maxSpellSlots) {
+        for (var lvl in maxSpellSlots[chClass]) {
+          if (!numSpellSlots[chClass]) {
+            numSpellSlots[chClass] = {};
+          }
+          var available = Object.values(spellSlots).filter(
+            (i) => i.class == chClass && i.level == lvl && !i.isUsed
+          ).length;
+          if (maxSpellSlots[chClass][lvl] > 0 || available > 0) {
+            numSpellSlots[chClass][lvl] = {
+              available,
+              max: maxSpellSlots[chClass][lvl],
+            };
+          }
         }
-        if (!acc[chClass][level]) {
-          const maxSpellSlots = SpellSlots.getMaxSpellSlots(
-            chClass,
-            actor.system.level.value
-          );
-
-          acc[chClass][level] = { available: 0, max: maxSpellSlots[i.level] };
-        }
-
-        if (i.isUsed == false) {
-          acc[chClass][level].available++;
-        }
-
-        return acc;
-      }, {});
+      }
 
       spellSlotsByLevel = Object.values(spellSlots).reduce((acc, i) => {
         var chClass = i.class.toLowerCase().trim();

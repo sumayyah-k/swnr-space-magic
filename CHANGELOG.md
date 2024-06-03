@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - inventory tab will have an installed mod location and show how many you can do
   - stats tab is where to set the max
   - items can be set as a mod which will give a pot to specify he location that it is installed, which will show as a badge on the item list
+- Add Partial Spellcaster support when using partial class "items"
+  - Will calculate spell slots correctly.
 
 ### Fixed
 

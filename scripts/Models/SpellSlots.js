@@ -19,27 +19,28 @@ export default class SpellSlots {
    * @returns {Object} An object containing all of the slots keyed by id
    */
   static async getForActor(actor) {
-    if (typeof actor == 'string') {
+    if (typeof actor == "string") {
       actor = await game.actors.get(actor);
     }
     if (actor) {
-      var existing = await actor
-        ?.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.SPELLSLOTS);
+      var existing = await actor?.getFlag(
+        MageMagicAddon.ID,
+        MageMagicAddon.FLAGS.SPELLSLOTS
+      );
 
       if (!existing) {
         return this.fillSpellSlots(actor);
       }
 
-      var chClass = await this.getActorCasterClass(actor);
-      return Object.values(existing).filter((s) => s.class == chClass);
+      return existing;
     }
     return {};
   }
 
   static async getActorCasterClass(actor) {
-    var chClass;// = actor?.system.class;
+    var chClass; // = actor?.system.class;
     if (await isArcanist(actor)) {
-      chClass = 'arcanist';
+      chClass = "arcanist";
     }
     if (await isMagister(actor)) {
       chClass = "magister";
@@ -88,25 +89,30 @@ export default class SpellSlots {
    */
   static async fillSpellSlots(actor, existing) {
     if (actor) {
-      var chClass = await this.getActorCasterClass(actor);
-      var level = actor?.system.level;
-      var maxSpellSlots = this.getMaxSpellSlots(chClass, level.value);
-      // console.log('swnr-mage', 'fill max', maxSpellSlots);
-      if (!existing) {
-        existing = await actor.getFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.SPELLSLOTS);
-      }
-      // console.log('swnr-mage', 'fill existing', existing);
+      var maxSpellSlots = this.getMaxSpellSlots(actor);
 
+      // Existing was not passed in as a param, so grab it from the flags
       if (!existing) {
-        for (var lvl in maxSpellSlots) {
-          for (var i = 0; i < maxSpellSlots[lvl]; i++) {
-            await this.createSpellSlot(actor.id, {
-              class: chClass,
-              level: lvl,
-            });
+        existing = await actor.getFlag(
+          MageMagicAddon.ID,
+          MageMagicAddon.FLAGS.SPELLSLOTS
+        );
+      }
+
+      // Still can't find existing, so create all new spell slots
+      if (!existing) {
+        for (var className in maxSpellSlots) {
+          for (var lvl in maxSpellSlots[className]) {
+            for (var i = 0; i < maxSpellSlots[className][lvl]; i++) {
+              await this.createSpellSlot(actor.id, {
+                class: className,
+                level: lvl,
+              });
+            }
           }
         }
 
+        // Gets existing once all of them are created
         existing = await actor.getFlag(
           MageMagicAddon.ID,
           MageMagicAddon.FLAGS.SPELLSLOTS
@@ -115,23 +121,39 @@ export default class SpellSlots {
 
       if (existing) {
         //make the number of slots match what it should be (max)
-        for (var lvl in maxSpellSlots) {
-          var existingForLevel = Object.values(existing).filter(s => s.level == lvl);
-          if (maxSpellSlots[lvl] > existingForLevel.length) {
-            var numToCreate = maxSpellSlots[lvl] - existingForLevel.length;
-            console.log('swnr-mage', 'fill - need to create ' + numToCreate + ' lvl ' + lvl + ' slots');
+        for (var className in maxSpellSlots) {
+          for (var lvl in maxSpellSlots[className]) {
+            var existingForLevel = Object.values(existing).filter(
+              (s) => s.level == lvl
+            );
+            console.log("swnr-mage", {
+              existingForLevel,
+              max: maxSpellSlots[className][lvl],
+            });
+            if (maxSpellSlots[className][lvl] > existingForLevel.length) {
+              var numToCreate =
+                maxSpellSlots[className][lvl] - existingForLevel.length;
+              console.log(
+                "swnr-mage",
+                "fill - need to create " + numToCreate + " lvl " + lvl + " slots"
+              );
 
-            for (var i = 0; i < numToCreate; i++) {
-              await this.createSpellSlot(actor.id, {
-                class: chClass,
-                level: lvl,
-              });
+              for (var i = 0; i < numToCreate; i++) {
+                await this.createSpellSlot(actor.id, {
+                  class: className,
+                  level: lvl,
+                });
+              }
             }
-          }
 
-          if (maxSpellSlots[lvl] < existingForLevel.length) {
-            var numToDetroy = existingForLevel.length - maxSpellSlots[lvl];
-            console.log('swnr-mage', 'fill - need to remove ' + numToDetroy + ' lvl ' + lvl + ' slots');
+            if (maxSpellSlots[className][lvl] < existingForLevel.length) {
+              var numToDetroy =
+                existingForLevel.length - maxSpellSlots[className][lvl];
+              console.log(
+                "swnr-mage",
+                "fill - need to remove " + numToDetroy + " lvl " + lvl + " slots"
+              );
+            }
           }
         }
 
@@ -164,46 +186,100 @@ export default class SpellSlots {
   }
 
   /**
+   * Gets the maximum spell slots for a character broken up by class
    *
-   * @param {String} chClass The Character's class
-   * @param {Integer} level The Character's level
-   * @returns {Object} An object with the maximum number of slots for each spell level for the class/level combo
+   * Output Example:
+   * {
+   *  "Partial Arcanist": { 1: 1, 2: 0, 3: 0, 4: 0, 5: 0 },
+   *  "Partial War Mage": { 1: 3, 2: 0, 3: 0, 4: 0, 5: 0 },
+   * }
+   *
+   * @param {Object} actor The Character
+   * @returns {Object} Refer above
    */
-  static getMaxSpellSlots(chClass, level) {
-    if (chClass.toLowerCase() == "arcanist") {
-      const table = {
-        1: { 1: 1, 2: 0, 3: 0, 4: 0, 5: 0 },
-        2: { 1: 2, 2: 0, 3: 0, 4: 0, 5: 0 },
-        3: { 1: 2, 2: 1, 3: 0, 4: 0, 5: 0 },
-        4: { 1: 3, 2: 2, 3: 0, 4: 0, 5: 0 },
-        5: { 1: 3, 2: 2, 3: 1, 4: 0, 5: 0 },
-        6: { 1: 3, 2: 3, 3: 2, 4: 0, 5: 0 },
-        7: { 1: 4, 2: 3, 3: 2, 4: 1, 5: 0 },
-        8: { 1: 4, 2: 3, 3: 3, 4: 2, 5: 0 },
-        9: { 1: 5, 2: 4, 3: 3, 4: 2, 5: 1 },
-        10: { 1: 5, 2: 4, 3: 3, 4: 3, 5: 2 },
-      };
-      return table[level];
-    } else if (
-      ["magister", "pacter", "rectifier", "war mage"].indexOf(
-        chClass.toLowerCase()
-      ) != -1
-    ) {
-      const table = {
-        1: { 1: 3, 2: 0, 3: 0, 4: 0, 5: 0 },
-        2: { 1: 4, 2: 0, 3: 0, 4: 0, 5: 0 },
-        3: { 1: 5, 2: 2, 3: 0, 4: 0, 5: 0 },
-        4: { 1: 6, 2: 3, 3: 0, 4: 0, 5: 0 },
-        5: { 1: 6, 2: 3, 3: 2, 4: 0, 5: 0 },
-        6: { 1: 6, 2: 4, 3: 3, 4: 0, 5: 0 },
-        7: { 1: 6, 2: 4, 3: 3, 4: 2, 5: 0 },
-        8: { 1: 6, 2: 5, 3: 4, 4: 3, 5: 0 },
-        9: { 1: 6, 2: 5, 3: 4, 4: 3, 5: 2 },
-        10: { 1: 6, 2: 6, 3: 5, 4: 4, 5: 3 },
-      };
-      return table[level];
+  static getMaxSpellSlots(actor) {
+    const magicClasses = actor.items.contents.filter(
+      (i) =>
+        i.type == "class" &&
+        [
+          "arcanist",
+          "magister",
+          "pacter",
+          "rectifier",
+          "war mage",
+          "partial arcanist",
+          "partial magister",
+          "partial pacter",
+          "partial rectifier",
+          "partial war mage",
+        ].indexOf(i.name.toLowerCase()) != -1
+    );
+    const level = actor.system.level.value;
+
+    var response = {};
+    if (magicClasses.length > 0) {
+      for (var mClass of magicClasses) {
+        var lev = level;
+        if (
+          [
+            "partial arcanist",
+            "partial magister",
+            "partial pacter",
+            "partial rectifier",
+            "partial war mage",
+          ].indexOf(mClass.name.toLowerCase()) != -1
+        ) {
+          lev = Math.ceil(lev / 2);
+        }
+        var table = {};
+        if (
+          ["arcanist", "partial arcanist"].indexOf(mClass.name.toLowerCase()) != -1
+        ) {
+          table = {
+            1: { 1: 1, 2: 0, 3: 0, 4: 0, 5: 0 },
+            2: { 1: 2, 2: 0, 3: 0, 4: 0, 5: 0 },
+            3: { 1: 2, 2: 1, 3: 0, 4: 0, 5: 0 },
+            4: { 1: 3, 2: 2, 3: 0, 4: 0, 5: 0 },
+            5: { 1: 3, 2: 2, 3: 1, 4: 0, 5: 0 },
+            6: { 1: 3, 2: 3, 3: 2, 4: 0, 5: 0 },
+            7: { 1: 4, 2: 3, 3: 2, 4: 1, 5: 0 },
+            8: { 1: 4, 2: 3, 3: 3, 4: 2, 5: 0 },
+            9: { 1: 5, 2: 4, 3: 3, 4: 2, 5: 1 },
+            10: { 1: 5, 2: 4, 3: 3, 4: 3, 5: 2 },
+          };
+          // return table[level];
+        } else if (
+          [
+            "magister",
+            "pacter",
+            "rectifier",
+            "war mage",
+            "partial magister",
+            "partial pacter",
+            "partial rectifier",
+            "partial war mage"
+          ].indexOf(
+            mClass.name.toLowerCase()
+          ) != -1
+        ) {
+          table = {
+            1: { 1: 3, 2: 0, 3: 0, 4: 0, 5: 0 },
+            2: { 1: 4, 2: 0, 3: 0, 4: 0, 5: 0 },
+            3: { 1: 5, 2: 2, 3: 0, 4: 0, 5: 0 },
+            4: { 1: 6, 2: 3, 3: 0, 4: 0, 5: 0 },
+            5: { 1: 6, 2: 3, 3: 2, 4: 0, 5: 0 },
+            6: { 1: 6, 2: 4, 3: 3, 4: 0, 5: 0 },
+            7: { 1: 6, 2: 4, 3: 3, 4: 2, 5: 0 },
+            8: { 1: 6, 2: 5, 3: 4, 4: 3, 5: 0 },
+            9: { 1: 6, 2: 5, 3: 4, 4: 3, 5: 2 },
+            10: { 1: 6, 2: 6, 3: 5, 4: 4, 5: 3 },
+          };
+          // return table[level];
+        }
+        response[mClass.name] = table[lev];
+      }
     }
-    return {};
+    return response;
   }
 
   /**
@@ -220,30 +296,37 @@ export default class SpellSlots {
 
       // construct the update to send
       const update = {
-        [slotId]: {...relevantSlot, ...updateData},
+        [slotId]: { ...relevantSlot, ...updateData },
       };
 
       // update the database with the updated ToDo list
-      return actor
-          ?.setFlag(MageMagicAddon.ID, MageMagicAddon.FLAGS.SPELLSLOTS, update);
+      return actor?.setFlag(
+        MageMagicAddon.ID,
+        MageMagicAddon.FLAGS.SPELLSLOTS,
+        update
+      );
     }
   }
 
   static async castByLevel(actorId, level) {
     const allSlots = await this.getForActor(actorId);
-    const firstFreeSlot = Object.values(allSlots).find(s => s.level == level && s.isUsed == false);
+    const firstFreeSlot = Object.values(allSlots).find(
+      (s) => s.level == level && s.isUsed == false
+    );
 
     if (firstFreeSlot) {
-      return this.updateSlot(actorId, firstFreeSlot.id, {isUsed: true})
+      return this.updateSlot(actorId, firstFreeSlot.id, { isUsed: true });
     }
   }
 
   static async prepareByLevel(actorId, level, spellId) {
     const allSlots = await this.getForActor(actorId);
-    const firstFreeSlot = Object.values(allSlots).find(s => s.level == level && !s.spell);
+    const firstFreeSlot = Object.values(allSlots).find(
+      (s) => s.level == level && !s.spell
+    );
 
     if (firstFreeSlot) {
-      return this.updateSlot(actorId, firstFreeSlot.id, {spell: spellId})
+      return this.updateSlot(actorId, firstFreeSlot.id, { spell: spellId });
     }
   }
 }

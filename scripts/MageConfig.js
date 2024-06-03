@@ -94,10 +94,7 @@ export class MageConfig extends FormApplication {
         acc[chClass] = {};
       }
       if (!acc[chClass][level]) {
-        const maxSpellSlots = SpellSlots.getMaxSpellSlots(
-          chClass,
-          actor.system.level.value
-        );
+        const maxSpellSlots = SpellSlots.getMaxSpellSlots(actor);
 
         acc[chClass][level] = { available: 0, max: maxSpellSlots[i.level] };
       }

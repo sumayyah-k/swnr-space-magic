@@ -43,7 +43,10 @@ export async function isArcanist(actor) {
     actor.items.contents.findIndex(
       (i) =>
         i.type == "class" &&
-        i.name.toLowerCase().trim() == "arcanist"
+        [
+          "arcanist",
+          "partial arcanist",
+        ].indexOf(i.name.toLowerCase().trim()) != -1
     ) != -1
   );
 }
@@ -64,9 +67,16 @@ export async function isMagister(actor) {
     actor.items.contents.findIndex(
       (i) =>
         i.type == "class" &&
-        ["magister", "pacter", "rectifier", "war mage"].indexOf(
-          i.name.toLowerCase().trim()
-        ) != -1
+        [
+          "magister",
+          "pacter",
+          "rectifier",
+          "war mage",
+          "partial magister",
+          "partial pacter",
+          "partial rectifier",
+          "partial war mage",
+        ].indexOf(i.name.toLowerCase().trim()) != -1
     ) != -1
   );
 }
