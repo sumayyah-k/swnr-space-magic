@@ -27,6 +27,7 @@ export class MageMagicAddon {
     SPELL_RELINQUISHED: "relinquished",
     SPELL_MANA_COST: "mana-cost",
     SPELL_DMG_DICE: "damage-dice",
+    SPELL_SLOT_POOL: "spell-slot-pool",
     //Items
     ITEM_POWER_TYPE: "power-type",
     ITEM_FOCUS_TYPE: "focus-type",

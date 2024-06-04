@@ -136,7 +136,7 @@ Hooks.once("ready", () => {
   });
   Handlebars.registerHelper(MageMagicAddon.ID + "-has-spellslot", function (spellSlots, level, options) {
     var slots = Object.values(spellSlots)[0];
-    return slots[level] && slots[level].available > 0
+    return slots && slots[level] && slots[level].available > 0
       ? options.fn(this)
       : options.inverse(this);
 

@@ -443,6 +443,13 @@
             </label>
           </div>
         </div>
+        <div class="flex gap-1">
+          <div class="form-group stacked">
+            <label>Spell Slot Pool</label>
+            <input type="text" name="flags.swnr-space-magic.spell-slot-pool"
+              value="{{item.flags.swnr-space-magic.spell-slot-pool}}" />
+          </div>
+        </div>
       {{/if}}
     {{else}}
       {{#swnr-space-magic-if-equals item.type 'item'}}

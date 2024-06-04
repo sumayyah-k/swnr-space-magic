@@ -7,6 +7,7 @@ import {
   isMagister,
   isSwNMage,
   isPsychic,
+  getActorClasses,
 } from "../utils.js";
 import SpellSlots from '../Models/SpellSlots.js';
 import Mana from "../Models/Mana.js";
@@ -76,7 +77,7 @@ export default class MageActorSheet extends CharacterActorSheet {
     actor = this.object;
     const swNMage = await isSwNMage(actor);
     const mtAMage = await isMtAMage(actor);
-    const hasEffort = isPsychic(actor);
+    const hasEffort = await isPsychic(actor);
     const classes = actor.items.contents
       .filter((i) => i.type == "class")
       .map((i) => i.name);
@@ -211,22 +212,24 @@ export default class MageActorSheet extends CharacterActorSheet {
       );
 
       const spellSlots = await SpellSlots.getForActor(this.object);
-      var chClass = await SpellSlots.getActorCasterClass(this.object);
-      const maxSpellSlots = SpellSlots.getMaxSpellSlots(actor);
+      var chClasses = await getActorClasses(this.object);
+      const maxSpellSlots = await SpellSlots.getMaxSpellSlots(actor);
 
       for(var chClass in maxSpellSlots) {
-        for (var lvl in maxSpellSlots[chClass]) {
-          if (!numSpellSlots[chClass]) {
-            numSpellSlots[chClass] = {};
-          }
-          var available = Object.values(spellSlots).filter(
-            (i) => i.class == chClass && i.level == lvl && !i.isUsed
-          ).length;
-          if (maxSpellSlots[chClass][lvl] > 0 || available > 0) {
-            numSpellSlots[chClass][lvl] = {
-              available,
-              max: maxSpellSlots[chClass][lvl],
-            };
+        if (chClasses.findIndex(c => c.name == chClass) != -1) {
+          for (var lvl in maxSpellSlots[chClass]) {
+            if (!numSpellSlots[chClass]) {
+              numSpellSlots[chClass] = {};
+            }
+            var available = Object.values(spellSlots).filter(
+              (i) => i.class == chClass && i.level == lvl && !i.isUsed
+            ).length;
+            if (maxSpellSlots[chClass][lvl] > 0 || available > 0) {
+              numSpellSlots[chClass][lvl] = {
+                available,
+                max: maxSpellSlots[chClass][lvl],
+              };
+            }
           }
         }
       }
@@ -867,7 +870,7 @@ export default class MageActorSheet extends CharacterActorSheet {
       }
 
       case "castByLevel": {
-        await SpellSlots.castByLevel(actor.id, castLevel);
+        await SpellSlots.useBySpell(actor, spellId);
         this.showSpellInChat(actor.id, spellId);
         this.render();
         break;

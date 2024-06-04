@@ -85,6 +85,7 @@ export class MageConfig extends FormApplication {
     }
 
     const spellSlots = await SpellSlots.getForActor(actor);
+    const maxSpellSlots = await SpellSlots.getMaxSpellSlots(actor);
 
     var numSpellSlots = Object.values(spellSlots).reduce((acc, i) => {
       var chClass = i.class.toLowerCase().trim();
@@ -94,9 +95,7 @@ export class MageConfig extends FormApplication {
         acc[chClass] = {};
       }
       if (!acc[chClass][level]) {
-        const maxSpellSlots = SpellSlots.getMaxSpellSlots(actor);
-
-        acc[chClass][level] = { available: 0, max: maxSpellSlots[i.level] };
+        acc[chClass][level] = { available: 0, max: maxSpellSlots[chClass][i.level] };
       }
 
       if (i.isUsed == false) {

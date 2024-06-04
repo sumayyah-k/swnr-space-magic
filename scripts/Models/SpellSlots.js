@@ -1,5 +1,5 @@
 import { MageMagicAddon } from "../MageMagicAddon.js";
-import { isArcanist, isMagister } from "../utils.js";
+import { getActorClasses, isArcanist, isMagister } from "../utils.js";
 /**
  * Single Spell Slot Type Definition
  *
@@ -89,7 +89,7 @@ export default class SpellSlots {
    */
   static async fillSpellSlots(actor, existing) {
     if (actor) {
-      var maxSpellSlots = this.getMaxSpellSlots(actor);
+      var maxSpellSlots = await this.getMaxSpellSlots(actor);
 
       // Existing was not passed in as a param, so grab it from the flags
       if (!existing) {
@@ -124,12 +124,9 @@ export default class SpellSlots {
         for (var className in maxSpellSlots) {
           for (var lvl in maxSpellSlots[className]) {
             var existingForLevel = Object.values(existing).filter(
-              (s) => s.level == lvl
+              (s) => s.level == lvl && s.class == className
             );
-            console.log("swnr-mage", {
-              existingForLevel,
-              max: maxSpellSlots[className][lvl],
-            });
+
             if (maxSpellSlots[className][lvl] > existingForLevel.length) {
               var numToCreate =
                 maxSpellSlots[className][lvl] - existingForLevel.length;
@@ -197,8 +194,10 @@ export default class SpellSlots {
    * @param {Object} actor The Character
    * @returns {Object} Refer above
    */
-  static getMaxSpellSlots(actor) {
-    const magicClasses = actor.items.contents.filter(
+  static async getMaxSpellSlots(actor) {
+    const classes = await getActorClasses(actor);
+
+    const magicClasses = classes.filter(
       (i) =>
         i.type == "class" &&
         [
@@ -305,6 +304,20 @@ export default class SpellSlots {
         MageMagicAddon.FLAGS.SPELLSLOTS,
         update
       );
+    }
+  }
+
+  static async useBySpell(actor, spellId) {
+    var spell = actor.items.contents.find(s => s.id == spellId);
+    var spellSlots = await this.getForActor(actor);
+    var slotToUse = Object.values(spellSlots).find(
+      (slot) =>
+        (slot.class == spell.system.source || slot.class == spell.flags[MageMagicAddon.ID][MageMagicAddon.FLAGS.SPELL_SLOT_POOL])
+        && !slot.isUsed
+    );
+
+    if (slotToUse) {
+      this.updateSlot(actor.id, slotToUse.id, {isUsed: true});
     }
   }
 

@@ -89,9 +89,10 @@ export default class MageItemSheet extends ItemSheet {
         ],
         focusTypeOptions: [{ value: "altForm", label: "Alternate Form" }],
         focusCasterTypeOptions: [
-          { value: "arcanist", label: "Arcanist" },
-          { value: "magister", label: "Magister" },
-          { value: "mage", label: "Mage (CoD)" },
+          { value: "Psychic", label: "Psychic" },
+          { value: "Arcanist", label: "Arcanist" },
+          { value: "Magister", label: "Magister" },
+          { value: "Mage", label: "Mage (CoD)" },
         ],
         arcana: arcanum.names,
         reachArcanaOpts,
