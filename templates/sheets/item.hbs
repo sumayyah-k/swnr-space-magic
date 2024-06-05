@@ -334,6 +334,7 @@
               </div>
             {{/swnr-space-magic-if-equals}}
           </section>
+        </div>
       {{else}}
         <div class="flex gap-1">
           <div>
@@ -642,6 +643,25 @@
           </select>
           </label>
         </div>
+        {{#swnr-space-magic-if-equals item.flags.swnr-space-magic.form-caster-type 'Adventurer' }}
+        <div>
+          {{#each focusCasterTypePartialOptions}}
+            <div class="form-group">
+              <label>
+                <input
+                  type="checkbox"
+                  name="flags.swnr-space-magic.form-caster-type-partials"
+                  value="{{this.value}}"
+                  {{#swnr-space-magic-if-contains this.value ../item.flags.swnr-space-magic.form-caster-type-partials }}
+                    checked="checked"
+                  {{/swnr-space-magic-if-contains}}
+                />
+                {{this.label}}
+              </label>
+            </div>
+          {{/each}}
+        </div>
+        {{/swnr-space-magic-if-equals}}
       {{else}}
         {{localize 'swnr.foci.level'}}:
         <select class="px-1 border border-gray-800 bg-gray-400 bg-opacity-75 rounded-md"

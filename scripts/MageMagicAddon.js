@@ -32,6 +32,7 @@ export class MageMagicAddon {
     ITEM_POWER_TYPE: "power-type",
     ITEM_FOCUS_TYPE: "focus-type",
     ITEM_FOCUS_CASTER_TYPE: "form-caster-type",
+    ITEM_FOCUS_CASTER_TYPE_PARTIALS: "form-caster-type-partials",
     MTA_SPELL_IS_YANTRA: "is-yantra",
     MTA_SPELL_YANTRA_BONUS: "yantra-bonus",
     ITEM_IS_MOD: "is-mod",

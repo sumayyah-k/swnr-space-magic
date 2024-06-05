@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - inventory tab will have an installed mod location and show how many you can do
   - stats tab is where to set the max
   - items can be set as a mod which will give a pot to specify he location that it is installed, which will show as a badge on the item list
-- Add Partial Spellcaster support when using partial class "items"
+- Add Partial Spellcaster support when using partial class "items" or when using a partial class in forms
   - Will calculate spell slots correctly.
 - SWNR Spells have a spell slot pool field that is referenced when deducting spell slots when the source field does not match the pool name (as in the case of a form, where the source is name of the form the power should show for)
 

@@ -39,6 +39,22 @@ export async function getActorClasses(actor) {
           name: activeFormCasterType,
           type: 'class'
         });
+        if (activeFormCasterType == 'Adventurer') {
+          const activeFormCasterTypePartials = await activeFormData.getFlag(
+            MageMagicAddon.ID,
+            MageMagicAddon.FLAGS.ITEM_FOCUS_CASTER_TYPE_PARTIALS
+          );
+          if (activeFormCasterTypePartials) {
+            for (const partial of activeFormCasterTypePartials) {
+              if (partial) {
+                classes.push({
+                  name: partial,
+                  type: "class",
+                });
+              }
+            }
+          }
+        }
       }
     }
   } else {
